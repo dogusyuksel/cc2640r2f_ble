@@ -1,0 +1,45 @@
+name: build-and-test
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+    cancel-in-progress: true
+
+on: [pull_request]
+
+jobs:
+  build-and-test-build-job:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        github-server-url: https://github.com/dogusyuksel/cc2640r2f_ble.git
+        lfs: true
+
+    - name: Setup Environment
+      run: |
+        ./setup_environment.sh
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Project Docker
+      uses: docker/build-push-action@v5
+      with:
+        load: true
+        tags: |
+          ${{ secrets.DOCKER_REPO }}:master
+        context: .
+        file: docker/Dockerfile
+        pull: true
+        push: false
+        provenance: false
+
+    - name: Build Check
+      run: |
+        ./docker/run_docker.sh ${{ secrets.DOCKER_REPO }}:master "cd /workspace && source my_env && cd ble5_simple_peripheral_cc2640r2lp_app && make -C ./FlashROM_StackLibrary/ clean && make -C ./FlashROM_StackLibrary/ all"
