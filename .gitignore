@@ -21,7 +21,6 @@ ti_cc2640r2f_sdk/*
 *.pch
 
 # Libraries
-*.lib
 *.a
 *.la
 *.lo
@@ -48,7 +47,6 @@ ti_cc2640r2f_sdk/*
 
 # Kernel Module Compile Results
 *.mod*
-*.cmd
 .tmp_versions/
 modules.order
 Module.symvers
