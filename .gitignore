@@ -1,6 +1,6 @@
 # custom ignores
-docker/*
-ti_cc2640r2f_sdk/*
+docker
+ti_cc2640r2f_sdk
 
 # Prerequisites
 *.d
