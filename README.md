@@ -1,5 +1,10 @@
 # Simple Peripheral
 
+## IO LAYOUT
+
+![IO](./docs/images/IO.JPG "IO")
+
+
 ## Introduction
 
 The simple_peripheral project implements a simple Bluetooth low energy peripheral device with GATT services
@@ -203,13 +208,6 @@ Now, on boot when connected to a UART terminal you will see the option enable PT
 Note: Once transitioned to PTM mode, the UART feed will stop and it's responsibility will transfer to the NPI
 task to handle the receiving and transmitting of test mode commands. In order to exit this mode, a reboot is
 required.
-
-
-# IO LAYOUT
-
-
-![IO](./docs/images/IO.JPG "IO")
-
 
 
 # NOTES
