@@ -59,6 +59,7 @@
 #include "hal_assert.h"
 #include "bcomdef.h"
 #include "simple_peripheral.h"
+#include "common_jobs.h"
 #ifdef PTM_MODE
 #include "npi_task.h"
 #endif // PTM_MODE
@@ -148,6 +149,8 @@ int main()
   ICall_createRemoteTasks();
 
   SimplePeripheral_createTask();
+
+  CommonJobs_createTask();
 
   /* enable interrupts and start SYS/BIOS */
   BIOS_start();

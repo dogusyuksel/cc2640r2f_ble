@@ -146,3 +146,6 @@
 /* Include Transport Layer (Full or PTM) */
 -DHCI_TL_NONE
 /* -DHCI_TL_FULL */
+
+/* display disabled because UART will be used */
+-DDisplay_DISABLE_ALL

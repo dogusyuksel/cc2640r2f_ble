@@ -10,6 +10,7 @@ GEN_CMDS__FLAG := -l"configPkg/linker.cmd"
 ORDERED_OBJS += \
 "./Application/board_key.obj" \
 "./Application/simple_peripheral.obj" \
+"./Application/common_jobs.obj" \
 "./Application/simple_peripheral_menu.obj" \
 "./Application/two_btn_menu.obj" \
 "./Application/util.obj" \
@@ -186,8 +187,8 @@ ble5_simple_peripheral_cc2640r2lp_app.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS) /work
 # Other Targets
 clean:
 	-$(RM) $(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "Application/board_key.obj" "Application/simple_peripheral.obj" "Application/simple_peripheral_menu.obj" "Application/two_btn_menu.obj" "Application/util.obj" "Drivers/ECC/ECCROMCC26XX.obj" "Drivers/TRNG/TRNGCC26XX.obj" "ICall/icall.obj" "ICall/icall_cc2650.obj" "ICall/icall_user_config.obj" "ICallBLE/ble_user_config.obj" "ICallBLE/icall_api_lite.obj" "PROFILES/devinfoservice.obj" "PROFILES/gatt_uuid.obj" "PROFILES/gattservapp_util.obj" "PROFILES/simple_gatt_profile.obj" "Startup/board.obj" "Startup/ccfg_app_ble.obj" "Startup/main.obj" 
-	-$(RM) "Application/board_key.d" "Application/simple_peripheral.d" "Application/simple_peripheral_menu.d" "Application/two_btn_menu.d" "Application/util.d" "Drivers/ECC/ECCROMCC26XX.d" "Drivers/TRNG/TRNGCC26XX.d" "ICall/icall.d" "ICall/icall_cc2650.d" "ICall/icall_user_config.d" "ICallBLE/ble_user_config.d" "ICallBLE/icall_api_lite.d" "PROFILES/devinfoservice.d" "PROFILES/gatt_uuid.d" "PROFILES/gattservapp_util.d" "PROFILES/simple_gatt_profile.d" "Startup/board.d" "Startup/ccfg_app_ble.d" "Startup/main.d" 
+	-$(RM) "Application/board_key.obj" "Application/simple_peripheral.obj" "Application/common_jobs.obj" "Application/simple_peripheral_menu.obj" "Application/two_btn_menu.obj" "Application/util.obj" "Drivers/ECC/ECCROMCC26XX.obj" "Drivers/TRNG/TRNGCC26XX.obj" "ICall/icall.obj" "ICall/icall_cc2650.obj" "ICall/icall_user_config.obj" "ICallBLE/ble_user_config.obj" "ICallBLE/icall_api_lite.obj" "PROFILES/devinfoservice.obj" "PROFILES/gatt_uuid.obj" "PROFILES/gattservapp_util.obj" "PROFILES/simple_gatt_profile.obj" "Startup/board.obj" "Startup/ccfg_app_ble.obj" "Startup/main.obj" 
+	-$(RM) "Application/board_key.d" "Application/simple_peripheral.d" "Application/common_jobs.d" "Application/simple_peripheral_menu.d" "Application/two_btn_menu.d" "Application/util.d" "Drivers/ECC/ECCROMCC26XX.d" "Drivers/TRNG/TRNGCC26XX.d" "ICall/icall.d" "ICall/icall_cc2650.d" "ICall/icall_user_config.d" "ICallBLE/ble_user_config.d" "ICallBLE/icall_api_lite.d" "PROFILES/devinfoservice.d" "PROFILES/gatt_uuid.d" "PROFILES/gattservapp_util.d" "PROFILES/simple_gatt_profile.d" "Startup/board.d" "Startup/ccfg_app_ble.d" "Startup/main.d" 
 	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)
 	-@echo 'Finished clean'
 	-@echo ' '
