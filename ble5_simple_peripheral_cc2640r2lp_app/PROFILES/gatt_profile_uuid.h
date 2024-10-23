@@ -1,48 +1,3 @@
-/******************************************************************************
-
- @file  gatt_profile_uuid.h
-
- @brief This file contains GATT Profile UUID types.
-
- Group: WCS, BTS
- Target Device: cc2640r2
-
- ******************************************************************************
-
- Copyright (c) 2013-2024, Texas Instruments Incorporated
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
-
- *  Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
-
- *  Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
-
- *  Neither the name of Texas Instruments Incorporated nor the names of
-    its contributors may be used to endorse or promote products derived
-    from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
- OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
- OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
- ******************************************************************************
-
-
- *****************************************************************************/
 
 #ifndef GATT_PROFILE_UUID_H
 #define GATT_PROFILE_UUID_H
@@ -192,7 +147,7 @@ extern "C" {
 #define GATT_UNIT_VOLUME_CUBIC_MTR_UUID 0x2711      // m^3, m^3
 #define GATT_UNIT_VELOCITY_MPS_UUID 0x2712          // m/s, m s^-1
 #define GATT_UNIT_ACCELERATION_MPS_SQ_UUID 0x2713   // m/s^2, m s^-2
-#define GATT_UNIT_WAVENUMBER_RM_UUID 0x2714         // ó, m^-1
+#define GATT_UNIT_WAVENUMBER_RM_UUID 0x2714         // ï¿½, m^-1
 #define GATT_UNIT_DENSITY_KGPCM_UUID 0x2715         // p, kg m^-3
 #define GATT_UNIT_SURFACE_DENSITY_KGPSM_UUID 0x2716 // pA, kg m^-2
 #define GATT_UNIT_SPECIFIC_VOLUME_CMPKG_UUID 0x2717 // v, m^3 kg^-1

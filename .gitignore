@@ -2,6 +2,7 @@
 docker
 ti_cc2640r2f_sdk
 linting
+openocd
 ble5_simple_peripheral_cc2640r2lp_app_linkInfo.xml
 ble5_simple_peripheral_cc2640r2lp_app/FlashROM_StackLibrary/configPkg
 ble5_simple_peripheral_cc2640r2lp_app/TOOLS/src/sysbios

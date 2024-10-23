@@ -1,53 +1,3 @@
-/******************************************************************************
-
- @file  simple_peripheral.c
-
- @brief This file contains the Simple Peripheral sample application for use
-        with the CC2650 Bluetooth Low Energy Protocol Stack.
-
- Group: WCS, BTS
- Target Device: cc2640r2
-
- ******************************************************************************
-
- Copyright (c) 2013-2024, Texas Instruments Incorporated
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
-
- *  Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
-
- *  Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
-
- *  Neither the name of Texas Instruments Incorporated nor the names of
-    its contributors may be used to endorse or promote products derived
-    from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
- OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
- OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
- ******************************************************************************
-
-
- *****************************************************************************/
-
-/*********************************************************************
- * INCLUDES
- */
 #include <string.h>
 
 #include <ti/sysbios/knl/Clock.h>
@@ -55,12 +5,12 @@
 #include <ti/sysbios/knl/Queue.h>
 #include <ti/sysbios/knl/Task.h>
 
-#include <ti/display/Display.h>
-
 #if !(defined __TI_COMPILER_VERSION__)
 #include <intrinsics.h>
 #endif
 
+#include <ti/drivers/PIN.h>
+#include <ti/drivers/pin/PINCC26XX.h>
 #include <ti/drivers/utils/List.h>
 
 #include "util.h"
@@ -79,10 +29,7 @@
 #include <board.h>
 #include <board_key.h>
 
-#include <menu/two_btn_menu.h>
-
 #include "simple_peripheral.h"
-#include "simple_peripheral_menu.h"
 
 #ifdef PTM_MODE
 #include "icall_hci_tl.h" // To allow ICall HCI Transport Layer
@@ -90,13 +37,8 @@
 #include "npi_task.h"     // To allow RX event registration
 #endif                    // PTM_MODE
 
-/*********************************************************************
- * MACROS
- */
-
-/*********************************************************************
- * CONSTANTS
- */
+extern void uart_print(char *format, ...);
+extern PIN_Handle ledPinHandle;
 
 // Address mode of the local device
 // Note: When using the DEFAULT_ADDRESS_MODE as ADDRMODE_RANDOM or
@@ -262,9 +204,6 @@ typedef struct {
  * GLOBAL VARIABLES
  */
 
-// Display Interface
-Display_Handle dispHandle = NULL;
-
 // Task configuration
 Task_Struct spTask;
 #if defined __TI_COMPILER_VERSION__
@@ -408,8 +347,6 @@ static status_t SimplePeripheral_setPhy(uint16_t connHandle, uint8_t allPhys,
                                         uint8_t txPhy, uint8_t rxPhy,
                                         uint16_t phyOpts);
 static uint8_t SimplePeripheral_clearConnListEntry(uint16_t connHandle);
-static void SimplePeripheral_menuSwitchCb(tbmMenuObj_t *pMenuObjCurr,
-                                          tbmMenuObj_t *pMenuObjNext);
 static void SimplePeripheral_connEvtCB(Gap_ConnEventRpt_t *pReport);
 static void SimplePeripheral_processConnEvt(Gap_ConnEventRpt_t *pReport);
 #ifdef PTM_MODE
@@ -668,17 +605,6 @@ static void SimplePeripheral_init(void) {
 
   // Initialize array to store connection handle and RSSI values
   SimplePeripheral_initPHYRSSIArray();
-
-  // The type of display is configured based on the BOARD_DISPLAY_USE...
-  // preprocessor definitions
-  dispHandle = Display_open(Display_Type_ANY, NULL);
-
-  // Initialize Two-Button Menu module
-  TBM_SET_TITLE(&spMenuMain, "Simple Peripheral");
-  tbm_setItemStatus(&spMenuMain, TBM_ITEM_NONE, TBM_ITEM_ALL);
-
-  tbm_initTwoBtnMenu(dispHandle, &spMenuMain, 2, SimplePeripheral_menuSwitchCb);
-  Display_printf(dispHandle, SP_ROW_SEPARATOR_1, 0, "====================");
 }
 
 /*********************************************************************
@@ -787,11 +713,7 @@ static uint8_t SimplePeripheral_processStackMsg(ICall_Hdr *pMsg) {
       switch (pMyMsg->cmdOpcode) {
       case HCI_LE_SET_PHY: {
         if (pMyMsg->cmdStatus == HCI_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE) {
-          Display_printf(dispHandle, SP_ROW_STATUS_1, 0,
-                         "PHY Change failure, peer does not support this");
-        } else {
-          Display_printf(dispHandle, SP_ROW_STATUS_1, 0,
-                         "PHY Update Status Event: 0x%x", pMyMsg->cmdStatus);
+          uart_print("PHY Change failure, peer does not support this\n");
         }
 
         SimplePeripheral_updatePHYStat(HCI_LE_SET_PHY, (uint8_t *)pMsg);
@@ -812,16 +734,9 @@ static uint8_t SimplePeripheral_processStackMsg(ICall_Hdr *pMsg) {
       // A Phy Update Has Completed or Failed
       if (pPUC->BLEEventCode == HCI_BLE_PHY_UPDATE_COMPLETE_EVENT) {
         if (pPUC->status != SUCCESS) {
-          Display_printf(dispHandle, SP_ROW_STATUS_1, 0, "PHY Change failure");
+          uart_print("PHY Change failure\n");
         } else {
-          // Only symmetrical PHY is supported.
-          // rxPhy should be equal to txPhy.
-          Display_printf(dispHandle, SP_ROW_STATUS_2, 0, "PHY Updated to %s",
-                         (pPUC->rxPhy == PHY_UPDATE_COMPLETE_EVENT_1M)   ? "1M"
-                         : (pPUC->rxPhy == PHY_UPDATE_COMPLETE_EVENT_2M) ? "2M"
-                         : (pPUC->rxPhy == PHY_UPDATE_COMPLETE_EVENT_CODED)
-                             ? "CODED"
-                             : "Unexpected PHY Value");
+          uart_print("Only symmetrical PHY is supported\n");
         }
 
         SimplePeripheral_updatePHYStat(HCI_BLE_PHY_UPDATE_COMPLETE_EVENT,
@@ -895,12 +810,10 @@ static uint8_t SimplePeripheral_processGATTMsg(gattMsgEvent_t *pMsg) {
     // The app is informed in case it wants to drop the connection.
 
     // Display the opcode of the message that caused the violation.
-    Display_printf(dispHandle, SP_ROW_STATUS_1, 0, "FC Violated: %d",
-                   pMsg->msg.flowCtrlEvt.opcode);
+    uart_print("FC Violated, opcode %d\n", pMsg->msg.flowCtrlEvt.opcode);
   } else if (pMsg->method == ATT_MTU_UPDATED_EVENT) {
     // MTU size updated
-    Display_printf(dispHandle, SP_ROW_STATUS_1, 0, "MTU Size: %d",
-                   pMsg->msg.mtuEvt.MTU);
+    uart_print("MTU Size Updated, MTU: %d\n", pMsg->msg.mtuEvt.MTU);
   }
 
   // Free message payload. Needed only for ATT Protocol messages
@@ -1015,8 +928,6 @@ static void SimplePeripheral_processGapMessage(gapEventHdr_t *pMsg) {
       // Set Device Info Service Parameter
       DevInfo_SetParameter(DEVINFO_SYSTEM_ID, DEVINFO_SYSTEM_ID_LEN, systemId);
 
-      Display_printf(dispHandle, SP_ROW_STATUS_1, 0, "Initialized");
-
       // Setup and start Advertising
       // For more information, see the GAP section in the User's Guide:
       // http://software-dl.ti.com/lprf/ble5stack-latest/
@@ -1078,14 +989,9 @@ static void SimplePeripheral_processGapMessage(gapEventHdr_t *pMsg) {
           GapAdv_enable(advHandleLongRange, GAP_ADV_ENABLE_OPTIONS_USE_MAX, 0);
       SIMPLEPERIPHERAL_ASSERT(status == SUCCESS);
 
-#ifdef PTM_MODE
-      // Enable "Enable PTM Mode" option
-      tbm_setItemStatus(&spMenuMain, SP_ITEM_PTM_ENBL, SP_ITEM_NONE);
-#endif
       // Display device address
-      Display_printf(dispHandle, SP_ROW_IDA, 0, "%s Addr: %s",
-                     (addrMode <= ADDRMODE_RANDOM) ? "Dev" : "ID",
-                     Util_convertBdAddr2Str(pPkt->devAddr));
+      uart_print("%s Addr: %s\n", (addrMode <= ADDRMODE_RANDOM) ? "Dev" : "ID",
+                 Util_convertBdAddr2Str(pPkt->devAddr));
 
 #if defined(BLE_V42_FEATURES) && (BLE_V42_FEATURES & PRIVACY_1_2_CFG)
       if (addrMode > ADDRMODE_RANDOM) {
@@ -1106,19 +1012,14 @@ static void SimplePeripheral_processGapMessage(gapEventHdr_t *pMsg) {
 
     // Display the amount of current connections
     uint8_t numActive = linkDB_NumActive();
-    Display_printf(dispHandle, SP_ROW_STATUS_2, 0, "Num Conns: %d",
-                   (uint16_t)numActive);
+    uart_print("Num Conns: %d\n", (uint16_t)numActive);
 
     if (pPkt->hdr.status == SUCCESS) {
       // Add connection to list and start RSSI
       SimplePeripheral_addConn(pPkt->connectionHandle);
 
       // Display the address of this connection
-      Display_printf(dispHandle, SP_ROW_STATUS_1, 0, "Connected to %s",
-                     Util_convertBdAddr2Str(pPkt->devAddr));
-
-      // Enable connection selection option
-      tbm_setItemStatus(&spMenuMain, SP_ITEM_SELECT_CONN, TBM_ITEM_NONE);
+      uart_print("Connected to %s\n", Util_convertBdAddr2Str(pPkt->devAddr));
 
       // Start Periodic Clock.
       Util_startClock(&clkPeriodic);
@@ -1142,9 +1043,8 @@ static void SimplePeripheral_processGapMessage(gapEventHdr_t *pMsg) {
 
     // Display the amount of current connections
     uint8_t numActive = linkDB_NumActive();
-    Display_printf(dispHandle, SP_ROW_STATUS_1, 0, "Device Disconnected!");
-    Display_printf(dispHandle, SP_ROW_STATUS_2, 0, "Num Conns: %d",
-                   (uint16_t)numActive);
+
+    uart_print("Num Conns: %d\n", (uint16_t)numActive);
 
     // Remove the connection from the list and disable RSSI if needed
     SimplePeripheral_removeConn(pPkt->connectionHandle);
@@ -1153,17 +1053,11 @@ static void SimplePeripheral_processGapMessage(gapEventHdr_t *pMsg) {
     if (numActive == 0) {
       // Stop periodic clock
       Util_stopClock(&clkPeriodic);
-
-      // Disable Connection Selection option
-      tbm_setItemStatus(&spMenuMain, TBM_ITEM_NONE, SP_ITEM_SELECT_CONN);
     }
 
     // Start advertising since there is room for more connections
     GapAdv_enable(advHandleLegacy, GAP_ADV_ENABLE_OPTIONS_USE_MAX, 0);
     GapAdv_enable(advHandleLongRange, GAP_ADV_ENABLE_OPTIONS_USE_MAX, 0);
-
-    // Clear remaining lines
-    Display_clearLine(dispHandle, SP_ROW_CONNECTION);
 
     break;
   }
@@ -1202,13 +1096,12 @@ static void SimplePeripheral_processGapMessage(gapEventHdr_t *pMsg) {
 
     if (pPkt->status == SUCCESS) {
       // Display the address of the connection update
-      Display_printf(dispHandle, SP_ROW_STATUS_2, 0, "Link Param Updated: %s",
-                     Util_convertBdAddr2Str(linkInfo.addr));
+      uart_print("Link Param Updated: %s\n",
+                 Util_convertBdAddr2Str(linkInfo.addr));
     } else {
       // Display the address of the connection update failure
-      Display_printf(dispHandle, SP_ROW_STATUS_2, 0,
-                     "Link Param Update Failed 0x%x: %s", pPkt->opcode,
-                     Util_convertBdAddr2Str(linkInfo.addr));
+      uart_print("Link Param Update Failed 0x%x: %s\n", pPkt->opcode,
+                 Util_convertBdAddr2Str(linkInfo.addr));
     }
 
     // Check if there are any queued parameter updates
@@ -1226,7 +1119,6 @@ static void SimplePeripheral_processGapMessage(gapEventHdr_t *pMsg) {
   }
 
   default:
-    Display_clearLines(dispHandle, SP_ROW_STATUS_1, SP_ROW_STATUS_2);
     break;
   }
 }
@@ -1268,15 +1160,13 @@ static void SimplePeripheral_processCharValueChangeEvt(uint8_t paramId) {
   case SIMPLEPROFILE_CHAR1:
     SimpleProfile_GetParameter(SIMPLEPROFILE_CHAR1, &newValue);
 
-    Display_printf(dispHandle, SP_ROW_STATUS_1, 0, "Char 1: %d",
-                   (uint16_t)newValue);
+    uart_print("Char 1: %d\n", (uint16_t)newValue);
     break;
 
   case SIMPLEPROFILE_CHAR3:
     SimpleProfile_GetParameter(SIMPLEPROFILE_CHAR3, &newValue);
 
-    Display_printf(dispHandle, SP_ROW_STATUS_1, 0, "Char 3: %d",
-                   (uint16_t)newValue);
+    uart_print("Char 3: %d\n", (uint16_t)newValue);
     break;
 
   default:
@@ -1332,8 +1222,7 @@ static void SimplePeripheral_updateRPA(void) {
 
   if (memcmp(pRpaNew, rpa, B_ADDR_LEN)) {
     // If the RPA has changed, update the display
-    Display_printf(dispHandle, SP_ROW_RPA, 0, "RP Addr: %s",
-                   Util_convertBdAddr2Str(pRpaNew));
+    uart_print("RP Addr: %s\n", Util_convertBdAddr2Str(pRpaNew));
     memcpy(rpa, pRpaNew, B_ADDR_LEN);
   }
 }
@@ -1400,15 +1289,26 @@ static void SimplePeripheral_keyChangeHandler(uint8_t keys) {
  *                 KEY_RIGHT
  */
 static void SimplePeripheral_handleKeys(uint8_t keys) {
+  static uint8_t led1_state = 0, led2_state = 0;
   if (keys & KEY_LEFT) {
     // Check if the key is still pressed. Workaround for possible bouncing.
     if (PIN_getInputValue(Board_PIN_BUTTON0) == 0) {
-      tbm_buttonLeft();
+      if ((led1_state % 2) == 0) {
+        PIN_setOutputValue(ledPinHandle, Board_PIN_LED1, 1);
+      } else {
+        PIN_setOutputValue(ledPinHandle, Board_PIN_LED1, 0);
+      }
+      led1_state++;
     }
   } else if (keys & KEY_RIGHT) {
     // Check if the key is still pressed. Workaround for possible bouncing.
     if (PIN_getInputValue(Board_PIN_BUTTON1) == 0) {
-      tbm_buttonRight();
+      if ((led2_state % 2) == 0) {
+        PIN_setOutputValue(ledPinHandle, Board_PIN_LED2, 1);
+      } else {
+        PIN_setOutputValue(ledPinHandle, Board_PIN_LED2, 0);
+      }
+      led2_state++;
     }
   }
 }
@@ -1438,8 +1338,7 @@ bool SimplePeripheral_doSetConnPhy(uint8 index) {
 
   uint8_t connIndex = SimplePeripheral_getConnIndex(menuConnHandle);
   if (connIndex >= MAX_NUM_BLE_CONNS) {
-    Display_printf(dispHandle, SP_ROW_STATUS_1, 0,
-                   "Connection handle is not in the connList !!!");
+    uart_print("Connection handle is not in the connList !!!\n");
     return FALSE;
   }
 
@@ -1454,9 +1353,6 @@ bool SimplePeripheral_doSetConnPhy(uint8 index) {
     SimplePeripheral_stopAutoPhyChange(connList[connIndex].connHandle);
 
     SimplePeripheral_setPhy(menuConnHandle, 0, phy[index], phy[index], 0);
-
-    Display_printf(dispHandle, SP_ROW_STATUS_1, 0, "PHY preference: %s",
-                   TBM_GET_ACTION_DESC(&spMenuConnPhy, index));
   } else {
     // Start RSSI read for auto PHY update (if it is disabled)
     SimplePeripheral_startAutoPhyChange(menuConnHandle);
@@ -1495,13 +1391,11 @@ static void SimplePeripheral_advCallback(uint32_t event, void *pBuf,
 static void SimplePeripheral_processAdvEvent(spGapAdvEventData_t *pEventData) {
   switch (pEventData->event) {
   case GAP_EVT_ADV_START_AFTER_ENABLE:
-    Display_printf(dispHandle, SP_ROW_ADVSTATE, 0, "Adv Set %d Enabled",
-                   *(uint8_t *)(pEventData->pBuf));
+    uart_print("Adv Set Enabled\n");
     break;
 
   case GAP_EVT_ADV_END_AFTER_DISABLE:
-    Display_printf(dispHandle, SP_ROW_ADVSTATE, 0, "Adv Set %d Disabled",
-                   *(uint8_t *)(pEventData->pBuf));
+    uart_print("Adv Set Disabled\n");
     break;
 
   case GAP_EVT_ADV_START:
@@ -1514,9 +1408,7 @@ static void SimplePeripheral_processAdvEvent(spGapAdvEventData_t *pEventData) {
 #ifndef Display_DISABLE_ALL
     GapAdv_setTerm_t *advSetTerm = (GapAdv_setTerm_t *)(pEventData->pBuf);
 #endif
-    Display_printf(dispHandle, SP_ROW_ADVSTATE, 0,
-                   "Adv Set %d disabled after conn %d", advSetTerm->handle,
-                   advSetTerm->connHandle);
+    uart_print("Adv Set disabled after conn\n");
   } break;
 
   case GAP_EVT_SCAN_REQ_RECEIVED:
@@ -1603,33 +1495,30 @@ static void SimplePeripheral_processPairState(spPairStateData_t *pPairData) {
 
   switch (state) {
   case GAPBOND_PAIRING_STATE_STARTED:
-    Display_printf(dispHandle, SP_ROW_CONNECTION, 0, "Pairing started");
+    uart_print("Pairing started\n");
     break;
 
   case GAPBOND_PAIRING_STATE_COMPLETE:
     if (status == SUCCESS) {
-      Display_printf(dispHandle, SP_ROW_CONNECTION, 0, "Pairing success");
+      uart_print("Pairing success\n");
     } else {
-      Display_printf(dispHandle, SP_ROW_CONNECTION, 0, "Pairing fail: %d",
-                     status);
+      uart_print("Pairing failed\n");
     }
     break;
 
   case GAPBOND_PAIRING_STATE_ENCRYPTED:
     if (status == SUCCESS) {
-      Display_printf(dispHandle, SP_ROW_CONNECTION, 0, "Encryption success");
+      uart_print("Encryption success\n");
     } else {
-      Display_printf(dispHandle, SP_ROW_CONNECTION, 0, "Encryption failed: %d",
-                     status);
+      uart_print("Encryption failed\n");
     }
     break;
 
   case GAPBOND_PAIRING_STATE_BOND_SAVED:
     if (status == SUCCESS) {
-      Display_printf(dispHandle, SP_ROW_CONNECTION, 0, "Bond save success");
+      uart_print("Bond success\n");
     } else {
-      Display_printf(dispHandle, SP_ROW_CONNECTION, 0, "Bond save failed: %d",
-                     status);
+      uart_print("Bond failed\n");
     }
     break;
 
@@ -1648,8 +1537,7 @@ static void SimplePeripheral_processPairState(spPairStateData_t *pPairData) {
 static void SimplePeripheral_processPasscode(spPasscodeData_t *pPasscodeData) {
   // Display passcode to user
   if (pPasscodeData->uiOutputs != 0) {
-    Display_printf(dispHandle, SP_ROW_CONNECTION, 0, "Passcode: %d",
-                   B_APP_DEFAULT_PASSCODE);
+    uart_print("passcode is %d\n", B_APP_DEFAULT_PASSCODE);
   }
 
 #if defined(GAP_BOND_MGR)
@@ -1685,8 +1573,7 @@ static void SimplePeripheral_processConnEvt(Gap_ConnEventRpt_t *pReport) {
   uint8_t connIndex = SimplePeripheral_getConnIndex(pReport->handle);
 
   if (connIndex >= MAX_NUM_BLE_CONNS) {
-    Display_printf(dispHandle, SP_ROW_STATUS_1, 0,
-                   "Connection handle is not in the connList !!!");
+    uart_print("Connection handle is not in the connList !!!\n");
     return;
   }
 
@@ -1720,29 +1607,6 @@ static status_t SimplePeripheral_enqueueMsg(uint8_t event, void *pData) {
   }
 
   return (bleMemAllocError);
-}
-
-/*********************************************************************
- * @fn      SimplePeripheral_doSelectConn
- *
- * @brief   Select a connection to communicate with
- *
- * @param   index - item index from the menu
- *
- * @return  always true
- */
-bool SimplePeripheral_doSelectConn(uint8_t index) {
-  menuConnHandle = connList[index].connHandle;
-
-  // Set the menu title and go to this connection's context
-  TBM_SET_TITLE(&spMenuPerConn, TBM_GET_ACTION_DESC(&spMenuSelectConn, index));
-
-  // Clear non-connection-related message
-  Display_clearLine(dispHandle, SP_ROW_CONNECTION);
-
-  tbm_goTo(&spMenuPerConn);
-
-  return (true);
 }
 
 /*********************************************************************
@@ -1934,8 +1798,7 @@ static void SimplePeripheral_processParamUpdate(uint16_t connHandle) {
 
   connIndex = SimplePeripheral_getConnIndex(connHandle);
   if (connIndex >= MAX_NUM_BLE_CONNS) {
-    Display_printf(dispHandle, SP_ROW_STATUS_1, 0,
-                   "Connection handle is not in the connList !!!");
+    uart_print("Connection handle is not in the connList !!!\n");
     return;
   }
 
@@ -2061,8 +1924,8 @@ static void SimplePeripheral_processCmdCompleteEvt(hciEvt_CmdComplete_t *pMsg) {
         }   // end of if (connList[index].phyCngRq == FALSE)
       }     // end of if (rssi != LL_RSSI_NOT_AVAILABLE)
 
-      Display_printf(dispHandle, SP_ROW_RSSI, 0, "RSSI:%d dBm, AVG RSSI:%d dBm",
-                     (uint32_t)(rssi), connList[index].rssiAvg);
+      uart_print("RSSI:%d dBm, AVG RSSI:%d dBm\n", (uint32_t)(rssi),
+                 connList[index].rssiAvg);
 
     } // end of if (status == SUCCESS)
     break;
@@ -2070,8 +1933,7 @@ static void SimplePeripheral_processCmdCompleteEvt(hciEvt_CmdComplete_t *pMsg) {
 
   case HCI_LE_READ_PHY: {
     if (status == SUCCESS) {
-      Display_printf(dispHandle, SP_ROW_RSSI + 2, 0, "RXPh: %d, TXPh: %d",
-                     pMsg->pReturnParam[3], pMsg->pReturnParam[4]);
+      uart_print("HCI_LE_READ_PHY SUCCESS\n");
     }
     break;
   }
@@ -2258,69 +2120,6 @@ static void SimplePeripheral_updatePHYStat(uint16_t eventCode, uint8_t *pMsg) {
   } // end of switch (eventCode)
 }
 
-/*********************************************************************
- * @fn      SimplePeripheral_menuSwitchCb
- *
- * @brief   Detect menu context switching
- *
- * @param   pMenuObjCurr - the current menu object
- * @param   pMenuObjNext - the menu object the context is about to switch to
- *
- * @return  none
- */
-static void SimplePeripheral_menuSwitchCb(tbmMenuObj_t *pMenuObjCurr,
-                                          tbmMenuObj_t *pMenuObjNext) {
-  uint8_t NUMB_ACTIVE_CONNS = linkDB_NumActive();
-
-  // interested in only the events of
-  // entering scMenuConnect, spMenuSelectConn, and scMenuMain for now
-  if (pMenuObjNext == &spMenuSelectConn) {
-    static uint8_t *pAddrs;
-    uint8_t *pAddrTemp;
-
-    if (pAddrs != NULL) {
-      ICall_free(pAddrs);
-    }
-
-    // Allocate buffer to display addresses
-    pAddrs = ICall_malloc(NUMB_ACTIVE_CONNS * SP_ADDR_STR_SIZE);
-
-    if (pAddrs == NULL) {
-      TBM_SET_NUM_ITEM(&spMenuSelectConn, 0);
-    } else {
-      uint8_t i;
-
-      TBM_SET_NUM_ITEM(&spMenuSelectConn, MAX_NUM_BLE_CONNS);
-
-      pAddrTemp = pAddrs;
-
-      // Add active connection info to the menu object
-      for (i = 0; i < MAX_NUM_BLE_CONNS; i++) {
-        if (connList[i].connHandle != CONNHANDLE_INVALID) {
-          // Get the address from the connection handle
-          linkDBInfo_t linkInfo;
-          linkDB_GetInfo(connList[i].connHandle, &linkInfo);
-          // This connection is active. Set the corresponding menu item with
-          // the address of this connection and enable the item.
-          memcpy(pAddrTemp, Util_convertBdAddr2Str(linkInfo.addr),
-                 SP_ADDR_STR_SIZE);
-          TBM_SET_ACTION_DESC(&spMenuSelectConn, i, pAddrTemp);
-          tbm_setItemStatus(&spMenuSelectConn, (1 << i), SP_ITEM_NONE);
-          pAddrTemp += SP_ADDR_STR_SIZE;
-        } else {
-          // This connection is not active. Disable the corresponding menu item.
-          tbm_setItemStatus(&spMenuSelectConn, SP_ITEM_NONE, (1 << i));
-        }
-      }
-    }
-  } else if (pMenuObjNext == &spMenuMain) {
-    // Now we are not in a specific connection's context
-
-    // Clear connection-related message
-    Display_clearLine(dispHandle, SP_ROW_CONNECTION);
-  }
-}
-
 #ifdef PTM_MODE
 /*********************************************************************
  * @fn      SimplePeripheral_doEnablePTMMode
@@ -2332,18 +2131,6 @@ static void SimplePeripheral_menuSwitchCb(tbmMenuObj_t *pMenuObjCurr,
  * @return  always true
  */
 bool SimplePeripheral_doEnablePTMMode(uint8_t index) {
-  // Clear Display
-  Display_clearLines(dispHandle, 0, 15);
-
-  // Indicate in screen that PTM Mode is initializing
-  Display_printf(
-      dispHandle, 1, 0,
-      "PTM Mode initializing!\n\n\rPlease note UART feed will now stop...");
-
-  // Before starting the NPI task close Display driver to make sure there is no
-  // shared resource used by both
-  Display_close(dispHandle);
-
   // Start NPI task
   NPITask_createTask(ICALL_SERVICE_CLASS_BLE);
 
@@ -2365,10 +2152,6 @@ bool SimplePeripheral_doEnablePTMMode(uint8_t index) {
 
   // Inform Stack to Initialize PTM
   HCI_EXT_EnablePTMCmd();
-
-  // Open back the display to avoid crashes to future calls to Display_printf
-  // (even though they won't go through until reboot)
-  dispHandle = Display_open(Display_Type_ANY, NULL);
 
   return TRUE;
 }
