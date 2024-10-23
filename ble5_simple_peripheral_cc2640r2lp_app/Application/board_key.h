@@ -9,7 +9,7 @@
  Target Device: cc2640r2
 
  ******************************************************************************
- 
+
  Copyright (c) 2014-2024, Texas Instruments Incorporated
  All rights reserved.
 
@@ -41,8 +41,8 @@
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  ******************************************************************************
- 
- 
+
+
  *****************************************************************************/
 
 #ifndef BOARD_KEY_H
@@ -57,20 +57,20 @@ extern "C" {
  */
 
 /*********************************************************************
-*  EXTERNAL VARIABLES
-*/
+ *  EXTERNAL VARIABLES
+ */
 
 /*********************************************************************
  * CONSTANTS
  */
-#define KEY_SELECT            0x0001
-#define KEY_UP                0x0002
-#define KEY_DOWN              0x0004
-#define KEY_LEFT              0x0008
-#define KEY_RIGHT             0x0010
+#define KEY_SELECT 0x0001
+#define KEY_UP 0x0002
+#define KEY_DOWN 0x0004
+#define KEY_LEFT 0x0008
+#define KEY_RIGHT 0x0010
 
 // Debounce timeout in milliseconds
-#define KEY_DEBOUNCE_TIMEOUT  200
+#define KEY_DEBOUNCE_TIMEOUT 200
 
 /*********************************************************************
  * TYPEDEFS

@@ -9,7 +9,7 @@
  Target Device: cc2640r2
 
  ******************************************************************************
- 
+
  Copyright (c) 2014-2024, Texas Instruments Incorporated
  All rights reserved.
 
@@ -41,18 +41,18 @@
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  ******************************************************************************
- 
- 
+
+
  *****************************************************************************/
 
 /*********************************************************************
  * INCLUDES
  */
 #include <stdbool.h>
+#include <ti/sysbios/hal/Hwi.h>
 #include <ti/sysbios/knl/Clock.h>
 #include <ti/sysbios/knl/Event.h>
 #include <ti/sysbios/knl/Queue.h>
-#include <ti/sysbios/hal/Hwi.h>
 
 #ifdef USE_ICALL
 #include <icall.h>
@@ -63,16 +63,14 @@
 #include "bcomdef.h"
 #include "util.h"
 
-
 /*********************************************************************
  * TYPEDEFS
  */
 
 // RTOS queue for profile/app messages.
-typedef struct _queueRec_
-{
-  Queue_Elem _elem;          // queue element
-  uint8_t *pData;            // pointer to app data
+typedef struct _queueRec_ {
+  Queue_Elem _elem; // queue element
+  uint8_t *pData;   // pointer to app data
 } queueRec_t;
 
 /*********************************************************************
@@ -107,13 +105,9 @@ typedef struct _queueRec_
  *
  * @return  Clock_Handle  - a handle to the clock instance.
  */
-Clock_Handle Util_constructClock(Clock_Struct *pClock,
-                                 Clock_FuncPtr clockCB,
-                                 uint32_t clockDuration,
-                                 uint32_t clockPeriod,
-                                 uint8_t startFlag,
-                                 UArg arg)
-{
+Clock_Handle Util_constructClock(Clock_Struct *pClock, Clock_FuncPtr clockCB,
+                                 uint32_t clockDuration, uint32_t clockPeriod,
+                                 uint8_t startFlag, UArg arg) {
   Clock_Params clockParams;
 
   // Convert clockDuration in milliseconds to ticks.
@@ -147,8 +141,7 @@ Clock_Handle Util_constructClock(Clock_Struct *pClock,
  *
  * @return  none
  */
-void Util_startClock(Clock_Struct *pClock)
-{
+void Util_startClock(Clock_Struct *pClock) {
   Clock_Handle handle = Clock_handle(pClock);
 
   // Start clock instance
@@ -165,15 +158,13 @@ void Util_startClock(Clock_Struct *pClock)
  *
  * @return  none
  */
-void Util_restartClock(Clock_Struct *pClock, uint32_t clockTimeout)
-{
+void Util_restartClock(Clock_Struct *pClock, uint32_t clockTimeout) {
   uint32_t clockTicks;
   Clock_Handle handle;
 
   handle = Clock_handle(pClock);
 
-  if (Clock_isActive(handle))
-  {
+  if (Clock_isActive(handle)) {
     // Stop clock first
     Clock_stop(handle);
   }
@@ -198,8 +189,7 @@ void Util_restartClock(Clock_Struct *pClock, uint32_t clockTimeout)
  * @return  TRUE if Clock is currently active
             FALSE otherwise
  */
-bool Util_isActive(Clock_Struct *pClock)
-{
+bool Util_isActive(Clock_Struct *pClock) {
   Clock_Handle handle = Clock_handle(pClock);
 
   // Start clock instance
@@ -215,8 +205,7 @@ bool Util_isActive(Clock_Struct *pClock)
  *
  * @return  none
  */
-void Util_stopClock(Clock_Struct *pClock)
-{
+void Util_stopClock(Clock_Struct *pClock) {
   Clock_Handle handle = Clock_handle(pClock);
 
   // Stop clock instance
@@ -232,8 +221,7 @@ void Util_stopClock(Clock_Struct *pClock)
  * @param   clockPeriod - longevity of clock timer in milliseconds
  * @return  none
  */
-void Util_rescheduleClock(Clock_Struct *pClock, uint32_t clockPeriod)
-{
+void Util_rescheduleClock(Clock_Struct *pClock, uint32_t clockPeriod) {
   bool running;
   uint32_t clockTicks;
   Clock_Handle handle;
@@ -241,8 +229,7 @@ void Util_rescheduleClock(Clock_Struct *pClock, uint32_t clockPeriod)
   handle = Clock_handle(pClock);
   running = Clock_isActive(handle);
 
-  if (running)
-  {
+  if (running) {
     Clock_stop(handle);
   }
 
@@ -252,8 +239,7 @@ void Util_rescheduleClock(Clock_Struct *pClock, uint32_t clockPeriod)
   Clock_setTimeout(handle, clockTicks);
   Clock_setPeriod(handle, clockTicks);
 
-  if (running)
-  {
+  if (running) {
     Clock_start(handle);
   }
 }
@@ -267,8 +253,7 @@ void Util_rescheduleClock(Clock_Struct *pClock, uint32_t clockPeriod)
  *
  * @return  A queue handle.
  */
-Queue_Handle Util_constructQueue(Queue_Struct *pQueue)
-{
+Queue_Handle Util_constructQueue(Queue_Struct *pQueue) {
   // Construct a Queue instance.
   Queue_construct(pQueue, NULL);
 
@@ -287,10 +272,8 @@ Queue_Handle Util_constructQueue(Queue_Struct *pQueue)
  *
  * @return  TRUE if message was queued, FALSE otherwise.
  */
-uint8_t Util_enqueueMsg(Queue_Handle msgQueue,
-                        Event_Handle event,
-                        uint8_t *pMsg)
-{
+uint8_t Util_enqueueMsg(Queue_Handle msgQueue, Event_Handle event,
+                        uint8_t *pMsg) {
   queueRec_t *pRec;
 
   // Allocated space for queue node.
@@ -306,8 +289,7 @@ uint8_t Util_enqueueMsg(Queue_Handle msgQueue,
     Queue_put(msgQueue, &pRec->_elem);
 
     // Wake up the application thread event handler.
-    if (event)
-    {
+    if (event) {
       Event_post(event, UTIL_QUEUE_EVENT_ID);
     }
 
@@ -333,12 +315,10 @@ uint8_t Util_enqueueMsg(Queue_Handle msgQueue,
  *
  * @return  pointer to dequeued message, NULL otherwise.
  */
-uint8_t *Util_dequeueMsg(Queue_Handle msgQueue)
-{
+uint8_t *Util_dequeueMsg(Queue_Handle msgQueue) {
   queueRec_t *pRec = Queue_get(msgQueue);
 
-  if (pRec != (queueRec_t *)msgQueue)
-  {
+  if (pRec != (queueRec_t *)msgQueue) {
     uint8_t *pData = pRec->pData;
 
     // Free the queue node
@@ -365,12 +345,11 @@ uint8_t *Util_dequeueMsg(Queue_Handle msgQueue)
  *
  * @return  BD address as a string
  */
-char *Util_convertBdAddr2Str(uint8_t *pAddr)
-{
-  uint8_t     charCnt;
-  char        hex[] = "0123456789ABCDEF";
-  static char str[(2*B_ADDR_LEN)+3];
-  char        *pStr = str;
+char *Util_convertBdAddr2Str(uint8_t *pAddr) {
+  uint8_t charCnt;
+  char hex[] = "0123456789ABCDEF";
+  static char str[(2 * B_ADDR_LEN) + 3];
+  char *pStr = str;
 
   *pStr++ = '0';
   *pStr++ = 'x';
@@ -378,8 +357,7 @@ char *Util_convertBdAddr2Str(uint8_t *pAddr)
   // Start from end of addr
   pAddr += B_ADDR_LEN;
 
-  for (charCnt = B_ADDR_LEN; charCnt > 0; charCnt--)
-  {
+  for (charCnt = B_ADDR_LEN; charCnt > 0; charCnt--) {
     *pStr++ = hex[*--pAddr >> 4];
     *pStr++ = hex[*pAddr & 0x0F];
   }
@@ -399,18 +377,14 @@ char *Util_convertBdAddr2Str(uint8_t *pAddr)
  *
  * @return  TRUE if buffer matches the pattern, FALSE otherwise.
  */
-uint8_t Util_isBufSet(uint8_t *pBuf, uint8_t pattern, uint16_t len)
-{
+uint8_t Util_isBufSet(uint8_t *pBuf, uint8_t pattern, uint16_t len) {
   uint8_t result = FALSE;
 
-  if (pBuf)
-  {
+  if (pBuf) {
     result = TRUE;
 
-    for(uint16_t i = 0; i < len; i++)
-    {
-      if (pBuf[i] != pattern)
-      {
+    for (uint16_t i = 0; i < len; i++) {
+      if (pBuf[i] != pattern) {
         // Buffer does not match pattern.
         result = FALSE;
         break;
@@ -420,7 +394,6 @@ uint8_t Util_isBufSet(uint8_t *pBuf, uint8_t pattern, uint16_t len)
 
   return (result);
 }
-
 
 /*********************************************************************
 *********************************************************************/

@@ -9,7 +9,7 @@
  Target Device: cc2640r2
 
  ******************************************************************************
- 
+
  Copyright (c) 2014-2024, Texas Instruments Incorporated
  All rights reserved.
 
@@ -41,8 +41,8 @@
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  ******************************************************************************
- 
- 
+
+
  *****************************************************************************/
 
 /**
@@ -65,12 +65,12 @@ extern "C" {
  */
 #include <stdbool.h>
 #include <ti/sysbios/knl/Clock.h>
-#include <ti/sysbios/knl/Queue.h>
 #include <ti/sysbios/knl/Event.h>
+#include <ti/sysbios/knl/Queue.h>
 
 /*********************************************************************
-*  EXTERNAL VARIABLES
-*/
+ *  EXTERNAL VARIABLES
+ */
 
 /*********************************************************************
  * CONSTANTS
@@ -89,11 +89,10 @@ extern "C" {
  * TYPEDEFS
  */
 
-typedef struct
-{
+typedef struct {
   uint16_t event; // Event type.
-  uint8_t state; // Event state;
-}appEvtHdr_t;
+  uint8_t state;  // Event state;
+} appEvtHdr_t;
 
 /*********************************************************************
  * MACROS
@@ -119,8 +118,7 @@ typedef struct
 extern Clock_Handle Util_constructClock(Clock_Struct *pClock,
                                         Clock_FuncPtr clockCB,
                                         uint32_t clockDuration,
-                                        uint32_t clockPeriod,
-                                        uint8_t startFlag,
+                                        uint32_t clockPeriod, uint8_t startFlag,
                                         UArg arg);
 
 /**
@@ -191,8 +189,7 @@ extern Queue_Handle Util_constructQueue(Queue_Struct *pQueue);
  *
  * @return  TRUE if message was queued, FALSE otherwise.
  */
-extern uint8_t Util_enqueueMsg(Queue_Handle msgQueue,
-                               Event_Handle event,
+extern uint8_t Util_enqueueMsg(Queue_Handle msgQueue, Event_Handle event,
                                uint8_t *pMsg);
 
 /**
@@ -224,7 +221,6 @@ extern char *Util_convertBdAddr2Str(uint8_t *pAddr);
  * @return  TRUE if buffer matches the pattern, FALSE otherwise.
  */
 extern uint8_t Util_isBufSet(uint8_t *pBuf, uint8_t pattern, uint16_t len);
-
 
 /*********************************************************************
 *********************************************************************/

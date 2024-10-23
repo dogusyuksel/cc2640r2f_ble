@@ -8,7 +8,7 @@
  Target Device: cc2640r2
 
  ******************************************************************************
- 
+
  Copyright (c) 2016-2024, Texas Instruments Incorporated
  All rights reserved.
 
@@ -40,8 +40,8 @@
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  ******************************************************************************
- 
- 
+
+
  *****************************************************************************/
 
 #ifdef USE_RCOSC
@@ -56,15 +56,15 @@
 
 #include "hci.h"
 
-#include "util.h"
 #include "rcosc_calibration.h"
+#include "util.h"
 
 /*********************************************************************
  * LOCAL VARIABLES
  */
 
 // Clock instance for Calibration injections
-static Clock_Struct  injectCalibrationClock;
+static Clock_Struct injectCalibrationClock;
 
 // Power Notify Object for wake-up callbacks
 Power_NotifyObj injectCalibrationPowerNotifyObj;
@@ -93,14 +93,12 @@ static uint8_t rcosc_injectCalibrationPostNotify(uint8_t eventType,
  *
  * @return  none
  */
-void RCOSC_enableCalibration(void)
-{
-  if (!isEnabled)
-  {
+void RCOSC_enableCalibration(void) {
+  if (!isEnabled) {
     isEnabled = TRUE;
 
     // Set device's Sleep Clock Accuracy
-#if ( HOST_CONFIG & ( CENTRAL_CFG | PERIPHERAL_CFG ) )
+#if (HOST_CONFIG & (CENTRAL_CFG | PERIPHERAL_CFG))
     HCI_EXT_SetSCACmd(500);
 #endif // (CENTRAL_CFG | PERIPHERAL_CFG)
 
@@ -110,10 +108,9 @@ void RCOSC_enableCalibration(void)
                         RCOSC_CALIBRATION_PERIOD, 0, false, 0);
 
     // Receive callback when device wakes up from Standby Mode.
-    Power_registerNotify(&injectCalibrationPowerNotifyObj, PowerCC26XX_AWAKE_STANDBY,
-                         (Power_NotifyFxn)rcosc_injectCalibrationPostNotify,
-                         NULL);
-
+    Power_registerNotify(
+        &injectCalibrationPowerNotifyObj, PowerCC26XX_AWAKE_STANDBY,
+        (Power_NotifyFxn)rcosc_injectCalibrationPostNotify, NULL);
 
     // Start clock for the RCOSC calibration injection.  Calibration must be
     // done once every second by either the clock or by waking up from StandyBy
@@ -134,8 +131,7 @@ void RCOSC_enableCalibration(void)
  *
  * @return  None.
  */
-static void rcosc_injectCalibrationClockHandler(UArg arg)
-{
+static void rcosc_injectCalibrationClockHandler(UArg arg) {
   // Restart clock.
   Util_startClock(&injectCalibrationClock);
 
@@ -155,11 +151,9 @@ static void rcosc_injectCalibrationClockHandler(UArg arg)
  */
 static uint8_t rcosc_injectCalibrationPostNotify(uint8_t eventType,
                                                  uint32_t *eventArg,
-                                                 uint32_t *clientArg)
-{
+                                                 uint32_t *clientArg) {
   // If clock is active at time of wake up,
-  if (Util_isActive(&injectCalibrationClock))
-  {
+  if (Util_isActive(&injectCalibrationClock)) {
     // Stop injection of calibration - the wakeup has automatically done this.
     Util_stopClock(&injectCalibrationClock);
   }
@@ -170,4 +164,4 @@ static uint8_t rcosc_injectCalibrationPostNotify(uint8_t eventType,
 
   return Power_NOTIFYDONE;
 }
-#endif //USE_RCOSC
+#endif // USE_RCOSC
