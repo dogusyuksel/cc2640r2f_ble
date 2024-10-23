@@ -2,7 +2,7 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-CG_TOOL_ROOT := /workspace/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
+CG_TOOL_ROOT := $(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 
 GEN_OPTS__FLAG := --cmd_file="configPkg/compiler.opt" 
 GEN_CMDS__FLAG := -l"configPkg/linker.cmd" 
@@ -29,16 +29,16 @@ ORDERED_OBJS += \
 "./Startup/ccfg_app_ble.obj" \
 "./Startup/main.obj" \
 $(GEN_CMDS__FLAG) \
--l"/workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/devices/cc26x0r2/driverlib/bin/ccs/driverlib.lib" \
--l"/workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/kernel/tirtos/packages/ti/dpl/lib/dpl_cc26x0r2.aem3" \
--l"/workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/drivers/lib/drivers_cc26x0r2.aem3" \
--l"/workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/drivers/rf/lib/rf_singleMode_cc26x0r2.aem3" \
--l"/workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/display/lib/display.aem3" \
--l"/workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/grlib/lib/ccs/m3/grlib.a" \
+-l"$(TI_SDK_PATH)/source/ti/devices/cc26x0r2/driverlib/bin/ccs/driverlib.lib" \
+-l"$(TI_SDK_PATH)/kernel/tirtos/packages/ti/dpl/lib/dpl_cc26x0r2.aem3" \
+-l"$(TI_SDK_PATH)/source/ti/drivers/lib/drivers_cc26x0r2.aem3" \
+-l"$(TI_SDK_PATH)/source/ti/drivers/rf/lib/rf_singleMode_cc26x0r2.aem3" \
+-l"$(TI_SDK_PATH)/source/ti/display/lib/display.aem3" \
+-l"$(TI_SDK_PATH)/source/ti/grlib/lib/ccs/m3/grlib.a" \
 -l"/workspace/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/ble_r2.symbols" \
 -l"/workspace/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/lib_linker.cmd" \
 -l"/workspace/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/ble5_simple_peripheral_cc2640r2lp_stack_library.lib" \
--l"/workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/ble5stack/common/cc26xx/ccs/cc26xx_app.cmd" \
+-l"$(TI_SDK_PATH)/source/ti/ble5stack/common/cc26xx/ccs/cc26xx_app.cmd" \
 -llibc.a \
 
 -include ../makefile.init
@@ -179,7 +179,7 @@ dependents:
 ble5_simple_peripheral_cc2640r2lp_app.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS) /workspace/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/ble5_simple_peripheral_cc2640r2lp_stack_library.lib
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: Arm Linker'
-	"/workspace/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" --cmd_file="/workspace/ble5_simple_peripheral_cc2640r2lp_app/TOOLS/defines/ble5_simple_peripheral_cc2640r2lp_app_FlashROM_StackLibrary.opt" --cmd_file="/workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/ble5stack/config/build_components.opt" --cmd_file="/workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/ble5stack/config/factory_config.opt" --cmd_file="/workspace/ble5_simple_peripheral_cc2640r2lp_stack_library/TOOLS/build_config.opt"  -mv7M3 --code_state=16 -me -O4 --opt_for_speed=0 --define=DeviceFamily_CC26X0R2 -g --c99 --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"ble5_simple_peripheral_cc2640r2lp_app.map" --heap_size=0 --stack_size=256 -i"/workspace/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/lib" -i"/workspace/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --reread_libs --define=CC26X0ROM=2 --diag_suppress=16002-D --diag_suppress=10247-D --diag_suppress=10325-D --diag_suppress=10229-D --diag_suppress=16032-D --diag_wrap=off --display_error_number --warn_sections --xml_link_info="ble5_simple_peripheral_cc2640r2lp_app_linkInfo.xml" --rom_model -o "ble5_simple_peripheral_cc2640r2lp_app.out" $(ORDERED_OBJS)
+	"$(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" --cmd_file="/workspace/ble5_simple_peripheral_cc2640r2lp_app/TOOLS/defines/ble5_simple_peripheral_cc2640r2lp_app_FlashROM_StackLibrary.opt" --cmd_file="$(TI_SDK_PATH)/source/ti/ble5stack/config/build_components.opt" --cmd_file="$(TI_SDK_PATH)/source/ti/ble5stack/config/factory_config.opt" --cmd_file="/workspace/ble5_simple_peripheral_cc2640r2lp_stack_library/TOOLS/build_config.opt"  -mv7M3 --code_state=16 -me -O4 --opt_for_speed=0 --define=DeviceFamily_CC26X0R2 -g --c99 --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"ble5_simple_peripheral_cc2640r2lp_app.map" --heap_size=0 --stack_size=256 -i"$(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/lib" -i"$(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --reread_libs --define=CC26X0ROM=2 --diag_suppress=16002-D --diag_suppress=10247-D --diag_suppress=10325-D --diag_suppress=10229-D --diag_suppress=16032-D --diag_wrap=off --display_error_number --warn_sections --xml_link_info="ble5_simple_peripheral_cc2640r2lp_app_linkInfo.xml" --rom_model -o "ble5_simple_peripheral_cc2640r2lp_app.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
@@ -194,7 +194,7 @@ clean:
 	-@echo ' '
 
 post-build:
-	-/workspace/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armhex -order MS --memwidth=8 --romwidth=8 --intel -o ble5_simple_peripheral_cc2640r2lp_app.hex ble5_simple_peripheral_cc2640r2lp_app.out
+	-$(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armhex -order MS --memwidth=8 --romwidth=8 --intel -o ble5_simple_peripheral_cc2640r2lp_app.hex ble5_simple_peripheral_cc2640r2lp_app.out
 	-@echo ' '
 
 .PHONY: all clean dependents

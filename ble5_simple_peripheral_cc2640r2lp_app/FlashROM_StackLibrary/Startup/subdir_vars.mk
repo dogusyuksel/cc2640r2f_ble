@@ -4,7 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-/workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/ble5stack/target/board.c \
+$(TI_SDK_PATH)/source/ti/ble5stack/target/board.c \
 ../Startup/ccfg_app_ble.c \
 ../Startup/main.c 
 
@@ -29,7 +29,7 @@ C_DEPS__QUOTED += \
 "Startup/main.d" 
 
 C_SRCS__QUOTED += \
-"/workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/ble5stack/target/board.c" \
+"$(TI_SDK_PATH)/source/ti/ble5stack/target/board.c" \
 "../Startup/ccfg_app_ble.c" \
 "../Startup/main.c" 
 

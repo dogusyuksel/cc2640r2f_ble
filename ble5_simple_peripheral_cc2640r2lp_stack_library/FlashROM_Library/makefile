@@ -2,7 +2,7 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-CG_TOOL_ROOT := /workspace/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
+CG_TOOL_ROOT := $(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -184,7 +184,7 @@ ble5_simple_peripheral_cc2640r2lp_stack_library.lib: $(OBJS)
 ifneq ($(strip $(ORDERED_OBJS)),)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: Arm Archiver'
-	"/workspace/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armar" r "ble5_simple_peripheral_cc2640r2lp_stack_library.lib" $(ORDERED_OBJS)
+	"$(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armar" r "ble5_simple_peripheral_cc2640r2lp_stack_library.lib" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 endif
@@ -198,7 +198,7 @@ clean:
 	-@echo ' '
 
 pre-build:
-	-/workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/ble5stack/../../../tools/ble5stack/lib_search/lib_search    --opt /workspace/ble5_simple_peripheral_cc2640r2lp_stack_library/TOOLS/build_config.opt    --lib-dir /workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/ble5stack/blelib/cc26x0r2    --cmd /workspace/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/lib_linker.cmd    --xml /workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/ble5stack/../../../tools/ble5stack/lib_search/lib_search.xml    --sym-dir /workspace/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/ble5stack/symbols/cc26x0r2
+	-$(TI_SDK_PATH)/source/ti/ble5stack/../../../tools/ble5stack/lib_search/lib_search    --opt /workspace/ble5_simple_peripheral_cc2640r2lp_stack_library/TOOLS/build_config.opt    --lib-dir $(TI_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2    --cmd /workspace/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/lib_linker.cmd    --xml $(TI_SDK_PATH)/source/ti/ble5stack/../../../tools/ble5stack/lib_search/lib_search.xml    --sym-dir $(TI_SDK_PATH)/source/ti/ble5stack/symbols/cc26x0r2
 	-@echo ' '
 
 .PHONY: all clean dependents

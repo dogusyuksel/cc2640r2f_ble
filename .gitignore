@@ -3,9 +3,12 @@ docker
 ti_cc2640r2f_sdk
 ble5_simple_peripheral_cc2640r2lp_app_linkInfo.xml
 ble5_simple_peripheral_cc2640r2lp_app/FlashROM_StackLibrary/configPkg
-.vscode
+ble5_simple_peripheral_cc2640r2lp_app/TOOLS/src/sysbios
 *.d_raw
 *.aem3
+ccsObjs.opt
+*.ccsproject
+*.vscode
 
 # Prerequisites
 *.d
