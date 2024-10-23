@@ -1,6 +1,3 @@
-################################################################################
-# Automatically-generated file. Do not edit!
-################################################################################
 
 CG_TOOL_ROOT := $(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 
@@ -8,26 +5,7 @@ GEN_OPTS__FLAG := --cmd_file="configPkg/compiler.opt"
 GEN_CMDS__FLAG := -l"configPkg/linker.cmd" 
 
 ORDERED_OBJS += \
-"./Application/board_key.obj" \
-"./Application/simple_peripheral.obj" \
-"./Application/common_jobs.obj" \
-"./Application/simple_peripheral_menu.obj" \
-"./Application/two_btn_menu.obj" \
-"./Application/util.obj" \
-"./Drivers/ECC/ECCROMCC26XX.obj" \
-"./Drivers/TRNG/TRNGCC26XX.obj" \
-"./ICall/icall.obj" \
-"./ICall/icall_cc2650.obj" \
-"./ICall/icall_user_config.obj" \
-"./ICallBLE/ble_user_config.obj" \
-"./ICallBLE/icall_api_lite.obj" \
-"./PROFILES/devinfoservice.obj" \
-"./PROFILES/gatt_uuid.obj" \
-"./PROFILES/gattservapp_util.obj" \
-"./PROFILES/simple_gatt_profile.obj" \
-"./Startup/board.obj" \
-"./Startup/ccfg_app_ble.obj" \
-"./Startup/main.obj" \
+$(OBJS) \
 $(GEN_CMDS__FLAG) \
 -l"$(TI_SDK_PATH)/source/ti/devices/cc26x0r2/driverlib/bin/ccs/driverlib.lib" \
 -l"$(TI_SDK_PATH)/kernel/tirtos/packages/ti/dpl/lib/dpl_cc26x0r2.aem3" \
@@ -68,96 +46,6 @@ RMDIR := rm -rf
 -include TOOLS/defines/subdir_rules.mk
 -include objects.mk
 
-ifneq ($(MAKECMDGOALS),clean)
-ifneq ($(strip $(C55_DEPS)),)
--include $(C55_DEPS)
-endif
-ifneq ($(strip $(C_UPPER_DEPS)),)
--include $(C_UPPER_DEPS)
-endif
-ifneq ($(strip $(S67_DEPS)),)
--include $(S67_DEPS)
-endif
-ifneq ($(strip $(S62_DEPS)),)
--include $(S62_DEPS)
-endif
-ifneq ($(strip $(S_DEPS)),)
--include $(S_DEPS)
-endif
-ifneq ($(strip $(OPT_DEPS)),)
--include $(OPT_DEPS)
-endif
-ifneq ($(strip $(C??_DEPS)),)
--include $(C??_DEPS)
-endif
-ifneq ($(strip $(ASM_UPPER_DEPS)),)
--include $(ASM_UPPER_DEPS)
-endif
-ifneq ($(strip $(S??_DEPS)),)
--include $(S??_DEPS)
-endif
-ifneq ($(strip $(C64_DEPS)),)
--include $(C64_DEPS)
-endif
-ifneq ($(strip $(CXX_DEPS)),)
--include $(CXX_DEPS)
-endif
-ifneq ($(strip $(S64_DEPS)),)
--include $(S64_DEPS)
-endif
-ifneq ($(strip $(INO_DEPS)),)
--include $(INO_DEPS)
-endif
-ifneq ($(strip $(CLA_DEPS)),)
--include $(CLA_DEPS)
-endif
-ifneq ($(strip $(S55_DEPS)),)
--include $(S55_DEPS)
-endif
-ifneq ($(strip $(SV7A_DEPS)),)
--include $(SV7A_DEPS)
-endif
-ifneq ($(strip $(C62_DEPS)),)
--include $(C62_DEPS)
-endif
-ifneq ($(strip $(C67_DEPS)),)
--include $(C67_DEPS)
-endif
-ifneq ($(strip $(PDE_DEPS)),)
--include $(PDE_DEPS)
-endif
-ifneq ($(strip $(K_DEPS)),)
--include $(K_DEPS)
-endif
-ifneq ($(strip $(C_DEPS)),)
--include $(C_DEPS)
-endif
-ifneq ($(strip $(CC_DEPS)),)
--include $(CC_DEPS)
-endif
-ifneq ($(strip $(C++_DEPS)),)
--include $(C++_DEPS)
-endif
-ifneq ($(strip $(C43_DEPS)),)
--include $(C43_DEPS)
-endif
-ifneq ($(strip $(S43_DEPS)),)
--include $(S43_DEPS)
-endif
-ifneq ($(strip $(ASM_DEPS)),)
--include $(ASM_DEPS)
-endif
-ifneq ($(strip $(S_UPPER_DEPS)),)
--include $(S_UPPER_DEPS)
-endif
-ifneq ($(strip $(CPP_DEPS)),)
--include $(CPP_DEPS)
-endif
-ifneq ($(strip $(SA_DEPS)),)
--include $(SA_DEPS)
-endif
-endif
-
 -include ../makefile.defs
 
 # Add inputs and outputs from these tool invocations to the build variables 
@@ -169,7 +57,9 @@ EXE_OUTPUTS__QUOTED += \
 
 
 # All Target
-all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
+all: linting all_original
+
+all_original: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@$(MAKE) --no-print-directory -Onone "ble5_simple_peripheral_cc2640r2lp_app.out"
 
 dependents:
@@ -186,18 +76,20 @@ ble5_simple_peripheral_cc2640r2lp_app.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS) /work
 
 # Other Targets
 clean:
-	-$(RM) $(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "Application/board_key.obj" "Application/simple_peripheral.obj" "Application/common_jobs.obj" "Application/simple_peripheral_menu.obj" "Application/two_btn_menu.obj" "Application/util.obj" "Drivers/ECC/ECCROMCC26XX.obj" "Drivers/TRNG/TRNGCC26XX.obj" "ICall/icall.obj" "ICall/icall_cc2650.obj" "ICall/icall_user_config.obj" "ICallBLE/ble_user_config.obj" "ICallBLE/icall_api_lite.obj" "PROFILES/devinfoservice.obj" "PROFILES/gatt_uuid.obj" "PROFILES/gattservapp_util.obj" "PROFILES/simple_gatt_profile.obj" "Startup/board.obj" "Startup/ccfg_app_ble.obj" "Startup/main.obj" 
-	-$(RM) "Application/board_key.d" "Application/simple_peripheral.d" "Application/common_jobs.d" "Application/simple_peripheral_menu.d" "Application/two_btn_menu.d" "Application/util.d" "Drivers/ECC/ECCROMCC26XX.d" "Drivers/TRNG/TRNGCC26XX.d" "ICall/icall.d" "ICall/icall_cc2650.d" "ICall/icall_user_config.d" "ICallBLE/ble_user_config.d" "ICallBLE/icall_api_lite.d" "PROFILES/devinfoservice.d" "PROFILES/gatt_uuid.d" "PROFILES/gattservapp_util.d" "PROFILES/simple_gatt_profile.d" "Startup/board.d" "Startup/ccfg_app_ble.d" "Startup/main.d" 
-	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)
+	../clean.sh
 	-@echo 'Finished clean'
+	-@echo ' '
+
+linting:
+	../../linting/format_check.sh ../
+	-@echo 'Finished linting'
 	-@echo ' '
 
 post-build:
 	-$(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armhex -order MS --memwidth=8 --romwidth=8 --intel -o ble5_simple_peripheral_cc2640r2lp_app.hex ble5_simple_peripheral_cc2640r2lp_app.out
 	-@echo ' '
 
-.PHONY: all clean dependents
+.PHONY: all clean dependents linting
 .SECONDARY:
 /workspace/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/ble5_simple_peripheral_cc2640r2lp_stack_library.lib:
 

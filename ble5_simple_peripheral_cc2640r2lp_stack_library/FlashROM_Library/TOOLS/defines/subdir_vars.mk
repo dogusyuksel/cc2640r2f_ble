@@ -6,7 +6,4 @@
 OPT_SRCS += \
 ../TOOLS/defines/ble5_simple_peripheral_cc2640r2lp_stack_library_FlashROM_Library.opt 
 
-OPT_SRCS__QUOTED += \
-"../TOOLS/defines/ble5_simple_peripheral_cc2640r2lp_stack_library_FlashROM_Library.opt" 
-
 

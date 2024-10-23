@@ -8,7 +8,7 @@
  Target Device: cc2640r2
 
  ******************************************************************************
- 
+
  Copyright (c) 2014-2024, Texas Instruments Incorporated
  All rights reserved.
 
@@ -40,32 +40,32 @@
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  ******************************************************************************
- 
- 
+
+
  *****************************************************************************/
 
 /*********************************************************************
  * INCLUDES
  */
-#include <ti/display/Display.h>
-#include <bcomdef.h>
 #include "two_btn_menu.h"
+#include <bcomdef.h>
+#include <ti/display/Display.h>
 
 /******************************************************************************
  * DEFINITIONS
  */
 /* Row to display Title at */
-#define TBM_ROW_TITLE      0
+#define TBM_ROW_TITLE 0
 /* Row to display 'Next item' at */
-#define TBM_ROW_NEXT       1
+#define TBM_ROW_NEXT 1
 /* First row to display items at */
 #define TBM_ROW_ITEM_FIRST 2
 
 /*********************************************************************
  * LOCAL VARIABLES
  */
-static tbmMenuObj_t*  ptbmMenuObj = NULL;
-static uint8          tbmItemCurrent = 0;
+static tbmMenuObj_t *ptbmMenuObj = NULL;
+static uint8 tbmItemCurrent = 0;
 static pfnMenuSwitchCB_t pfn_tbmMenuSwitch;
 #ifndef Display_DISABLE_ALL
 static Display_Handle tbmDispHandle;
@@ -82,7 +82,7 @@ uint8 tbmRowItemLast;
  */
 #ifndef Display_DISABLE_ALL
 void tbm_displayItemPage(void);
-void tbm_goTo(tbmMenuObj_t* pMenuObj);
+void tbm_goTo(tbmMenuObj_t *pMenuObj);
 #endif /* !Display_DISABLE_ALL */
 
 /*********************************************************************
@@ -103,16 +103,13 @@ void tbm_goTo(tbmMenuObj_t* pMenuObj);
  *
  * @return  true if successful, false otherwise
  */
-bool tbm_initTwoBtnMenu(Display_Handle hDisp, tbmMenuObj_t* pMenuMain,
-                        uint8 numItemRow, pfnMenuSwitchCB_t pfnMenuSwitchCB)
-{
-  if (pMenuMain == NULL || hDisp == NULL || numItemRow == 0)
-  {
+bool tbm_initTwoBtnMenu(Display_Handle hDisp, tbmMenuObj_t *pMenuMain,
+                        uint8 numItemRow, pfnMenuSwitchCB_t pfnMenuSwitchCB) {
+  if (pMenuMain == NULL || hDisp == NULL || numItemRow == 0) {
     return false;
   }
 
-  if (pMenuMain->attrib.numItem == 0)
-  {
+  if (pMenuMain->attrib.numItem == 0) {
     return false;
   }
 
@@ -130,26 +127,20 @@ bool tbm_initTwoBtnMenu(Display_Handle hDisp, tbmMenuObj_t* pMenuMain,
 
 #if defined(TBM_ACTIVE_ITEMS_ONLY)
 /* Find the first active item from the current position */
-uint8 tbm_findActiveItem(uint8 itemStart)
-{
+uint8 tbm_findActiveItem(uint8 itemStart) {
   uint8 itemCurrent = itemStart; /* Save current focus */
 
   /* Bypass disabled items */
   while (!TBM_IS_ITEM_ACTIVE(ptbmMenuObj, itemCurrent) &&
-         itemCurrent < ptbmMenuObj->attrib.numItem)
-  {
+         itemCurrent < ptbmMenuObj->attrib.numItem) {
     itemCurrent++;
   }
 
-  if (itemCurrent == ptbmMenuObj->attrib.numItem)
-  {
-    if (ptbmMenuObj->pUpper == NULL)
-    {
+  if (itemCurrent == ptbmMenuObj->attrib.numItem) {
+    if (ptbmMenuObj->pUpper == NULL) {
       itemCurrent = TBM_NO_ITEM;
     }
-  }
-  else if (itemCurrent > ptbmMenuObj->attrib.numItem)
-  {
+  } else if (itemCurrent > ptbmMenuObj->attrib.numItem) {
     itemCurrent = TBM_NO_ITEM;
   }
 
@@ -157,27 +148,25 @@ uint8 tbm_findActiveItem(uint8 itemStart)
 }
 #endif /* TBM_ACTIVE_ITEMS_ONLY */
 
-/* Get the number of items to display including upper menu in the current menu */
-uint8 tbm_getNumDisplayItem(void)
-{
-  uint8  numDisplayItem = 0;
+/* Get the number of items to display including upper menu in the current menu
+ */
+uint8 tbm_getNumDisplayItem(void) {
+  uint8 numDisplayItem = 0;
 #if defined(TBM_ACTIVE_ITEMS_ONLY)
-  uint8  numItem = ptbmMenuObj->attrib.numItem;
+  uint8 numItem = ptbmMenuObj->attrib.numItem;
   uint32 bActive = ptbmMenuObj->attrib.bActive;
 #endif /* TBM_ACTIVE_ITEMS_ONLY */
 
-  if (ptbmMenuObj->pUpper != NULL)
-  {
+  if (ptbmMenuObj->pUpper != NULL) {
     numDisplayItem++;
   }
 
 #if defined(TBM_ACTIVE_ITEMS_ONLY)
-  do
-  {
+  do {
     numDisplayItem += (bActive & 0x01);
     bActive >>= 1;
   } while (--numItem);
-#else /* !TBM_ACTIVE_ITEMS_ONLY */
+#else  /* !TBM_ACTIVE_ITEMS_ONLY */
   numDisplayItem += ptbmMenuObj->attrib.numItem;
 #endif /* TBM_ACTIVE_ITEMS_ONLY */
 
@@ -185,11 +174,9 @@ uint8 tbm_getNumDisplayItem(void)
 }
 
 /* Go to a menu */
-void tbm_goTo(tbmMenuObj_t* pMenuObj)
-{
+void tbm_goTo(tbmMenuObj_t *pMenuObj) {
   /* If a callback is registered, call it */
-  if (pfn_tbmMenuSwitch)
-  {
+  if (pfn_tbmMenuSwitch) {
     pfn_tbmMenuSwitch(ptbmMenuObj, pMenuObj);
   }
 
@@ -199,7 +186,7 @@ void tbm_goTo(tbmMenuObj_t* pMenuObj)
 #if defined(TBM_ACTIVE_ITEMS_ONLY)
   /* Put the focus on the first active item */
   tbmItemCurrent = tbm_findActiveItem(0);
-#else /* !TBM_ACTIVE_ITEMS_ONLY */
+#else  /* !TBM_ACTIVE_ITEMS_ONLY */
   /* Put the focus on the first item */
   tbmItemCurrent = 0;
 #endif /* TBM_ACTIVE_ITEMS_ONLY */
@@ -213,57 +200,49 @@ void tbm_goTo(tbmMenuObj_t* pMenuObj)
 }
 
 /* Change individual item's status and refresh the display if necessary */
-void tbm_setItemStatus(tbmMenuObj_t* pMenuObj, uint32 enables, uint32 disables)
-{
-  if (enables != TBM_ITEM_NONE)
-  {
+void tbm_setItemStatus(tbmMenuObj_t *pMenuObj, uint32 enables,
+                       uint32 disables) {
+  if (enables != TBM_ITEM_NONE) {
     pMenuObj->attrib.bActive |= enables;
   }
 
-  if (disables != TBM_ITEM_NONE)
-  {
+  if (disables != TBM_ITEM_NONE) {
     pMenuObj->attrib.bActive &= ~disables;
   }
 
   /* If current item, refresh the display */
-  if (pMenuObj == ptbmMenuObj)
-  {
+  if (pMenuObj == ptbmMenuObj) {
     tbm_goTo(pMenuObj);
   }
 }
 
 /* Left Button Task */
-bool tbm_buttonLeft(void)
-{
-  if (tbmItemCurrent == ptbmMenuObj->attrib.numItem)
-  {
+bool tbm_buttonLeft(void) {
+  if (tbmItemCurrent == ptbmMenuObj->attrib.numItem) {
 #if defined(TBM_ACTIVE_ITEMS_ONLY)
     /* If current item is "upper", find the first active item */
     tbmItemCurrent = tbm_findActiveItem(0);
-#else /* !TBM_ACTIVE_ITEMS_ONLY */
+#else  /* !TBM_ACTIVE_ITEMS_ONLY */
     /* If current item is "upper", move focus onto the first item */
     tbmItemCurrent = 0;
 #endif /* TBM_ACTIVE_ITEMS_ONLY */
   }
 #if defined(TBM_ACTIVE_ITEMS_ONLY)
-  else if (tbmItemCurrent != TBM_NO_ITEM)
-  {
+  else if (tbmItemCurrent != TBM_NO_ITEM) {
     uint8 itemTemp;
 
     /* If current item is not "upper", find the next active item */
     itemTemp = tbm_findActiveItem(tbmItemCurrent + 1);
 
     /* if there is no more active item, find one from the beginning */
-    if (itemTemp == TBM_NO_ITEM)
-    {
+    if (itemTemp == TBM_NO_ITEM) {
       itemTemp = tbm_findActiveItem(0);
     }
 
     tbmItemCurrent = itemTemp;
   }
-#else /* !TBM_ACTIVE_ITEMS_ONLY */
-  else
-  {
+#else  /* !TBM_ACTIVE_ITEMS_ONLY */
+  else {
     /* If current item is not "upper",
        move focus onto either the next item or the first item
        depending on existence of the "upper" */
@@ -283,38 +262,31 @@ bool tbm_buttonLeft(void)
 }
 
 /* Right Button Task */
-bool tbm_buttonRight(void)
-{
+bool tbm_buttonRight(void) {
   bool status = true;
 
-  if (tbmItemCurrent == ptbmMenuObj->attrib.numItem)
-  {
+  if (tbmItemCurrent == ptbmMenuObj->attrib.numItem) {
     /* We are now at "Back to Upper". Go there. */
     tbm_goTo(ptbmMenuObj->pUpper);
   }
   /* Focused item cannot be a disabled one */
 #if defined(TBM_ACTIVE_ITEMS_ONLY)
-  else if (tbmItemCurrent != TBM_NO_ITEM)
-  {
-#else /* !TBM_ACTIVE_ITEMS_ONLY */
-  else if (TBM_IS_ITEM_ACTIVE(ptbmMenuObj, tbmItemCurrent))
-  {
+  else if (tbmItemCurrent != TBM_NO_ITEM) {
+#else  /* !TBM_ACTIVE_ITEMS_ONLY */
+  else if (TBM_IS_ITEM_ACTIVE(ptbmMenuObj, tbmItemCurrent)) {
 #endif /* TBM_ACTIVE_ITEMS_ONLY */
     /* Go down into the submenu or take the action only if it is active */
-    if (TBM_IS_SUBMENU(ptbmMenuObj, tbmItemCurrent))
-    {
+    if (TBM_IS_SUBMENU(ptbmMenuObj, tbmItemCurrent)) {
       /* Go down into the submenu */
       tbm_goTo(ptbmMenuObj->itemEntry[tbmItemCurrent].item.pSubMenu);
-    }
-    else
-    {
+    } else {
       /* Take the action */
-      status = ptbmMenuObj->itemEntry[tbmItemCurrent].item.pfnAction(tbmItemCurrent);
+      status =
+          ptbmMenuObj->itemEntry[tbmItemCurrent].item.pfnAction(tbmItemCurrent);
     }
   }
 #if !defined(TBM_ACTIVE_ITEMS_ONLY)
-  else
-  {
+  else {
     status = false;
   }
 #endif /* !TBM_ACTIVE_ITEMS_ONLY */
@@ -328,54 +300,41 @@ bool tbm_buttonRight(void)
 
 #ifndef Display_DISABLE_ALL
 /* Display a single item */
-void tbm_displayItem(uint8 itemIndex, uint8 row)
-{
-  uint8* pDesc;
-  uint8* pPrefix = "";
-  uint8* pPostfix = "";
+void tbm_displayItem(uint8 itemIndex, uint8 row) {
+  uint8 *pDesc;
+  uint8 *pPrefix = "";
+  uint8 *pPostfix = "";
 
-  if (itemIndex == ptbmMenuObj->attrib.numItem)
-  {
+  if (itemIndex == ptbmMenuObj->attrib.numItem) {
     /* If Upper Menu exists, the description will be "Back to Upper" */
-    pDesc = (uint8*) strUpper;
-  }
-  else
-  {
-    if (TBM_IS_SUBMENU(ptbmMenuObj, itemIndex))
-    {
+    pDesc = (uint8 *)strUpper;
+  } else {
+    if (TBM_IS_SUBMENU(ptbmMenuObj, itemIndex)) {
       /* If this is a submenu, pull the title from the submenu object */
       pDesc = ptbmMenuObj->itemEntry[itemIndex].item.pSubMenu->pTitle;
-    }
-    else
-    {
+    } else {
       /* If this is an action, pull the description from the item entry */
       pDesc = ptbmMenuObj->itemEntry[itemIndex].pDesc;
     }
 
-  #if !defined(TBM_ACTIVE_ITEMS_ONLY)
-    if (!TBM_IS_ITEM_ACTIVE(ptbmMenuObj, itemIndex))
-    {
+#if !defined(TBM_ACTIVE_ITEMS_ONLY)
+    if (!TBM_IS_ITEM_ACTIVE(ptbmMenuObj, itemIndex)) {
       /* If this is an inactive item, should be prefixed with 'x' */
       pPrefix = "x";
-    }
-    else
-  #endif /* TBM_ACTIVE_ITEMS_ONLY */
+    } else
+#endif /* TBM_ACTIVE_ITEMS_ONLY */
     {
-      if (TBM_IS_SUBMENU(ptbmMenuObj, itemIndex))
-      {
+      if (TBM_IS_SUBMENU(ptbmMenuObj, itemIndex)) {
         /* If this is an active submenu, '+' should prefix the text. */
         pPrefix = "+";
-      }
-      else
-      {
+      } else {
         /* If this is an active action, a space should prefix the text. */
         pPrefix = " ";
       }
     }
   }
 
-  if (row == TBM_ROW_ITEM_FIRST)
-  {
+  if (row == TBM_ROW_ITEM_FIRST) {
     /* If the current item, postfix with " >" */
     pPostfix = " >";
   }
@@ -385,55 +344,47 @@ void tbm_displayItem(uint8 itemIndex, uint8 row)
 }
 
 /* Display one page of the item list */
-void tbm_displayItemPage(void)
-{
+void tbm_displayItemPage(void) {
   uint8 i, itemToDisplay;
-  #if !defined(TBM_ACTIVE_ITEMS_ONLY)
+#if !defined(TBM_ACTIVE_ITEMS_ONLY)
   uint8 itemEnd = tbm_getNumDisplayItem();
-  #endif /* !TBM_ACTIVE_ITEMS_ONLY */
+#endif /* !TBM_ACTIVE_ITEMS_ONLY */
 
   /* Display "< Next Item" if there are more than 1 item */
-  if (tbm_getNumDisplayItem() > 1)
-  {
+  if (tbm_getNumDisplayItem() > 1) {
     Display_printf(tbmDispHandle, TBM_ROW_NEXT, 0, "< Next Item");
-  }
-  else
-  {
+  } else {
     Display_clearLine(tbmDispHandle, TBM_ROW_NEXT);
   }
 
   /* Display from the first item row */
   i = TBM_ROW_ITEM_FIRST;
 
-  #if defined(TBM_ACTIVE_ITEMS_ONLY)
-  if (tbmItemCurrent != TBM_NO_ITEM)
-  {
-  #endif /* TBM_ACTIVE_ITEMS_ONLY */
+#if defined(TBM_ACTIVE_ITEMS_ONLY)
+  if (tbmItemCurrent != TBM_NO_ITEM) {
+#endif /* TBM_ACTIVE_ITEMS_ONLY */
     /* Display from the current item */
     itemToDisplay = tbmItemCurrent;
 
     /* Display items as many as possible in the designated area */
-    do
-    {
+    do {
       tbm_displayItem(itemToDisplay, i++);
-  #if defined(TBM_ACTIVE_ITEMS_ONLY)
+#if defined(TBM_ACTIVE_ITEMS_ONLY)
       /* Find next active item */
       itemToDisplay = tbm_findActiveItem(itemToDisplay + 1);
     } while (itemToDisplay != TBM_NO_ITEM && i < tbmRowItemLast);
-  #else /* !TBM_ACTIVE_ITEMS_ONLY */
-      /* Find next item */
-      itemToDisplay++;
-    } while (itemToDisplay < itemEnd && i < tbmRowItemLast);
-  #endif /* TBM_ACTIVE_ITEMS_ONLY */
-  #if defined(TBM_ACTIVE_ITEMS_ONLY)
+#else  /* !TBM_ACTIVE_ITEMS_ONLY */
+    /* Find next item */
+    itemToDisplay++;
+  } while (itemToDisplay < itemEnd && i < tbmRowItemLast);
+#endif /* TBM_ACTIVE_ITEMS_ONLY */
+#if defined(TBM_ACTIVE_ITEMS_ONLY)
   }
-  #endif /* TBM_ACTIVE_ITEMS_ONLY */
+#endif /* TBM_ACTIVE_ITEMS_ONLY */
 
   /* Clear unused area */
-  if (i < tbmRowItemLast)
-  {
+  if (i < tbmRowItemLast) {
     Display_clearLines(tbmDispHandle, i, tbmRowItemLast - 1);
   }
 }
 #endif /* !Display_DISABLE_ALL */
-

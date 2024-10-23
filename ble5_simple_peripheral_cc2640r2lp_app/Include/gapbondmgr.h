@@ -4,7 +4,7 @@
  Target Device: cc2640r2
 
  ******************************************************************************
- 
+
  Copyright (c) 2010-2024, Texas Instruments Incorporated
  All rights reserved.
 
@@ -36,8 +36,8 @@
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  ******************************************************************************
- 
- 
+
+
  *****************************************************************************/
 
 /**
@@ -52,8 +52,7 @@
 #define GAPBONDMGR_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*-------------------------------------------------------------------
@@ -70,17 +69,17 @@ extern "C"
  * @{
  */
 
-#if !defined ( GAP_BONDINGS_MAX )
+#if !defined(GAP_BONDINGS_MAX)
 /// Maximum number of bonds that can be saved in NV.
-#define GAP_BONDINGS_MAX    6
+#define GAP_BONDINGS_MAX 6
 #if GAP_BONDINGS_MAX > 6
-#warning "Setting bond list size to be bigger than 6 is not supported" 
+#warning "Setting bond list size to be bigger than 6 is not supported"
 #endif
 #endif
 
-#if !defined ( GAP_CHAR_CFG_MAX )
+#if !defined(GAP_CHAR_CFG_MAX)
 /// Maximum number of characteristic configuration that can be saved in NV.
-#define GAP_CHAR_CFG_MAX    4
+#define GAP_CHAR_CFG_MAX 4
 #endif
 
 /** @} End GAPBondMgr_Constants */
@@ -102,7 +101,7 @@ extern "C"
  *
  * range: @ref GAPBondMgr_Pairing_Modes
  */
-#define GAPBOND_PAIRING_MODE          0x400
+#define GAPBOND_PAIRING_MODE 0x400
 
 /**
  * Whether to use authenticated pairing (Read/Write)
@@ -113,7 +112,7 @@ extern "C"
  *
  * range: TRUE (use) or FALSE (do not use)
  */
-#define GAPBOND_MITM_PROTECTION       0x402
+#define GAPBOND_MITM_PROTECTION 0x402
 
 /**
  * The I/O capabilities of the local device (Read/Write)
@@ -124,7 +123,7 @@ extern "C"
  *
  * range: @ref GAPBondMgr_IO_Caps
  */
-#define GAPBOND_IO_CAPABILITIES       0x403
+#define GAPBOND_IO_CAPABILITIES 0x403
 
 /**
  * Whether to use OOB for pairing (Read/Write)
@@ -135,7 +134,7 @@ extern "C"
  *
  * range: TRUE (use) or FALSE (do not use)
  */
-#define GAPBOND_OOB_ENABLED           0x404
+#define GAPBOND_OOB_ENABLED 0x404
 
 /**
  * OOB data to use for pairing (Read/Write)
@@ -147,7 +146,7 @@ extern "C"
  * range: 0x00000000000000000000000000000000 -
  * 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
  */
-#define GAPBOND_OOB_DATA              0x405
+#define GAPBOND_OOB_DATA 0x405
 
 /**
  * Whether to bond after pairing (Read/Write)
@@ -158,7 +157,7 @@ extern "C"
  *
  * range: TRUE (request) or FALSE (do not request)
  */
-#define GAPBOND_BONDING_ENABLED       0x406
+#define GAPBOND_BONDING_ENABLED 0x406
 
 /**
  * Key distribution list for pairing (Read/Write)
@@ -172,18 +171,18 @@ extern "C"
  *
  * range: @ref GAPBondMgr_Key_Distr
  */
-#define GAPBOND_KEY_DIST_LIST         0x407
+#define GAPBOND_KEY_DIST_LIST 0x407
 
 /**
  * Erase all bonds from SNV and remove all bonded devices (Write)
  *
  * @note The erase won't happen until there are no active connections.
  */
-#define GAPBOND_ERASE_ALLBONDS        0x409
+#define GAPBOND_ERASE_ALLBONDS 0x409
 
 /// @cond NODOC
-#define GAPBOND_AUTO_FAIL_PAIRING     0x40A
-#define GAPBOND_AUTO_FAIL_REASON      0x40B
+#define GAPBOND_AUTO_FAIL_PAIRING 0x40A
+#define GAPBOND_AUTO_FAIL_REASON 0x40B
 /// @endcond // NODOC
 
 /**
@@ -195,7 +194,7 @@ extern "C"
  *
  * range: @ref GAP_PARAM_SM_MIN_KEY_LEN @ref GAP_PARAM_SM_MAX_KEY_LEN
  */
-#define GAPBOND_KEYSIZE               0x40C
+#define GAPBOND_KEYSIZE 0x40C
 
 /**
  * Synchronize the whitelist with bonded devices (Read/Write)
@@ -210,7 +209,7 @@ extern "C"
  *
  * range: TRUE (sync) or FALSE (don't sync)
  */
-#define GAPBOND_AUTO_SYNC_WL          0x40D
+#define GAPBOND_AUTO_SYNC_WL 0x40D
 
 /**
  * Gets the total number of bonds stored in NV (Read-only)
@@ -219,7 +218,7 @@ extern "C"
  *
  * range: 0 255
  */
-#define GAPBOND_BOND_COUNT            0x40E
+#define GAPBOND_BOND_COUNT 0x40E
 
 /**
  * The action that the device takes after an unsuccessful bonding
@@ -231,7 +230,7 @@ extern "C"
  *
  * range: @ref GAPBondMgr_Bond_Failure_Actions
  */
-#define GAPBOND_BOND_FAIL_ACTION      0x40F
+#define GAPBOND_BOND_FAIL_ACTION 0x40F
 
 /**
  * Erase a single bonded device (Write-only)
@@ -242,7 +241,7 @@ extern "C"
  *
  * range: A one-byte address type followed by a 6 byte address
  */
-#define GAPBOND_ERASE_SINGLEBOND      0x410
+#define GAPBOND_ERASE_SINGLEBOND 0x410
 
 /**
  * Define Secure Connections Usage during Pairing (Read/Write)
@@ -257,7 +256,7 @@ extern "C"
  *
  * range: @ref GAPBondMgr_Secure_Cxns
  */
-#define GAPBOND_SECURE_CONNECTION     0x411
+#define GAPBOND_SECURE_CONNECTION 0x411
 
 /**
  * ECC Key Regeneration Policy (Write Only)
@@ -277,7 +276,7 @@ extern "C"
  *
  * range: 0 256
  */
-#define GAPBOND_ECCKEY_REGEN_POLICY   0x412
+#define GAPBOND_ECCKEY_REGEN_POLICY 0x412
 
 /**
  * The private and public keys to use for Secure Connections pairing
@@ -300,7 +299,7 @@ extern "C"
  * range: A valid @ref gapBondEccKeys_t structure <br>
  * 0x00: previously passed keys will no longer be used
  */
-#define GAPBOND_ECC_KEYS              0x413
+#define GAPBOND_ECC_KEYS 0x413
 
 /**
  * Enable / Disable LRU Bond Replacement Scheme (Read/Write)
@@ -315,7 +314,7 @@ extern "C"
  *
  * range: TRUE (enable) or FALSE (disable)
  */
-#define GAPBOND_LRU_BOND_REPLACEMENT  0x418
+#define GAPBOND_LRU_BOND_REPLACEMENT 0x418
 
 /**
  * Erase Local NV Info (Write-only)
@@ -325,7 +324,7 @@ extern "C"
  * @note The erase won't happen until there are no active connections.
  *
  */
-#define GAPBOND_ERASE_LOCAL_INFO      0x41A
+#define GAPBOND_ERASE_LOCAL_INFO 0x41A
 /** @} End GAPBondMgr_Params */
 
 /**
@@ -338,11 +337,11 @@ extern "C"
  * @{
  */
 /// Pairing is not allowed
-#define GAPBOND_PAIRING_MODE_NO_PAIRING          0x00
+#define GAPBOND_PAIRING_MODE_NO_PAIRING 0x00
 /// Wait for a pairing request or slave security request
-#define GAPBOND_PAIRING_MODE_WAIT_FOR_REQ        0x01
+#define GAPBOND_PAIRING_MODE_WAIT_FOR_REQ 0x01
 /// Don't wait, initiate a pairing request or slave security request
-#define GAPBOND_PAIRING_MODE_INITIATE            0x02
+#define GAPBOND_PAIRING_MODE_INITIATE 0x02
 /** @} End GAPBondMgr_Pairing_Modes */
 
 /**
@@ -350,15 +349,15 @@ extern "C"
  * @{
  */
 /// Display Only Device
-#define GAPBOND_IO_CAP_DISPLAY_ONLY              0x00
+#define GAPBOND_IO_CAP_DISPLAY_ONLY 0x00
 /// Display and Yes and No Capable
-#define GAPBOND_IO_CAP_DISPLAY_YES_NO            0x01
+#define GAPBOND_IO_CAP_DISPLAY_YES_NO 0x01
 /// Keyboard Only
-#define GAPBOND_IO_CAP_KEYBOARD_ONLY             0x02
+#define GAPBOND_IO_CAP_KEYBOARD_ONLY 0x02
 /// No Display or Input Device
-#define GAPBOND_IO_CAP_NO_INPUT_NO_OUTPUT        0x03
+#define GAPBOND_IO_CAP_NO_INPUT_NO_OUTPUT 0x03
 /// Both Keyboard and Display Capable
-#define GAPBOND_IO_CAP_KEYBOARD_DISPLAY          0x04
+#define GAPBOND_IO_CAP_KEYBOARD_DISPLAY 0x04
 /** @} End GAPBondMgr_IO_Caps */
 
 /**
@@ -366,21 +365,21 @@ extern "C"
  * @{
  */
 /// Slave Encryption Key
-#define GAPBOND_KEYDIST_SENCKEY                  0x01
+#define GAPBOND_KEYDIST_SENCKEY 0x01
 /// Slave IRK and ID information
-#define GAPBOND_KEYDIST_SIDKEY                   0x02
+#define GAPBOND_KEYDIST_SIDKEY 0x02
 /// Slave CSRK
-#define GAPBOND_KEYDIST_SSIGN                    0x04
+#define GAPBOND_KEYDIST_SSIGN 0x04
 /// Slave Link Key
-#define GAPBOND_KEYDIST_SLINK                    0x08
+#define GAPBOND_KEYDIST_SLINK 0x08
 /// Master Encryption Key
-#define GAPBOND_KEYDIST_MENCKEY                  0x10
+#define GAPBOND_KEYDIST_MENCKEY 0x10
 /// Master IRK and ID information
-#define GAPBOND_KEYDIST_MIDKEY                   0x20
+#define GAPBOND_KEYDIST_MIDKEY 0x20
 /// Master CSRK
-#define GAPBOND_KEYDIST_MSIGN                    0x40
+#define GAPBOND_KEYDIST_MSIGN 0x40
 /// Master Link Key
-#define GAPBOND_KEYDIST_MLINK                    0x80
+#define GAPBOND_KEYDIST_MLINK 0x80
 /** @} End GAPBondMgr_Key_Distr */
 
 /** @} End GAPBondMgr_Constants */
@@ -400,7 +399,7 @@ extern "C"
  * @ref SUCCESS : pairing has been initiated. A pairing request has been either
  *      sent or received.
  */
-#define GAPBOND_PAIRING_STATE_STARTED             0x00
+#define GAPBOND_PAIRING_STATE_STARTED 0x00
 
 /**
  * Pairing Complete
@@ -421,7 +420,7 @@ extern "C"
  * @ref bleTimeout : pairing failed to complete before timeout
  * @ref bleGAPBondRejected : keys did not match
  */
-#define GAPBOND_PAIRING_STATE_COMPLETE            0x01
+#define GAPBOND_PAIRING_STATE_COMPLETE 0x01
 
 /**
  * Encryption has started
@@ -440,13 +439,13 @@ extern "C"
  * @ref bleGAPBondRejected (0x32): this is received due to one of the previous
  *      three errors
  */
-#define GAPBOND_PAIRING_STATE_ENCRYPTED           0x02
+#define GAPBOND_PAIRING_STATE_ENCRYPTED 0x02
 /// Bonding record saved in NV
-#define GAPBOND_PAIRING_STATE_BOND_SAVED          0x03
+#define GAPBOND_PAIRING_STATE_BOND_SAVED 0x03
 /// Central Address Resolution Characteristic Read
-#define GAPBOND_PAIRING_STATE_CAR_READ            0x04
+#define GAPBOND_PAIRING_STATE_CAR_READ 0x04
 /// Resolvable Private Address Only Characteristic Read
-#define GAPBOND_PAIRING_STATE_RPAO_READ           0x05
+#define GAPBOND_PAIRING_STATE_RPAO_READ 0x05
 /** @} End GAPBondMgr_Events */
 
 /**
@@ -462,47 +461,47 @@ extern "C"
  * The user input of the passkey failed, for example, the user canceled the
  * operation.
  */
-#define SMP_PAIRING_FAILED_PASSKEY_ENTRY_FAILED   0x01
+#define SMP_PAIRING_FAILED_PASSKEY_ENTRY_FAILED 0x01
 /// The OOB data is not available
-#define SMP_PAIRING_FAILED_OOB_NOT_AVAIL          0x02
+#define SMP_PAIRING_FAILED_OOB_NOT_AVAIL 0x02
 /**
  * The pairing procedure can't be performed as authentication requirements
  * can't be met due to IO capabilities of one or both devices
  */
-#define SMP_PAIRING_FAILED_AUTH_REQ               0x03
+#define SMP_PAIRING_FAILED_AUTH_REQ 0x03
 /// The confirm value doesn't match the calculated compare value
-#define SMP_PAIRING_FAILED_CONFIRM_VALUE          0x04
+#define SMP_PAIRING_FAILED_CONFIRM_VALUE 0x04
 /// Pairing isn't supported by the device
-#define SMP_PAIRING_FAILED_NOT_SUPPORTED          0x05
+#define SMP_PAIRING_FAILED_NOT_SUPPORTED 0x05
 /**
  * The resultant encryption key size is insufficient for the security
  * requirements of this device.
  */
-#define SMP_PAIRING_FAILED_ENC_KEY_SIZE           0x06
+#define SMP_PAIRING_FAILED_ENC_KEY_SIZE 0x06
 /// The SMP command received is not supported on this device.
-#define SMP_PAIRING_FAILED_CMD_NOT_SUPPORTED      0x07
+#define SMP_PAIRING_FAILED_CMD_NOT_SUPPORTED 0x07
 /// Pairing failed due to an unspecified reason
-#define SMP_PAIRING_FAILED_UNSPECIFIED            0x08
+#define SMP_PAIRING_FAILED_UNSPECIFIED 0x08
 /**
  * Pairing or authentication procedure is disallowed because too little time has
  * elapsed since the last pairing request or security request.
  */
-#define SMP_PAIRING_FAILED_REPEATED_ATTEMPTS      0x09
+#define SMP_PAIRING_FAILED_REPEATED_ATTEMPTS 0x09
 /**
- * Indicates that the command length is invalid or that a parameter is outside of
- * the specified range.
+ * Indicates that the command length is invalid or that a parameter is outside
+ * of the specified range.
  */
-#define SMP_PAIRING_FAILED_INVALID_PARAMETERS     0x0A
+#define SMP_PAIRING_FAILED_INVALID_PARAMETERS 0x0A
 /**
  * Indicates to the remote device that the DHKey Check value received does not
  * match the one calculated by the local device.
  */
-#define SMP_PAIRING_FAILED_DHKEY_CHECK_FAILED     0x0B
+#define SMP_PAIRING_FAILED_DHKEY_CHECK_FAILED 0x0B
 /**
  * Indicates that the confirm value in the numeric comparison protocol do not
  * match.
  */
-#define SMP_PAIRING_FAILED_NUM_COMPARISON_FAILED  0x0C
+#define SMP_PAIRING_FAILED_NUM_COMPARISON_FAILED 0x0C
 /** @} End GAPBondMgr_Pairing_Failed */
 
 /**
@@ -510,16 +509,16 @@ extern "C"
  * @{
  */
 /// Take no action upon unsuccessful bonding
-#define GAPBOND_FAIL_NO_ACTION                         0x00
+#define GAPBOND_FAIL_NO_ACTION 0x00
 /// Initiate pairing upon unsuccessful bonding
-#define GAPBOND_FAIL_INITIATE_PAIRING                  0x01
+#define GAPBOND_FAIL_INITIATE_PAIRING 0x01
 /// Terminate link upon unsuccessful bonding
-#define GAPBOND_FAIL_TERMINATE_LINK                    0x02
+#define GAPBOND_FAIL_TERMINATE_LINK 0x02
 /**
  * Terminate link and erase all existing bonds on device upon unsuccessful
  * bonding
  */
-#define GAPBOND_FAIL_TERMINATE_ERASE_BONDS             0x03
+#define GAPBOND_FAIL_TERMINATE_ERASE_BONDS 0x03
 /** @} End GAPBondMgr_Bond_Failure_Actions */
 
 /**
@@ -527,11 +526,11 @@ extern "C"
  * @{
  */
 /// Secure Connections not supported
-#define GAPBOND_SECURE_CONNECTION_NONE                 0x00
+#define GAPBOND_SECURE_CONNECTION_NONE 0x00
 /// Secure Connections are supported
-#define GAPBOND_SECURE_CONNECTION_ALLOW                0x01
+#define GAPBOND_SECURE_CONNECTION_ALLOW 0x01
 /// Secure Connections Only Mode
-#define GAPBOND_SECURE_CONNECTION_ONLY                 0x02
+#define GAPBOND_SECURE_CONNECTION_ONLY 0x02
 /** @} End GAPBondMgr_Secure_Cxns */
 
 /**
@@ -543,13 +542,13 @@ extern "C"
  * @{
  */
 /// Regenerate after each usage
-#define GAPBOND_REGENERATE_ALWAYS                       0x00
+#define GAPBOND_REGENERATE_ALWAYS 0x00
 /// Never regenerate, always use the same pair.
-#define GAPBOND_REGENERATE_NEVER                        0xFF
+#define GAPBOND_REGENERATE_NEVER 0xFF
 /** @} End GAPBondMgr_ECC_Policies */
 
 /// ECC Key Length: 256 bit keys
-#define ECC_KEYLEN                                     32
+#define ECC_KEYLEN 32
 
 /** @} End GAPBondMgr_Constants */
 
@@ -580,14 +579,9 @@ extern "C"
  *        should be displayed for numeric comparison pairing. If this is zero,
  *        then passkey entry pairing is occurring.
  */
-typedef void (*pfnPasscodeCB_t)
-(
-  uint8_t  *deviceAddr,
-  uint16_t connectionHandle,
-  uint8_t  uiInputs,
-  uint8_t  uiOutputs,
-  uint32_t numComparison
-);
+typedef void (*pfnPasscodeCB_t)(uint8_t *deviceAddr, uint16_t connectionHandle,
+                                uint8_t uiInputs, uint8_t uiOutputs,
+                                uint32_t numComparison);
 
 /**
  * Pairing State Callback Function
@@ -600,12 +594,8 @@ typedef void (*pfnPasscodeCB_t)
  * @param state @ref GAPBondMgr_Events
  * @param status pairing status
  */
-typedef void (*pfnPairStateCB_t)
-(
-  uint16_t connectionHandle,
-  uint8_t  state,
-  uint8_t  status
-);
+typedef void (*pfnPairStateCB_t)(uint16_t connectionHandle, uint8_t state,
+                                 uint8_t status);
 
 /**
  * GAPBondMgr Callback Structure
@@ -613,10 +603,9 @@ typedef void (*pfnPairStateCB_t)
  * This must be setup by the application and passed to the GAPBondMgr when
  * @ref GAPBondMgr_Register is called.
  */
-typedef struct
-{
-  pfnPasscodeCB_t     passcodeCB;       //!< Passcode callback
-  pfnPairStateCB_t    pairStateCB;      //!< Pairing state callback
+typedef struct {
+  pfnPasscodeCB_t passcodeCB;   //!< Passcode callback
+  pfnPairStateCB_t pairStateCB; //!< Pairing state callback
 } gapBondCBs_t;
 
 /** @} End GAPBondMgr_CBs */
@@ -627,11 +616,10 @@ typedef struct
  */
 
 /// @brief Public and Private ECC Keys
-typedef struct
-{
-  uint8_t privateKey[ECC_KEYLEN];     //!< private key
-  uint8_t publicKeyX[ECC_KEYLEN];     //!< public key X
-  uint8_t publicKeyY[ECC_KEYLEN];     //!< prublic key Y
+typedef struct {
+  uint8_t privateKey[ECC_KEYLEN]; //!< private key
+  uint8_t publicKeyX[ECC_KEYLEN]; //!< public key X
+  uint8_t publicKeyY[ECC_KEYLEN]; //!< prublic key Y
 } gapBondEccKeys_t;
 
 /** @} End GAPBondMgr_Structs */
@@ -663,7 +651,7 @@ extern void GAPBondMgr_Register(gapBondCBs_t *pCB);
  * @return @ref INVALIDPARAMETER
  */
 extern bStatus_t GAPBondMgr_SetParameter(uint16_t param, uint8_t len,
-    void *pValue);
+                                         void *pValue);
 
 /**
  * Get a GAP Bond Manager parameter.

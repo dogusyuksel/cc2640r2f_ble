@@ -21,4 +21,10 @@ else
     update_repo "docker"
 fi
 
+if [ ! -d "linting" ]; then
+    git clone https://github.com/dogusyuksel/embedded_linting.git linting
+else
+    update_repo "linting"
+fi
+
 exit 0

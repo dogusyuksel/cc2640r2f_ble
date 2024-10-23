@@ -9,7 +9,7 @@
  Target Device: cc2640r2
 
  ******************************************************************************
- 
+
  Copyright (c) 2016-2024, Texas Instruments Incorporated
  All rights reserved.
 
@@ -41,16 +41,15 @@
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  ******************************************************************************
- 
- 
+
+
  *****************************************************************************/
 
 #ifndef TWO_BTN_MENU_H
 #define TWO_BTN_MENU_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*********************************************************************
@@ -65,7 +64,7 @@ extern "C"
 
 /* First row for the application messages. Note that application SHOULD NOT
    use the rows before TBM_ROW_APP */
-#define TBM_ROW_APP        tbmRowItemLast
+#define TBM_ROW_APP tbmRowItemLast
 
 /*
  * Initialization macros for a menu object consisting of item entries
@@ -78,23 +77,29 @@ extern "C"
      Z: Pointer to upper menu object.
         If none or not desired, NULL should be given.
 */
-#define MENU_OBJ(W, X, Y, Z) tbmMenuObj_t W = { \
-.pTitle=X, .attrib.numItem=Y, .attrib.bActive=TBM_ITEM_ALL, .pUpper=Z, \
-.itemEntry = {
+#define MENU_OBJ(W, X, Y, Z)                                                   \
+  tbmMenuObj_t W = {.pTitle = X,                                               \
+                    .attrib.numItem = Y,                                       \
+                    .attrib.bActive = TBM_ITEM_ALL,                            \
+                    .pUpper = Z,                                               \
+                    .itemEntry = {
 
 /* Submenu item entry.
      X: Pointer to submenu object
 */
-#define MENU_ITEM_SUBMENU(X) {.pDesc=NULL, .item.pSubMenu=(X)},
+#define MENU_ITEM_SUBMENU(X) {.pDesc = NULL, .item.pSubMenu = (X)},
 
 /* Action item entry.
      X: Action description.
      Y: Pointer to action function
 */
-#define MENU_ITEM_ACTION(X, Y) {.pDesc=(X), .item.pfnAction=(Y)},
+#define MENU_ITEM_ACTION(X, Y) {.pDesc = (X), .item.pfnAction = (Y)},
 
 /* End of the menu object declaration and initialization */
-#define MENU_OBJ_END }};
+#define MENU_OBJ_END                                                           \
+  }                                                                            \
+  }                                                                            \
+  ;
 
 /*
  * Menu item setting macros for already existing menu object instances
@@ -104,34 +109,34 @@ extern "C"
      X: Pointer to menu object
      Y: Pointer to the title string.
 */
-#define TBM_SET_TITLE(X, Y) (X)->pTitle=(Y)
+#define TBM_SET_TITLE(X, Y) (X)->pTitle = (Y)
 
 /* Set the number of items in a menu object.
      X: Pointer to menu object
      Y: Number of items
 */
-#define TBM_SET_NUM_ITEM(X, Y) (X)->attrib.numItem=(Y)
+#define TBM_SET_NUM_ITEM(X, Y) (X)->attrib.numItem = (Y)
 
 /* Set the object of a submenu item.
      X: Pointer to menu object
      Y: Item index
      Z: Pointer to the submenu object.
 */
-#define TBM_SET_SUBMENU_OBJ(X, Y, Z) (X)->itemEntry[Y].item.pSubMenu=(Z)
+#define TBM_SET_SUBMENU_OBJ(X, Y, Z) (X)->itemEntry[Y].item.pSubMenu = (Z)
 
 /* Set an action description. Only applicable to an action item.
      X: Pointer to menu object
      Y: Item index
      Z: Pointer to the action description string.
 */
-#define TBM_SET_ACTION_DESC(X, Y, Z) (X)->itemEntry[Y].pDesc=Z
+#define TBM_SET_ACTION_DESC(X, Y, Z) (X)->itemEntry[Y].pDesc = Z
 
 /* Set an action function. Only applicable to an action item.
      X: Pointer to menu object
      Y: Item index
      Z: Function pointer of the action.
 */
-#define TBM_SET_ACTION_FUNC(X, Y, Z) (X)->itemEntry[Y].item.pfnAction=(Z)
+#define TBM_SET_ACTION_FUNC(X, Y, Z) (X)->itemEntry[Y].item.pfnAction = (Z)
 
 /* Set both the description and the function of an action item.
      W: Pointer to menu object
@@ -139,8 +144,9 @@ extern "C"
      Y: Item description
      Z: Pointer to the action description string.
 */
-#define TBM_SET_ACTION_ITEM(W, X, Y, Z) TBM_SET_ACTION_DESC(W, X, Y); \
-TBM_SET_ACTION_FUNC(W, X, Z)
+#define TBM_SET_ACTION_ITEM(W, X, Y, Z)                                        \
+  TBM_SET_ACTION_DESC(W, X, Y);                                                \
+  TBM_SET_ACTION_FUNC(W, X, Z)
 
 /* Get the number of items in a menu object.
      X: Pointer to menu object
@@ -184,12 +190,12 @@ TBM_SET_ACTION_FUNC(W, X, Z)
 #define TBM_IS_ITEM_ACTIVE(X, Y) (((X)->attrib.bActive & (1 << (Y))) != 0)
 
 /* Indicates no more active item from there */
-#define TBM_NO_ITEM      0xFF
+#define TBM_NO_ITEM 0xFF
 
 /* Item bitmap for enabling/disabling */
-#define TBM_ITEM(X)      (1 << (X))
-#define TBM_ITEM_ALL     0x07FFFFFF
-#define TBM_ITEM_NONE    0     /* Used when nothing is selected */
+#define TBM_ITEM(X) (1 << (X))
+#define TBM_ITEM_ALL 0x07FFFFFF
+#define TBM_ITEM_NONE 0 /* Used when nothing is selected */
 
 /******************************************************************************
  * TYPEDEFS
@@ -202,27 +208,27 @@ typedef struct tbmMenuObj_s tbmMenuObj_t;
 
 /* Type definition for a submenu/action item entry */
 typedef struct {
-  uint8* pDesc;                 /* action description. NULL for submenu */
+  uint8 *pDesc; /* action description. NULL for submenu */
   union {
-    tbmMenuObj_t* pSubMenu;     /* submenu */
-    pfnAction_t   pfnAction;    /* function for action */
+    tbmMenuObj_t *pSubMenu; /* submenu */
+    pfnAction_t pfnAction;  /* function for action */
   } item;
 } tbmItemEntry_t;
 
 /* Type definition for a menu object */
 struct tbmMenuObj_s {
-  uint8* pTitle;                /* Title of this menu */
+  uint8 *pTitle; /* Title of this menu */
   struct {
-    uint32 bActive : 27;        /* status bitmap of items */
-    uint32 numItem : 5;         /* # of item entries */
+    uint32 bActive : 27; /* status bitmap of items */
+    uint32 numItem : 5;  /* # of item entries */
   } attrib;
-  tbmMenuObj_t*  pUpper;        /* upper menu */
-  tbmItemEntry_t itemEntry[];   /* item entries */
+  tbmMenuObj_t *pUpper;       /* upper menu */
+  tbmItemEntry_t itemEntry[]; /* item entries */
 };
 
 /* Type definition for menu switching notificaiton callback */
-typedef void (*pfnMenuSwitchCB_t)(tbmMenuObj_t* pMenuObjCurr,
-                                  tbmMenuObj_t* pMenuObjNext);
+typedef void (*pfnMenuSwitchCB_t)(tbmMenuObj_t *pMenuObjCurr,
+                                  tbmMenuObj_t *pMenuObjNext);
 
 /******************************************************************************
  * EXTERNAL VARIABLES
@@ -248,7 +254,7 @@ extern uint8 tbmRowItemLast;
  *
  * @return  true if successful, false otherwise
  */
-bool tbm_initTwoBtnMenu(Display_Handle hDisp, tbmMenuObj_t* pMenuMain,
+bool tbm_initTwoBtnMenu(Display_Handle hDisp, tbmMenuObj_t *pMenuMain,
                         uint8 numItemRow, pfnMenuSwitchCB_t pfnMenuSwitchCB);
 
 /**
@@ -260,11 +266,11 @@ bool tbm_initTwoBtnMenu(Display_Handle hDisp, tbmMenuObj_t* pMenuMain,
  *                     to be set.
  * @param   enables  - Bitmap of the items to be enabled. If no item to enable,
  *                     this shall be TBM_ITEM_NONE.
- * @param   disables - Bitmap of the items to be disabled. If no item to disable,
- *                     this shall be TBM_ITEM_NONE.
+ * @param   disables - Bitmap of the items to be disabled. If no item to
+ * disable, this shall be TBM_ITEM_NONE.
  * @return  None
  */
-void tbm_setItemStatus(tbmMenuObj_t* pMenuObj, uint32 enables, uint32 disables);
+void tbm_setItemStatus(tbmMenuObj_t *pMenuObj, uint32 enables, uint32 disables);
 
 /**
  * @fn     tbm_goTo
@@ -274,7 +280,7 @@ void tbm_setItemStatus(tbmMenuObj_t* pMenuObj, uint32 enables, uint32 disables);
  *
  * @return  None
  */
-void tbm_goTo(tbmMenuObj_t* pMenuObj);
+void tbm_goTo(tbmMenuObj_t *pMenuObj);
 
 /**
  * @fn     tbm_buttonLeft
@@ -303,4 +309,3 @@ bool tbm_buttonRight(void);
 #endif
 
 #endif /* TWO_BTN_MENU_H */
-

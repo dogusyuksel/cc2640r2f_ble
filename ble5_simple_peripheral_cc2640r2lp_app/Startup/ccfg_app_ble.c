@@ -8,7 +8,7 @@
  Target Device: cc2640r2
 
  ******************************************************************************
- 
+
  Copyright (c) 2014-2024, Texas Instruments Incorporated
  All rights reserved.
 
@@ -40,8 +40,8 @@
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  ******************************************************************************
- 
- 
+
+
  *****************************************************************************/
 
 //
@@ -58,8 +58,8 @@
 // flash and reflect the hw configuration of the device. it is very important
 // that it remains align with the version of driverlib you are using.
 // all BLE project except sensor tag use the same configuration.
-// Keeping the "#include <startup_files/ccfg.c>" guarantee that your project using
-// driverlib and the ccfg area will be align.
+// Keeping the "#include <startup_files/ccfg.c>" guarantee that your project
+// using driverlib and the ccfg area will be align.
 
 // you can modify it if you want, the recommend way will be to remove the
 // bellow include, copy the content of the <startup_files/ccfg.c> file in this

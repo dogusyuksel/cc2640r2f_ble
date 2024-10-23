@@ -1,6 +1,7 @@
 # custom ignores
 docker
 ti_cc2640r2f_sdk
+linting
 ble5_simple_peripheral_cc2640r2lp_app_linkInfo.xml
 ble5_simple_peripheral_cc2640r2lp_app/FlashROM_StackLibrary/configPkg
 ble5_simple_peripheral_cc2640r2lp_app/TOOLS/src/sysbios
@@ -18,6 +19,7 @@ ccsObjs.opt
 *.ko
 *.obj
 *.elf
+*.hex
 
 # Linker output
 *.ilk

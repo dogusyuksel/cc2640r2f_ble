@@ -8,7 +8,7 @@
  Target Device: cc2640r2
 
  ******************************************************************************
- 
+
  Copyright (c) 2013-2024, Texas Instruments Incorporated
  All rights reserved.
 
@@ -41,8 +41,8 @@
  contact Texas Instruments Incorporated at www.TI.com.
 
  ******************************************************************************
- 
- 
+
+
  *****************************************************************************/
 
 /*******************************************************************************
@@ -88,11 +88,12 @@
  * LOCAL FUNCTIONS
  */
 
-static gattCharCfg_t *gattServApp_FindCharCfgItem( uint16 connHandle,
-                                                   gattCharCfg_t *charCfgTbl );
-static bStatus_t gattServApp_SendNotiInd( uint16 connHandle, uint8 cccValue,
-                                          uint8 authenticated, gattAttribute_t *pAttr,
-                                          uint8 taskId, pfnGATTReadAttrCB_t pfnReadAttrCB );
+static gattCharCfg_t *gattServApp_FindCharCfgItem(uint16 connHandle,
+                                                  gattCharCfg_t *charCfgTbl);
+static bStatus_t gattServApp_SendNotiInd(uint16 connHandle, uint8 cccValue,
+                                         uint8 authenticated,
+                                         gattAttribute_t *pAttr, uint8 taskId,
+                                         pfnGATTReadAttrCB_t pfnReadAttrCB);
 
 /*********************************************************************
  * API FUNCTIONS
@@ -113,23 +114,17 @@ static bStatus_t gattServApp_SendNotiInd( uint16 connHandle, uint8 cccValue,
  *
  * @return  none
  */
-void GATTServApp_InitCharCfg( uint16 connHandle, gattCharCfg_t *charCfgTbl )
-{
+void GATTServApp_InitCharCfg(uint16 connHandle, gattCharCfg_t *charCfgTbl) {
   // Initialize Client Characteristic Configuration attributes
-  if ( connHandle == CONNHANDLE_INVALID )
-  {
+  if (connHandle == CONNHANDLE_INVALID) {
     uint8 i;
-    for ( i = 0; i < linkDBNumConns; i++ )
-    {
+    for (i = 0; i < linkDBNumConns; i++) {
       charCfgTbl[i].connHandle = CONNHANDLE_INVALID;
       charCfgTbl[i].value = GATT_CFG_NO_OPERATION;
     }
-  }
-  else
-  {
-    gattCharCfg_t *pItem = gattServApp_FindCharCfgItem( connHandle, charCfgTbl );
-    if ( pItem != NULL )
-    {
+  } else {
+    gattCharCfg_t *pItem = gattServApp_FindCharCfgItem(connHandle, charCfgTbl);
+    if (pItem != NULL) {
       pItem->connHandle = CONNHANDLE_INVALID;
       pItem->value = GATT_CFG_NO_OPERATION;
     }
@@ -151,50 +146,46 @@ void GATTServApp_InitCharCfg( uint16 connHandle, gattCharCfg_t *charCfgTbl )
  *
  * @return  Success or Failure
  */
-bStatus_t GATTServApp_ProcessCharCfg( gattCharCfg_t *charCfgTbl, uint8 *pValue,
-                                      uint8 authenticated, gattAttribute_t *attrTbl,
-                                      uint16 numAttrs, uint8 taskId,
-                                      pfnGATTReadAttrCB_t pfnReadAttrCB )
-{
+bStatus_t GATTServApp_ProcessCharCfg(gattCharCfg_t *charCfgTbl, uint8 *pValue,
+                                     uint8 authenticated,
+                                     gattAttribute_t *attrTbl, uint16 numAttrs,
+                                     uint8 taskId,
+                                     pfnGATTReadAttrCB_t pfnReadAttrCB) {
   uint8 i;
   bStatus_t status = SUCCESS;
 
   // Verify input parameters
-  if ( ( charCfgTbl == NULL ) || ( pValue == NULL ) ||
-       ( attrTbl == NULL )    || ( pfnReadAttrCB == NULL ) )
-  {
-    return ( INVALIDPARAMETER );
+  if ((charCfgTbl == NULL) || (pValue == NULL) || (attrTbl == NULL) ||
+      (pfnReadAttrCB == NULL)) {
+    return (INVALIDPARAMETER);
   }
 
-  for ( i = 0; i < linkDBNumConns; i++ )
-  {
+  for (i = 0; i < linkDBNumConns; i++) {
     gattCharCfg_t *pItem = &(charCfgTbl[i]);
 
-    if ( ( pItem->connHandle != CONNHANDLE_INVALID ) &&
-         ( pItem->value != GATT_CFG_NO_OPERATION ) )
-    {
+    if ((pItem->connHandle != CONNHANDLE_INVALID) &&
+        (pItem->value != GATT_CFG_NO_OPERATION)) {
       gattAttribute_t *pAttr;
 
       // Find the characteristic value attribute
-      pAttr = GATTServApp_FindAttr( attrTbl, numAttrs, pValue );
-      if ( pAttr != NULL )
-      {
-        if ( pItem->value & GATT_CLIENT_CFG_NOTIFY )
-        {
-           status |= gattServApp_SendNotiInd( pItem->connHandle, GATT_CLIENT_CFG_NOTIFY,
-                                              authenticated, pAttr, taskId, pfnReadAttrCB );
+      pAttr = GATTServApp_FindAttr(attrTbl, numAttrs, pValue);
+      if (pAttr != NULL) {
+        if (pItem->value & GATT_CLIENT_CFG_NOTIFY) {
+          status |= gattServApp_SendNotiInd(
+              pItem->connHandle, GATT_CLIENT_CFG_NOTIFY, authenticated, pAttr,
+              taskId, pfnReadAttrCB);
         }
 
-        if ( pItem->value & GATT_CLIENT_CFG_INDICATE )
-        {
-           status |= gattServApp_SendNotiInd( pItem->connHandle, GATT_CLIENT_CFG_INDICATE,
-                                              authenticated, pAttr, taskId, pfnReadAttrCB );
+        if (pItem->value & GATT_CLIENT_CFG_INDICATE) {
+          status |= gattServApp_SendNotiInd(
+              pItem->connHandle, GATT_CLIENT_CFG_INDICATE, authenticated, pAttr,
+              taskId, pfnReadAttrCB);
         }
       }
     }
   } // for
 
-  return ( status );
+  return (status);
 }
 
 /*********************************************************************
@@ -209,20 +200,17 @@ bStatus_t GATTServApp_ProcessCharCfg( gattCharCfg_t *charCfgTbl, uint8 *pValue,
  *
  * @return      Pointer to attribute record. NULL, if not found.
  */
-gattAttribute_t *GATTServApp_FindAttr( gattAttribute_t *pAttrTbl,
-                                       uint16 numAttrs, uint8 *pValue )
-{
-  uint16  i;
-  for ( i = 0; i < numAttrs; i++ )
-  {
-    if ( pAttrTbl[i].pValue == pValue )
-    {
+gattAttribute_t *GATTServApp_FindAttr(gattAttribute_t *pAttrTbl,
+                                      uint16 numAttrs, uint8 *pValue) {
+  uint16 i;
+  for (i = 0; i < numAttrs; i++) {
+    if (pAttrTbl[i].pValue == pValue) {
       // Attribute record found
-      return ( &(pAttrTbl[i]) );
+      return (&(pAttrTbl[i]));
     }
   }
 
-  return ( (gattAttribute_t *)NULL );
+  return ((gattAttribute_t *)NULL);
 }
 
 /*********************************************************************
@@ -240,47 +228,37 @@ gattAttribute_t *GATTServApp_FindAttr( gattAttribute_t *pAttrTbl,
  *
  * @return  Success or Failure
  */
-bStatus_t GATTServApp_ProcessCCCWriteReq( uint16 connHandle, gattAttribute_t *pAttr,
-                                          uint8 *pValue, uint16 len, uint16 offset,
-                                          uint16 validCfg )
-{
+bStatus_t GATTServApp_ProcessCCCWriteReq(uint16 connHandle,
+                                         gattAttribute_t *pAttr, uint8 *pValue,
+                                         uint16 len, uint16 offset,
+                                         uint16 validCfg) {
   bStatus_t status = SUCCESS;
 
   // Validate the value
-  if ( offset == 0 )
-  {
-    if ( len == 2 )
-    {
-      uint16 value = BUILD_UINT16( pValue[0], pValue[1] );
+  if (offset == 0) {
+    if (len == 2) {
+      uint16 value = BUILD_UINT16(pValue[0], pValue[1]);
 
       // Validate characteristic configuration bit field
-      if ( ( value & ~validCfg ) == 0 ) // indicate and/or notify
+      if ((value & ~validCfg) == 0) // indicate and/or notify
       {
         // Write the value if it's changed
-        if ( GATTServApp_ReadCharCfg( connHandle,
-                                      GATT_CCC_TBL(pAttr->pValue) ) != value )
-        {
-          status = GATTServApp_WriteCharCfg( connHandle,
-                                             GATT_CCC_TBL(pAttr->pValue),
-                                             value );
+        if (GATTServApp_ReadCharCfg(connHandle, GATT_CCC_TBL(pAttr->pValue)) !=
+            value) {
+          status = GATTServApp_WriteCharCfg(connHandle,
+                                            GATT_CCC_TBL(pAttr->pValue), value);
         }
-      }
-      else
-      {
+      } else {
         status = ATT_ERR_INVALID_VALUE;
       }
-    }
-    else
-    {
+    } else {
       status = ATT_ERR_INVALID_VALUE_SIZE;
     }
-  }
-  else
-  {
+  } else {
     status = ATT_ERR_ATTR_NOT_LONG;
   }
 
-  return ( status );
+  return (status);
 }
 
 /*********************************************************************
@@ -299,17 +277,15 @@ bStatus_t GATTServApp_ProcessCCCWriteReq( uint16 connHandle, gattAttribute_t *pA
  *
  * @return  attribute value
  */
-uint16 GATTServApp_ReadCharCfg( uint16 connHandle, gattCharCfg_t *charCfgTbl )
-{
+uint16 GATTServApp_ReadCharCfg(uint16 connHandle, gattCharCfg_t *charCfgTbl) {
   gattCharCfg_t *pItem;
 
-  pItem = gattServApp_FindCharCfgItem( connHandle, charCfgTbl );
-  if ( pItem != NULL )
-  {
-    return ( (uint16)(pItem->value) );
+  pItem = gattServApp_FindCharCfgItem(connHandle, charCfgTbl);
+  if (pItem != NULL) {
+    return ((uint16)(pItem->value));
   }
 
-  return ( (uint16)GATT_CFG_NO_OPERATION );
+  return ((uint16)GATT_CFG_NO_OPERATION);
 }
 
 /*********************************************************************
@@ -329,18 +305,15 @@ uint16 GATTServApp_ReadCharCfg( uint16 connHandle, gattCharCfg_t *charCfgTbl )
  *
  * @return  Success or Failure
  */
-uint8 GATTServApp_WriteCharCfg( uint16 connHandle, gattCharCfg_t *charCfgTbl,
-                                uint16 value )
-{
+uint8 GATTServApp_WriteCharCfg(uint16 connHandle, gattCharCfg_t *charCfgTbl,
+                               uint16 value) {
   gattCharCfg_t *pItem;
 
-  pItem = gattServApp_FindCharCfgItem( connHandle, charCfgTbl );
-  if ( pItem == NULL )
-  {
-    pItem = gattServApp_FindCharCfgItem( CONNHANDLE_INVALID, charCfgTbl );
-    if ( pItem == NULL )
-    {
-      return ( ATT_ERR_INSUFFICIENT_RESOURCES );
+  pItem = gattServApp_FindCharCfgItem(connHandle, charCfgTbl);
+  if (pItem == NULL) {
+    pItem = gattServApp_FindCharCfgItem(CONNHANDLE_INVALID, charCfgTbl);
+    if (pItem == NULL) {
+      return (ATT_ERR_INSUFFICIENT_RESOURCES);
     }
 
     pItem->connHandle = connHandle;
@@ -349,7 +322,7 @@ uint8 GATTServApp_WriteCharCfg( uint16 connHandle, gattCharCfg_t *charCfgTbl,
   // Write the new value for this client
   pItem->value = value;
 
-  return ( SUCCESS );
+  return (SUCCESS);
 }
 
 /*********************************************************************
@@ -364,24 +337,21 @@ uint8 GATTServApp_WriteCharCfg( uint16 connHandle, gattCharCfg_t *charCfgTbl,
  *
  * @return  pointer to the found item. NULL, otherwise.
  */
-static gattCharCfg_t *gattServApp_FindCharCfgItem( uint16 connHandle,
-                                                   gattCharCfg_t *charCfgTbl )
-{
+static gattCharCfg_t *gattServApp_FindCharCfgItem(uint16 connHandle,
+                                                  gattCharCfg_t *charCfgTbl) {
   uint8 i;
 
-  for ( i = 0; i < linkDBNumConns; i++ )
-  {
-    if ( charCfgTbl[i].connHandle == connHandle )
-    {
+  for (i = 0; i < linkDBNumConns; i++) {
+    if (charCfgTbl[i].connHandle == connHandle) {
       // Entry found
-      return ( &(charCfgTbl[i]) );
+      return (&(charCfgTbl[i]));
     }
   }
 
-  return ( (gattCharCfg_t *)NULL );
+  return ((gattCharCfg_t *)NULL);
 }
 
- /*********************************************************************
+/*********************************************************************
  * @fn      gattServApp_SendNotiInd
  *
  * @brief   Send an ATT Notification/Indication.
@@ -395,10 +365,10 @@ static gattCharCfg_t *gattServApp_FindCharCfgItem( uint16 connHandle,
  *
  * @return  Success or Failure
  */
-static bStatus_t gattServApp_SendNotiInd( uint16 connHandle, uint8 cccValue,
-                                          uint8 authenticated, gattAttribute_t *pAttr,
-                                          uint8 taskId, pfnGATTReadAttrCB_t pfnReadAttrCB )
-{
+static bStatus_t gattServApp_SendNotiInd(uint16 connHandle, uint8 cccValue,
+                                         uint8 authenticated,
+                                         gattAttribute_t *pAttr, uint8 taskId,
+                                         pfnGATTReadAttrCB_t pfnReadAttrCB) {
   attHandleValueNoti_t noti;
   uint16 len;
   bStatus_t status;
@@ -406,40 +376,32 @@ static bStatus_t gattServApp_SendNotiInd( uint16 connHandle, uint8 cccValue,
   // If the attribute value is longer than (ATT_MTU - 3) octets, then
   // only the first (ATT_MTU - 3) octets of this attributes value can
   // be sent in a notification.
-  noti.pValue = (uint8 *)GATT_bm_alloc( connHandle, ATT_HANDLE_VALUE_NOTI,
-                                        GATT_MAX_MTU, &len );
-  if ( noti.pValue != NULL )
-  {
-    status = (*pfnReadAttrCB)( connHandle, pAttr, noti.pValue, &noti.len,
-                               0, len, GATT_LOCAL_READ );
-    if ( status == SUCCESS )
-    {
+  noti.pValue = (uint8 *)GATT_bm_alloc(connHandle, ATT_HANDLE_VALUE_NOTI,
+                                       GATT_MAX_MTU, &len);
+  if (noti.pValue != NULL) {
+    status = (*pfnReadAttrCB)(connHandle, pAttr, noti.pValue, &noti.len, 0, len,
+                              GATT_LOCAL_READ);
+    if (status == SUCCESS) {
       noti.handle = pAttr->handle;
 
-      if ( cccValue & GATT_CLIENT_CFG_NOTIFY )
+      if (cccValue & GATT_CLIENT_CFG_NOTIFY) {
+        status = GATT_Notification(connHandle, &noti, authenticated);
+      } else // GATT_CLIENT_CFG_INDICATE
       {
-        status = GATT_Notification( connHandle, &noti, authenticated );
-      }
-      else // GATT_CLIENT_CFG_INDICATE
-      {
-        status = GATT_Indication( connHandle, (attHandleValueInd_t *)&noti,
-                                  authenticated, taskId );
+        status = GATT_Indication(connHandle, (attHandleValueInd_t *)&noti,
+                                 authenticated, taskId);
       }
     }
 
-    if ( status != SUCCESS )
-    {
-      GATT_bm_free( (gattMsg_t *)&noti, ATT_HANDLE_VALUE_NOTI );
+    if (status != SUCCESS) {
+      GATT_bm_free((gattMsg_t *)&noti, ATT_HANDLE_VALUE_NOTI);
     }
-  }
-  else
-  {
+  } else {
     status = bleNoResources;
   }
 
-  return ( status );
+  return (status);
 }
-
 
 /****************************************************************************
 ****************************************************************************/

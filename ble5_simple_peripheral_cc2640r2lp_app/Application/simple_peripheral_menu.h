@@ -8,7 +8,7 @@
  Target Device: cc2640r2
 
  ******************************************************************************
- 
+
  Copyright (c) 2016-2024, Texas Instruments Incorporated
  All rights reserved.
 
@@ -40,27 +40,26 @@
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  ******************************************************************************
- 
- 
+
+
  *****************************************************************************/
 
 #ifndef SIMPLE_PERIPHERAL_MENU_H
 #define SIMPLE_PERIPHERAL_MENU_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 // Menu item indices.
-#define SP_ITEM_NONE            TBM_ITEM_NONE
-#define SP_ITEM_ALL             TBM_ITEM_ALL
+#define SP_ITEM_NONE TBM_ITEM_NONE
+#define SP_ITEM_ALL TBM_ITEM_ALL
 
 // Note: The defines should be updated accordingly if there is any change
 //       in the order of the items of the menu objects the items belong to.
-#define SP_ITEM_SELECT_CONN     TBM_ITEM(0)  // "Work with"
+#define SP_ITEM_SELECT_CONN TBM_ITEM(0) // "Work with"
 #ifdef PTM_MODE
-#define SP_ITEM_PTM_ENBL        TBM_ITEM(1)  // "Enable PTM Mode"
+#define SP_ITEM_PTM_ENBL TBM_ITEM(1) // "Enable PTM Mode"
 #endif
 
 /*
@@ -89,4 +88,3 @@ extern tbmMenuObj_t spMenuConnPhy;
 #endif
 
 #endif /* SIMPLE_PERIPHERAL_MENU_H */
-

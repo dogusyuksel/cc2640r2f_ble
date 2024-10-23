@@ -2,8 +2,7 @@
 #define COMMON_JOBS_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 extern void CommonJobs_createTask(void);

@@ -9,7 +9,7 @@
  Target Device: cc2640r2
 
  ******************************************************************************
- 
+
  Copyright (c) 2010-2024, Texas Instruments Incorporated
  All rights reserved.
 
@@ -42,16 +42,15 @@
  contact Texas Instruments Incorporated at www.TI.com.
 
  ******************************************************************************
- 
- 
+
+
  *****************************************************************************/
 
 #ifndef GATT_UUID_H
 #define GATT_UUID_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*********************************************************************
@@ -71,40 +70,42 @@ extern "C"
 /**
  * GATT Services
  */
-#define GAP_SERVICE_UUID                           0x1800 // Generic Access Profile
-#define GATT_SERVICE_UUID                          0x1801 // Generic Attribute Profile
+#define GAP_SERVICE_UUID 0x1800  // Generic Access Profile
+#define GATT_SERVICE_UUID 0x1801 // Generic Attribute Profile
 
 /**
  * GATT Declarations
  */
-#define GATT_PRIMARY_SERVICE_UUID                  0x2800 // Primary Service
-#define GATT_SECONDARY_SERVICE_UUID                0x2801 // Secondary Service
-#define GATT_INCLUDE_UUID                          0x2802 // Include
-#define GATT_CHARACTER_UUID                        0x2803 // Characteristic
+#define GATT_PRIMARY_SERVICE_UUID 0x2800   // Primary Service
+#define GATT_SECONDARY_SERVICE_UUID 0x2801 // Secondary Service
+#define GATT_INCLUDE_UUID 0x2802           // Include
+#define GATT_CHARACTER_UUID 0x2803         // Characteristic
 
 /**
  * GATT Descriptors
  */
-#define GATT_CHAR_EXT_PROPS_UUID                   0x2900 // Characteristic Extended Properties
-#define GATT_CHAR_USER_DESC_UUID                   0x2901 // Characteristic User Description
-#define GATT_CLIENT_CHAR_CFG_UUID                  0x2902 // Client Characteristic Configuration
-#define GATT_SERV_CHAR_CFG_UUID                    0x2903 // Server Characteristic Configuration
-#define GATT_CHAR_FORMAT_UUID                      0x2904 // Characteristic Presentation Format
-#define GATT_CHAR_AGG_FORMAT_UUID                  0x2905 // Characteristic Aggregate Format
-#define GATT_VALID_RANGE_UUID                      0x2906 // Valid Range
-#define GATT_EXT_REPORT_REF_UUID                   0x2907 // External Report Reference Descriptor
-#define GATT_REPORT_REF_UUID                       0x2908 // Report Reference Descriptor
+#define GATT_CHAR_EXT_PROPS_UUID 0x2900  // Characteristic Extended Properties
+#define GATT_CHAR_USER_DESC_UUID 0x2901  // Characteristic User Description
+#define GATT_CLIENT_CHAR_CFG_UUID 0x2902 // Client Characteristic Configuration
+#define GATT_SERV_CHAR_CFG_UUID 0x2903   // Server Characteristic Configuration
+#define GATT_CHAR_FORMAT_UUID 0x2904     // Characteristic Presentation Format
+#define GATT_CHAR_AGG_FORMAT_UUID 0x2905 // Characteristic Aggregate Format
+#define GATT_VALID_RANGE_UUID 0x2906     // Valid Range
+#define GATT_EXT_REPORT_REF_UUID 0x2907  // External Report Reference Descriptor
+#define GATT_REPORT_REF_UUID 0x2908      // Report Reference Descriptor
 
 /**
  * GATT Characteristics
  */
-#define DEVICE_NAME_UUID                           0x2A00 // Device Name
-#define APPEARANCE_UUID                            0x2A01 // Appearance
-#define RECONNECT_ADDR_UUID                        0x2A03 // Reconnection Address
-#define PERI_CONN_PARAM_UUID                       0x2A04 // Peripheral Preferred Connection Parameters
-#define SERVICE_CHANGED_UUID                       0x2A05 // Service Changed
-#define CENTRAL_ADDRESS_RESOLUTION_UUID            0x2AA6 // Central Address Resolution
-#define RESOLVABLE_PRIVATE_ADDRESS_ONLY_UUID       0x2AC9 // Resolvable Private Address Only
+#define DEVICE_NAME_UUID 0x2A00    // Device Name
+#define APPEARANCE_UUID 0x2A01     // Appearance
+#define RECONNECT_ADDR_UUID 0x2A03 // Reconnection Address
+#define PERI_CONN_PARAM_UUID                                                   \
+  0x2A04 // Peripheral Preferred Connection Parameters
+#define SERVICE_CHANGED_UUID 0x2A05            // Service Changed
+#define CENTRAL_ADDRESS_RESOLUTION_UUID 0x2AA6 // Central Address Resolution
+#define RESOLVABLE_PRIVATE_ADDRESS_ONLY_UUID                                   \
+  0x2AC9 // Resolvable Private Address Only
 
 /*********************************************************************
  * MACROS
@@ -162,7 +163,7 @@ extern CONST uint8 manuAddrUUID[];
 /*********************************************************************
  * FUNCTIONS
  */
-extern const uint8 *GATT_FindUUIDRec( const uint8 *pUUID, uint8 len );
+extern const uint8 *GATT_FindUUIDRec(const uint8 *pUUID, uint8 len);
 
 /*********************************************************************
 *********************************************************************/

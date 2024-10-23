@@ -1,23 +1,3 @@
-################################################################################
-# Automatically-generated file. Do not edit!
-################################################################################
-
-# Add inputs and outputs from these tool invocations to the build variables 
-C_SRCS += \
-../Application/board_key.c \
-../Application/simple_peripheral.c \
-../Application/common_jobs.c \
-../Application/simple_peripheral_menu.c \
-../Application/two_btn_menu.c \
-../Application/util.c 
-
-C_DEPS += \
-./Application/board_key.d \
-./Application/simple_peripheral.d \
-./Application/common_jobs.d \
-./Application/simple_peripheral_menu.d \
-./Application/two_btn_menu.d \
-./Application/util.d 
 
 OBJS += \
 ./Application/board_key.obj \
@@ -26,29 +6,5 @@ OBJS += \
 ./Application/simple_peripheral_menu.obj \
 ./Application/two_btn_menu.obj \
 ./Application/util.obj 
-
-OBJS__QUOTED += \
-"Application/board_key.obj" \
-"Application/simple_peripheral.obj" \
-"Application/common_jobs.obj" \
-"Application/simple_peripheral_menu.obj" \
-"Application/two_btn_menu.obj" \
-"Application/util.obj" 
-
-C_DEPS__QUOTED += \
-"Application/board_key.d" \
-"Application/simple_peripheral.d" \
-"Application/common_jobs.d" \
-"Application/simple_peripheral_menu.d" \
-"Application/two_btn_menu.d" \
-"Application/util.d" 
-
-C_SRCS__QUOTED += \
-"../Application/board_key.c" \
-"../Application/simple_peripheral.c" \
-"../Application/common_jobs.c" \
-"../Application/simple_peripheral_menu.c" \
-"../Application/two_btn_menu.c" \
-"../Application/util.c" 
 
 
