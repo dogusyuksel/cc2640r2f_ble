@@ -9,11 +9,13 @@
 #include <ti/sysbios/knl/Task.h>
 
 #include <ti/drivers/I2C.h>
+#include <ti/drivers/PIN.h>
 #include <ti/drivers/UART.h>
+#include <ti/drivers/pin/PINCC26XX.h>
 #include <ti/drivers/uart/UARTCC26XX.h>
 
 #include "ExtFlash.h"
-
+#include "printf.h"
 #include "util.h"
 
 #include <board.h>
@@ -42,21 +44,43 @@ Task_Struct cjTask;
 #endif
 uint8_t cjTaskStack[CJ_TASK_STACK_SIZE];
 
+PIN_Handle ledPinHandle;
 UART_Handle uart;
 I2C_Handle i2c;
 #define MAX_NUM_RX_BYTES 256     // Maximum RX bytes to receive in one go
 uint8_t rxBuf[MAX_NUM_RX_BYTES]; // Receive buffer
 size_t rxBufCounter = 0;
 
+PIN_Config pinTable[] = {
+#if defined(Board_CC1350_LAUNCHXL)
+    Board_DIO30_SWPWR | PIN_GPIO_OUTPUT_EN | PIN_GPIO_HIGH | PIN_PUSHPULL |
+        PIN_DRVSTR_MAX,
+#endif
+    Board_PIN_LED1 | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL |
+        PIN_DRVSTR_MAX,
+    Board_PIN_LED2 | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL |
+        PIN_DRVSTR_MAX,
+    PIN_TERMINATE};
+
 static void CommonJobs_init(void);
 static void CommonJobs_taskFxn(UArg a0, UArg a1);
 
-void uart_print(UART_Handle handle, char *message) {
-  if (NULL == handle) {
+void uart_print(char *format, ...) {
+  if (!uart) {
+    return;
+  }
+  va_list arguments;
+  char buffer[128] = {0};
+
+  va_start(arguments, format);
+  vsnprintf_(buffer, sizeof(buffer), format, arguments);
+  va_end(arguments);
+
+  if (strlen(buffer) == 0) {
     return;
   }
 
-  UART_write(uart, message, strlen(message));
+  UART_write(uart, buffer, strlen(buffer));
 }
 
 void CommonJobs_createTask(void) {
@@ -92,7 +116,7 @@ static void CommonJobs_init(void) {
       ;
   }
 
-  uart_print(uart, "uart initialized\n");
+  uart_print("uart initialized\n");
 
   I2C_Params i2cParams;
 
@@ -103,7 +127,15 @@ static void CommonJobs_init(void) {
   i2cParams.bitRate = I2C_400kHz;
   i2c = I2C_open(Board_I2C_TMP, &i2cParams);
   if (i2c == NULL) {
-    uart_print(uart, "I2C init error\n");
+    uart_print("I2C init error\n");
+    while (1)
+      ;
+  }
+
+  PIN_State ledPinState;
+  /* Open LED pins */
+  ledPinHandle = PIN_open(&ledPinState, pinTable);
+  if (ledPinHandle == NULL) {
     while (1)
       ;
   }
@@ -124,15 +156,15 @@ static void MPU_6050_Exists(void) {
 
   if (!I2C_transfer(i2c, &i2cTransaction)) {
     /* Could not resolve a sensor, error */
-    uart_print(uart, "I2C read error\n");
+    uart_print("I2C read error\n");
     while (1)
       ;
   }
 
   if (rxBuffer[0] != MPU_WHO_AM_I_RESPONSE) {
-    uart_print(uart, "WHO_AM_I_NOK\n");
+    uart_print("WHO_AM_I_NOK 0x%X\n", rxBuffer[0]);
   } else {
-    uart_print(uart, "WHO_AM_I_OK\n");
+    uart_print("WHO_AM_I_OK\n");
   }
 }
 
@@ -149,9 +181,9 @@ static void external_flash_check(void) {
   ExtFlash_read(0, 1, &read_buf);
 
   if (write_buf == read_buf) {
-    uart_print(uart, "EXT_FLASH_OK\n");
+    uart_print("EXT_FLASH_OK\n");
   } else {
-    uart_print(uart, "EXT_FLASH_NOK\n");
+    uart_print("EXT_FLASH_NOK: 0x%X\n", read_buf);
   }
 
   ExtFlash_close();
@@ -175,7 +207,7 @@ static void CommonJobs_taskFxn(UArg a0, UArg a1) {
       if (revbyte == (uint8_t)'\n') {
         rxBufCounter = 0;
         memset(rxBuf, 0, sizeof(rxBuf));
-        uart_print(uart, "proceed to process\n");
+        uart_print("proceed to process\n");
       }
     }
   }

@@ -27,4 +27,10 @@ else
     update_repo "linting"
 fi
 
+if [ ! -d "openocd" ]; then
+    git clone https://github.com/STMicroelectronics/OpenOCD.git openocd
+else
+    update_repo "openocd"
+fi
+
 exit 0
