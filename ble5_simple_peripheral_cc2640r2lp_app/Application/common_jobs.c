@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 
 #if !(defined __TI_COMPILER_VERSION__)
@@ -10,6 +11,8 @@
 #include <ti/drivers/I2C.h>
 #include <ti/drivers/UART.h>
 #include <ti/drivers/uart/UARTCC26XX.h>
+
+#include "ExtFlash.h"
 
 #include "util.h"
 
@@ -48,6 +51,14 @@ size_t rxBufCounter = 0;
 static void CommonJobs_init(void);
 static void CommonJobs_taskFxn(UArg a0, UArg a1);
 
+void uart_print(UART_Handle handle, char *message) {
+  if (NULL == handle) {
+    return;
+  }
+
+  UART_write(uart, message, strlen(message));
+}
+
 void CommonJobs_createTask(void) {
   Task_Params taskParams;
 
@@ -81,7 +92,7 @@ static void CommonJobs_init(void) {
       ;
   }
 
-  UART_write(uart, "uart initialized\n", 17);
+  uart_print(uart, "uart initialized\n");
 
   I2C_Params i2cParams;
 
@@ -92,7 +103,7 @@ static void CommonJobs_init(void) {
   i2cParams.bitRate = I2C_400kHz;
   i2c = I2C_open(Board_I2C_TMP, &i2cParams);
   if (i2c == NULL) {
-    UART_write(uart, "I2C init error\n", 15);
+    uart_print(uart, "I2C init error\n");
     while (1)
       ;
   }
@@ -113,16 +124,37 @@ static void MPU_6050_Exists(void) {
 
   if (!I2C_transfer(i2c, &i2cTransaction)) {
     /* Could not resolve a sensor, error */
-    UART_write(uart, "I2C read error\n", 15);
+    uart_print(uart, "I2C read error\n");
     while (1)
       ;
   }
 
   if (rxBuffer[0] != MPU_WHO_AM_I_RESPONSE) {
-    UART_write(uart, "WHO_AM_I_NOK\n", 13);
+    uart_print(uart, "WHO_AM_I_NOK\n");
   } else {
-    UART_write(uart, "WHO_AM_I_OK\n", 12);
+    uart_print(uart, "WHO_AM_I_OK\n");
   }
+}
+
+static void external_flash_check(void) {
+  uint8_t write_buf = 9;
+  uint8_t read_buf = 0;
+
+  ExtFlash_open();
+  const ExtFlashInfo_t *pExtFlashInfo = ExtFlash_info();
+
+  ExtFlash_erase(0, pExtFlashInfo->deviceSize);
+
+  ExtFlash_write(0, 1, &write_buf);
+  ExtFlash_read(0, 1, &read_buf);
+
+  if (write_buf == read_buf) {
+    uart_print(uart, "EXT_FLASH_OK\n");
+  } else {
+    uart_print(uart, "EXT_FLASH_NOK\n");
+  }
+
+  ExtFlash_close();
 }
 
 static void CommonJobs_taskFxn(UArg a0, UArg a1) {
@@ -130,6 +162,8 @@ static void CommonJobs_taskFxn(UArg a0, UArg a1) {
   CommonJobs_init();
 
   MPU_6050_Exists();
+
+  external_flash_check();
 
   // Application main loop
   for (;;) {
@@ -141,7 +175,7 @@ static void CommonJobs_taskFxn(UArg a0, UArg a1) {
       if (revbyte == (uint8_t)'\n') {
         rxBufCounter = 0;
         memset(rxBuf, 0, sizeof(rxBuf));
-        UART_write(uart, "proceed to process\n", 19);
+        uart_print(uart, "proceed to process\n");
       }
     }
   }
