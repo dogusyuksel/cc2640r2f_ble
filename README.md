@@ -9,6 +9,7 @@ This is a nice example with the following features;
 3. SPI usage with MX25R8035F flash
 4. GPIO (button interrupt and led output) usage
 5. TI RTOS task usage
+6. GDB usage
 
 ## IO Layout
 
