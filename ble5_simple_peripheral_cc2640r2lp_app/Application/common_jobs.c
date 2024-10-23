@@ -116,7 +116,7 @@ static void CommonJobs_init(void) {
       ;
   }
 
-  uart_print("uart initialized\n");
+  uart_print("uart initialized!\n");
 
   I2C_Params i2cParams;
 

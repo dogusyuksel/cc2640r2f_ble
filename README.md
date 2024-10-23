@@ -1,6 +1,16 @@
 # Simple Peripheral
 
-## IO LAYOUT
+My motivation while creating this repo is to create a Linux environment for TI CC2640R2 launchpad to build and debug the firmware through console.
+
+This is a nice example with the following features;
+
+1. BLE5 peripheral (removed bonding feature)
+2. I2C usage with MPU6050 sensor
+3. SPI usage with MX25R8035F flash
+4. GPIO (button interrupt and led output) usage
+5. TI RTOS task usage
+
+## IO Layout
 
 ![IO](./docs/images/IO.JPG "IO")
 
@@ -212,6 +222,9 @@ required.
 
 # NOTES
 
-1. [More Example](https://github.com/dogusyuksel/ti_cc2640r2f_sdk/tree/master/simplelink_cc2640r2_sdk_5_30_01_11/examples)
-2. [Schematic Details](./docs/LAUNCHXL-CC2640R2_1_0_0_Schematics.pdf)
+1. [BLE5-Stack User’s Guide](https://software-dl.ti.com/lprf/simplelink_cc26x2_latest/docs/ble5stack/ble_user_guide/html/ble-stack-5.x-guide/index-cc26x2.html)
+2. [More Example](https://github.com/dogusyuksel/ti_cc2640r2f_sdk/tree/master/simplelink_cc2640r2_sdk_5_30_01_11/examples)
+3. [Schematic Details](./docs/LAUNCHXL-CC2640R2_1_0_0_Schematics.pdf)
+4. [More](./docs)
+5. Bootloader related things can be found in the links and the examples (they are calling bootloader as "bim")
 
