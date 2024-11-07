@@ -223,9 +223,14 @@ required.
 
 # NOTES
 
+PS: Bootloader related things can be found in the links and the examples (they are calling bootloader as "bim")
+
+PS: Windows Desktop application written in C# can be found in the "tools"
+
 1. [BLE5-Stack User’s Guide](https://software-dl.ti.com/lprf/simplelink_cc26x2_latest/docs/ble5stack/ble_user_guide/html/ble-stack-5.x-guide/index-cc26x2.html)
 2. [More Example](https://github.com/dogusyuksel/ti_cc2640r2f_sdk/tree/master/simplelink_cc2640r2_sdk_5_30_01_11/examples)
 3. [Schematic Details](./docs/LAUNCHXL-CC2640R2_1_0_0_Schematics.pdf)
-4. [More](./docs)
-5. Bootloader related things can be found in the links and the examples (they are calling bootloader as "bim")
+4. [More on BLE on Linux](./docs/Communication_with_Bluetooth_Low-Energy_Devices_on_Linux.pdf)
+5. [More on BLE on Linux](https://github.com/IanHarvey/bluepy)
+6. [More](./docs)
 
