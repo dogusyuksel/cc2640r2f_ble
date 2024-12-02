@@ -10,10 +10,22 @@ jobs:
   build-and-test-build-job:
     runs-on: ubuntu-latest
     steps:
+    - name: Remove unnecessary files
+      run: |
+        df . -h
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+        df . -h
+
     - uses: actions/checkout@v4
       with:
         github-server-url: https://github.com/dogusyuksel/cc2640r2f_ble.git
         lfs: true
+    
+    - name: clone docker
+      run: |
+        git clone https://github.com/dogusyuksel/embedded_docker.git docker
+        cp -rf docker/* .
 
     - name: Setup Environment
       run: |
