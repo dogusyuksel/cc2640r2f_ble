@@ -22,10 +22,11 @@ jobs:
         github-server-url: https://github.com/dogusyuksel/cc2640r2f_ble.git
         lfs: true
     
-    - name: clone docker
+    - name: clone docker and linting
       run: |
         git clone https://github.com/dogusyuksel/embedded_docker.git docker
         cp -rf docker/* .
+        git clone https://github.com/dogusyuksel/embedded_linting.git linting
 
     - name: Login to Docker Hub
       uses: docker/login-action@v3
