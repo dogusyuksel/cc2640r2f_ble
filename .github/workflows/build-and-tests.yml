@@ -10,14 +10,21 @@ jobs:
   build-and-test-build-job:
     runs-on: ubuntu-latest
     steps:
+
     - uses: actions/checkout@v4
       with:
         github-server-url: https://github.com/dogusyuksel/cc2640r2f_ble.git
         lfs: true
-
-    - name: Setup Environment
+    
+    - name: clone docker and linting
       run: |
-        ./setup_environment.sh
+        git clone https://github.com/dogusyuksel/embedded_docker.git docker
+        cp -rf docker/* .
+        git clone https://github.com/dogusyuksel/embedded_linting.git linting
+
+    - name: free space
+      run: |
+        ./free_space.sh
 
     - name: Login to Docker Hub
       uses: docker/login-action@v3
@@ -42,4 +49,4 @@ jobs:
 
     - name: Build Check
       run: |
-        ./docker/run_docker.sh ${{ secrets.DOCKER_REPO }}:master "cd /workspace && source environment && cd firmware/ble5_simple_peripheral_cc2640r2lp_app && make -C ./FlashROM_StackLibrary/ clean && make -C ./FlashROM_StackLibrary/ all"
+        ./docker/sudo_run_docker.sh ${{ secrets.DOCKER_REPO }}:master "cd /workspace && source environment && cd firmware/ble5_simple_peripheral_cc2640r2lp_app && make -C ./FlashROM_StackLibrary/ clean && make -C ./FlashROM_StackLibrary/ all"
