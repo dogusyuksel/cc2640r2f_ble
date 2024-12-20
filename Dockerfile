@@ -21,6 +21,7 @@ RUN apt-get update && \
         cmake \
         gcc-multilib \
         g++-multilib \
+        openocd \
         software-properties-common \
         language-pack-en-base \
         wget \
