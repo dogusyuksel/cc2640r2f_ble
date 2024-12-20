@@ -80,7 +80,7 @@ clean:
 	-@echo ' '
 
 linting:
-	../../../linting/format_check.sh ../
+	/thirdparty/linting/format_check.sh /workspace/ble5_simple_peripheral_cc2640r2lp_app/Application
 	-@echo 'Finished linting'
 	-@echo ' '
 
