@@ -1,5 +1,0 @@
-
-OBJS += \
-./NPI/npi.obj 
-
-

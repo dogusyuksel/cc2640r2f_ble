@@ -1,5 +1,0 @@
-
-OBJS += \
-./TOOLS/onboard.obj 
-
-
