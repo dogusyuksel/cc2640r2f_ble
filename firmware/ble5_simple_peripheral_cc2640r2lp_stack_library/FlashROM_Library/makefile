@@ -4,9 +4,6 @@ CG_TOOL_ROOT := $(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
 
-ORDERED_OBJS += \
-$(OBJS) \
-
 -include ../makefile.init
 
 RM := rm -rf
@@ -14,9 +11,7 @@ RMDIR := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include HAL/Common/subdir_rules.mk
--include HAL/Target/CC2650/Drivers/subdir_rules.mk
--include HAL/Target/CC2650/_common/subdir_rules.mk
+-include subdir_rules_all.mk
 -include Host/subdir_rules.mk
 -include ICallBLE/subdir_rules.mk
 -include NPI/subdir_rules.mk
@@ -61,6 +56,9 @@ OBJS += \
 ./HAL/Target/CC2650/Drivers/hal_trng_wrapper.obj \
 ./HAL/Target/CC2650/_common/mb_patch.obj \
 ./NPI/npi.obj
+
+ORDERED_OBJS += \
+$(OBJS) \
 
 -include ../makefile.defs
 
