@@ -10,9 +10,7 @@ RM := rm -rf
 RMDIR := rm -rf
 
 # All of the sources participating in the build are defined here
--include sources.mk
 -include subdir_rules_all.mk
--include objects.mk
 
 OPT_SRCS += \
 ../TOOLS/defines/ble5_simple_peripheral_cc2640r2lp_stack_library_FlashROM_Library.opt
