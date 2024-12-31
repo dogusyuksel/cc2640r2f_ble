@@ -24,7 +24,6 @@ RM := rm -rf
 RMDIR := rm -rf
 
 # All of the sources participating in the build are defined here
--include sources.mk
 -include Application/subdir_vars.mk
 -include Drivers/ECC/subdir_vars.mk
 -include Drivers/TRNG/subdir_vars.mk
