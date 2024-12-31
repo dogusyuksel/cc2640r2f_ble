@@ -6,6 +6,7 @@ if [ "$#" -eq 1 ]; then
         echo "    '-b' to build new docker (optional)"
         echo "    '-c <command>' to run command (optional)"
         echo "    '-s' to execute docker in root (optional)"
+        echo "    '-i' to execute docker while attaching interface (optional)"
         exit 0
     fi
 fi
@@ -18,14 +19,16 @@ preferred_name=$BASENAME":latest"
 build_docker=false
 is_sudo=false
 command=""
+interface=""
 
 # It's the : after d that signifies that it takes an option argument.
 
-while getopts bsc: opt; do
+while getopts bsc:i: opt; do
     case $opt in
         b) build_docker=true ;;
         s) is_sudo=true ;;
         c) command=$OPTARG ;;
+        i) interface=$OPTARG ;;
         *) echo 'error in command line parsing' >&2
            exit 1
     esac
@@ -59,9 +62,14 @@ if [ "$command" != "" ]; then
     exit 0
 fi
 
+add_iface=""
+if [ "$interface" != "" ]; then
+    add_iface="--device $interface"
+fi
+
 # if no command run, lets start the docker for personal use
 if [ "$is_sudo" = "true" ]; then
-    docker run --rm -it --net=host -v $(pwd):/workspace --entrypoint=/bin/bash $preferred_name
+    docker run --rm -it --net=host -v $(pwd):/workspace $add_iface --entrypoint=/bin/bash $preferred_name
 else
-    docker run --rm -it --net=host -v $(pwd):/workspace -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -u $(id -u ${USER}):$(id -g ${USER}) --entrypoint=/bin/bash $preferred_name
+    docker run --rm -it --net=host -v $(pwd):/workspace -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -u $(id -u ${USER}):$(id -g ${USER}) $add_iface --entrypoint=/bin/bash $preferred_name
 fi

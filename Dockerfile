@@ -26,6 +26,8 @@ RUN apt-get update && \
         language-pack-en-base \
         wget \
         clang-format \
+        default-jre \
+        default-jdk \
         unzip && \
     apt-get -y clean
 

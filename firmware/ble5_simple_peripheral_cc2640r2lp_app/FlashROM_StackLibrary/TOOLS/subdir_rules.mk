@@ -17,4 +17,3 @@ configPkg/linker.cmd: build-1103652863 ../TOOLS/app_ble.cfg
 configPkg/compiler.opt: build-1103652863
 configPkg: build-1103652863
 
-

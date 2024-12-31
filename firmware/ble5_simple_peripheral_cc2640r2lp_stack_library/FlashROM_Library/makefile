@@ -4,41 +4,50 @@ CG_TOOL_ROOT := $(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
 
-ORDERED_OBJS += \
-$(OBJS) \
-
 -include ../makefile.init
 
 RM := rm -rf
 RMDIR := rm -rf
 
 # All of the sources participating in the build are defined here
--include sources.mk
--include HAL/Common/subdir_vars.mk
--include HAL/Target/CC2650/Drivers/subdir_vars.mk
--include HAL/Target/CC2650/_common/subdir_vars.mk
--include Host/subdir_vars.mk
--include ICallBLE/subdir_vars.mk
--include NPI/subdir_vars.mk
--include OSAL/subdir_vars.mk
--include PROFILES/subdir_vars.mk
--include ROM/subdir_vars.mk
--include Startup/subdir_vars.mk
--include TOOLS/subdir_vars.mk
--include TOOLS/defines/subdir_vars.mk
--include HAL/Common/subdir_rules.mk
--include HAL/Target/CC2650/Drivers/subdir_rules.mk
--include HAL/Target/CC2650/_common/subdir_rules.mk
--include Host/subdir_rules.mk
--include ICallBLE/subdir_rules.mk
--include NPI/subdir_rules.mk
--include OSAL/subdir_rules.mk
--include PROFILES/subdir_rules.mk
--include ROM/subdir_rules.mk
--include Startup/subdir_rules.mk
--include TOOLS/subdir_rules.mk
--include TOOLS/defines/subdir_rules.mk
--include objects.mk
+-include subdir_rules_all.mk
+
+OPT_SRCS += \
+../TOOLS/defines/ble5_simple_peripheral_cc2640r2lp_stack_library_FlashROM_Library.opt
+
+OBJS += \
+./OSAL/osal.obj \
+./OSAL/osal_bufmgr.obj \
+./OSAL/osal_cbtimer.obj \
+./OSAL/osal_clock.obj \
+./OSAL/osal_list.obj \
+./OSAL/osal_memory_icall.obj \
+./OSAL/osal_pwrmgr.obj \
+./OSAL/osal_snv_wrapper.obj \
+./OSAL/osal_timers.obj \
+./PROFILES/gap.obj \
+./PROFILES/gapbondmgr.obj \
+./PROFILES/gattservapp_util.obj \
+./PROFILES/sm_ecc.obj \
+./TOOLS/onboard.obj \
+./ROM/common_rom_init.obj \
+./ROM/rom_init.obj \
+./Startup/ble_user_config.obj \
+./Startup/icall_startup.obj \
+./Startup/osal_icall_ble.obj \
+./ICallBLE/ble_dispatch_JT.obj \
+./ICallBLE/ble_dispatch_lite.obj \
+./ICallBLE/icall_lite_translation.obj \
+./Host/gatt_uuid.obj \
+./HAL/Common/hal_assert.obj \
+./HAL/Target/CC2650/Drivers/hal_flash_wrapper.obj \
+./HAL/Target/CC2650/Drivers/hal_rtc_wrapper.obj \
+./HAL/Target/CC2650/Drivers/hal_trng_wrapper.obj \
+./HAL/Target/CC2650/_common/mb_patch.obj \
+./NPI/npi.obj
+
+ORDERED_OBJS += \
+$(OBJS) \
 
 -include ../makefile.defs
 
