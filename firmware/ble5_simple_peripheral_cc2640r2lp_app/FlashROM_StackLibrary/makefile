@@ -34,15 +34,7 @@ RMDIR := rm -rf
 -include Startup/subdir_vars.mk
 -include TOOLS/subdir_vars.mk
 -include TOOLS/defines/subdir_vars.mk
--include Application/subdir_rules.mk
--include Drivers/ECC/subdir_rules.mk
--include Drivers/TRNG/subdir_rules.mk
--include ICall/subdir_rules.mk
--include ICallBLE/subdir_rules.mk
--include PROFILES/subdir_rules.mk
--include Startup/subdir_rules.mk
--include TOOLS/subdir_rules.mk
--include TOOLS/defines/subdir_rules.mk
+-include subdir_rules_all.mk
 -include objects.mk
 
 -include ../makefile.defs
