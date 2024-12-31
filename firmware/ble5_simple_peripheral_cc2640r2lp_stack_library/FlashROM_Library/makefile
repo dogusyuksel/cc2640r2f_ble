@@ -12,15 +12,6 @@ RMDIR := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_rules_all.mk
--include Host/subdir_rules.mk
--include ICallBLE/subdir_rules.mk
--include NPI/subdir_rules.mk
--include OSAL/subdir_rules.mk
--include PROFILES/subdir_rules.mk
--include ROM/subdir_rules.mk
--include Startup/subdir_rules.mk
--include TOOLS/subdir_rules.mk
--include TOOLS/defines/subdir_rules.mk
 -include objects.mk
 
 OPT_SRCS += \
