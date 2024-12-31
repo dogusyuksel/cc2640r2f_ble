@@ -20,6 +20,9 @@ ccsObjs.opt
 *.obj
 *.elf
 *.hex
+*.mak
+*.dot
+*.xs
 
 # Linker output
 *.ilk
