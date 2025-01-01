@@ -34,7 +34,6 @@ RMDIR := rm -rf
 -include TOOLS/subdir_vars.mk
 -include TOOLS/subdir_rules.mk
 -include subdir_rules_all.mk
--include objects.mk
 
 -include ../makefile.defs
 
