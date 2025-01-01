@@ -12,4 +12,6 @@ while IFS= read -r line; do
     rm -rf $line
 done <<< "$files"
 
+rm -rf $APP_PATH"/FlashROM_StackLibrary/configPkg"
+
 exit 0
