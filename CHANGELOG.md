@@ -1,3 +1,7 @@
+## 1.0.2
+
+- try to remove unnecessary files
+
 ## 1.0.1
 
 - try to remove unnecessary files
