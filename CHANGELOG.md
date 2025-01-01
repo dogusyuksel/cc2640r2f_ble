@@ -1,6 +1,7 @@
 ## 1.0.2
 
 - try to remove unnecessary files
+- environment file edited
 
 ## 1.0.1
 
