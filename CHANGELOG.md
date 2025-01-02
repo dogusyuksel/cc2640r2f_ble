@@ -2,6 +2,7 @@
 
 - try to remove unnecessary files
 - environment file edited
+- start_odc.sh script fixed and tested
 
 ## 1.0.1
 
