@@ -86,7 +86,7 @@ clean:
 	-@echo ' '
 
 pre-build:
-	-$(TI_SDK_PATH)/source/ti/ble5stack/../../../tools/ble5stack/lib_search/lib_search    --opt /workspace/firmware/ble5_simple_peripheral_cc2640r2lp_stack_library/TOOLS/build_config.opt    --lib-dir $(TI_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2    --cmd /workspace/firmware/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/lib_linker.cmd    --xml $(TI_SDK_PATH)/source/ti/ble5stack/../../../tools/ble5stack/lib_search/lib_search.xml    --sym-dir $(TI_SDK_PATH)/source/ti/ble5stack/symbols/cc26x0r2
+	-$(TI_SDK_PATH)/source/ti/ble5stack/../../../tools/ble5stack/lib_search/lib_search    --opt $(STACK_LIBRARY_PATH)/TOOLS/build_config.opt    --lib-dir $(TI_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2    --cmd $(STACK_LIBRARY_PATH)/FlashROM_Library/lib_linker.cmd    --xml $(TI_SDK_PATH)/source/ti/ble5stack/../../../tools/ble5stack/lib_search/lib_search.xml    --sym-dir $(TI_SDK_PATH)/source/ti/ble5stack/symbols/cc26x0r2
 	-@echo ' '
 
 .PHONY: all clean dependents

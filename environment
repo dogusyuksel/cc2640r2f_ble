@@ -1,3 +1,5 @@
 export XDCTOOLS_JAVA_HOME="/usr/lib/jvm/default-java"
 export CCS_PATH="/thirdparty/ti_cc2640r2f_sdk/ccs1281"
 export TI_SDK_PATH="/thirdparty/ti_cc2640r2f_sdk/simplelink_cc2640r2_sdk_5_30_01_11"
+export APP_PATH="/workspace/firmware/ble5_simple_peripheral_cc2640r2lp_app"
+export STACK_LIBRARY_PATH="/workspace/firmware/ble5_simple_peripheral_cc2640r2lp_stack_library"

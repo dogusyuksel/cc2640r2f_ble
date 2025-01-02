@@ -1,3 +1,9 @@
+## 1.0.2
+
+- try to remove unnecessary files
+- environment file edited
+- start_odc.sh script fixed and tested
+
 ## 1.0.1
 
 - try to remove unnecessary files
