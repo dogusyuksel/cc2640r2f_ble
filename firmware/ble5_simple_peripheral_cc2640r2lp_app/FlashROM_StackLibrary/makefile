@@ -23,14 +23,31 @@ $(GEN_CMDS__FLAG) \
 RM := rm -rf
 RMDIR := rm -rf
 
+
+OBJS += \
+./board_key.obj \
+./simple_peripheral.obj \
+./common_jobs.obj \
+./ExtFlash.obj \
+./printf.obj \
+./util.obj \
+./devinfoservice.obj \
+./gatt_uuid.obj \
+./gattservapp_util.obj \
+./simple_gatt_profile.obj \
+./ECCROMCC26XX.obj \
+./TRNGCC26XX.obj\
+./board.obj \
+./ccfg_app_ble.obj \
+./main.obj \
+./ble_user_config.obj \
+./icall_api_lite.obj \
+./icall.obj \
+./icall_cc2650.obj \
+./icall_user_config.obj
+
 # All of the sources participating in the build are defined here
--include Application/subdir_vars.mk
--include Drivers/ECC/subdir_vars.mk
 -include Drivers/TRNG/subdir_vars.mk
--include ICall/subdir_vars.mk
--include ICallBLE/subdir_vars.mk
--include PROFILES/subdir_vars.mk
--include Startup/subdir_vars.mk
 -include TOOLS/subdir_vars.mk
 -include TOOLS/subdir_rules.mk
 -include subdir_rules_all.mk
