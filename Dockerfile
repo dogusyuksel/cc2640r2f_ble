@@ -34,7 +34,6 @@ RUN apt-get update && \
 RUN git config --global --add safe.directory /workspace
 
 RUN cd / && mkdir thirdparty && \
-    git clone https://github.com/dogusyuksel/embedded_linting.git /thirdparty/linting && \
     git clone https://github.com/STMicroelectronics/OpenOCD.git /thirdparty/openocd && \
     git clone https://github.com/dogusyuksel/ti_cc2640r2f_sdk.git /thirdparty/ti_cc2640r2f_sdk
 

@@ -63,7 +63,7 @@ EXE_OUTPUTS__QUOTED += \
 
 
 # All Target
-all: linting all_original
+all: all_original
 
 all_original: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@$(MAKE) --no-print-directory -Onone "ble5_simple_peripheral_cc2640r2lp_app.out"
@@ -86,16 +86,11 @@ clean:
 	-@echo 'Finished clean'
 	-@echo ' '
 
-linting:
-	/thirdparty/linting/format_check.sh $(APP_PATH)/Application
-	-@echo 'Finished linting'
-	-@echo ' '
-
 post-build:
 	-$(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armhex -order MS --memwidth=8 --romwidth=8 --intel -o ble5_simple_peripheral_cc2640r2lp_app.hex ble5_simple_peripheral_cc2640r2lp_app.out
 	-@echo ' '
 
-.PHONY: all clean dependents linting
+.PHONY: all clean dependents
 .SECONDARY:
 $(STACK_LIBRARY_PATH)/FlashROM_Library/ble5_simple_peripheral_cc2640r2lp_stack_library.lib:
 

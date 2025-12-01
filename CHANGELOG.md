@@ -1,3 +1,7 @@
+## 1.0.3
+
+- remove linting
+
 ## 1.0.2
 
 - try to remove unnecessary files
