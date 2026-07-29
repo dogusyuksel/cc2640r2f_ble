@@ -11,6 +11,26 @@ This is a nice example with the following features;
 5. TI RTOS task usage
 6. GDB usage
 
+## Table of Contents
+- [Simple Peripheral](#simple-peripheral)
+  - [Table of Contents](#table-of-contents)
+  - [IO Layout](#io-layout)
+  - [Introduction](#introduction)
+  - [Hardware Prerequisites](#hardware-prerequisites)
+  - [Software Prerequisites](#software-prerequisites)
+  - [Service/Prol e Table](#serviceprol-e-table)
+  - [Usage](#usage)
+    - [Characteristic 1 (UUID: FFF1)](#characteristic-1-uuid-fff1)
+    - [Characteristic 2 (UUID: FFF2)](#characteristic-2-uuid-fff2)
+    - [Characteristic 3 (UUID: FFF3)](#characteristic-3-uuid-fff3)
+    - [Characteristic 4 (UUID: FFF4)](#characteristic-4-uuid-fff4)
+    - [Characteristic 5 (UUID: FFF5)](#characteristic-5-uuid-fff5)
+  - [Production Test Mode (PTM)](#production-test-mode-ptm)
+    - [Enabling PTM Mode on the Simple Peripheral Application](#enabling-ptm-mode-on-the-simple-peripheral-application)
+  - [HOW TO USE GDB](#how-to-use-gdb)
+  - [HOW TO BUILD PROJECT](#how-to-build-project)
+  - [NOTES](#notes)
+
 ## IO Layout
 
 ![IO](./docs/images/IO.JPG "IO")
@@ -220,8 +240,32 @@ Note: Once transitioned to PTM mode, the UART feed will stop and it's responsibi
 task to handle the receiving and transmitting of test mode commands. In order to exit this mode, a reboot is
 required.
 
+## HOW TO USE GDB
 
-# NOTES
+```
+openocd -f openocd/tcl/interface/xds110.cfg -f openocd/tcl/board/ti_cc26x0_launchpad.cfg
+
+# then in another terminal, run below
+# gdb-multiarch <your_code>.out
+# target extended-remote localhost:3333
+# load comamnd can be used to fw update
+```
+
+## HOW TO BUILD PROJECT
+
+In docker environment, execute below commands;
+
+```
+source environment
+git submodule update --init --recursive
+build_docker
+rebuild_fw
+
+// and then find the hex "ble5_simple_peripheral_cc2640r2lp_app.hex"
+```
+
+
+## NOTES
 
 PS: Bootloader related things can be found in the links and the examples (they are calling bootloader as "bim")
 

@@ -1,0 +1,3 @@
+[submodule "thirdparty/ti_cc2640r2f_sdk"]
+	path = thirdparty/ti_cc2640r2f_sdk
+	url = https://github.com/dogusyuksel/ti_cc2640r2f_sdk.git
