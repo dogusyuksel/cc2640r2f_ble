@@ -10,12 +10,14 @@ APP_BUILD_DIR := $(APP_PATH)/FlashROM_StackLibrary
 STACK_BUILD_DIR := $(STACK_LIBRARY_PATH)/FlashROM_Library
 TI_ARM_CGT := $(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 VENDORED_SDK_PATH := $(REPO_ROOT)/firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11
+XDC_XS := $(CCS_PATH)/xdctools_3_62_01_16_core/xs
+XDC_PACKAGE_PATH := $(VENDORED_SDK_PATH)/source;$(VENDORED_SDK_PATH)/kernel/tirtos/packages;$(VENDORED_SDK_PATH)/source/ti/ble5stack
 
 REQUIRED_FW_FILES := \
 	$(TI_ARM_CGT)/bin/armcl \
 	$(TI_ARM_CGT)/bin/armar \
 	$(TI_ARM_CGT)/bin/armhex \
-	$(CCS_PATH)/xdctools_3_62_01_16_core/xs \
+	$(XDC_XS) \
 	$(VENDORED_SDK_PATH)/source/ti/devices/cc26x0r2/driverlib/bin/ccs/driverlib.lib \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/dpl/lib/dpl_cc26x0r2.aem3 \
 	$(VENDORED_SDK_PATH)/source/ti/drivers/lib/drivers_cc26x0r2.aem3 \
@@ -32,6 +34,9 @@ REQUIRED_FW_FILES := \
 	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/host/smp_pxxx.a \
 	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/host/sm_pxxx.a \
 	$(VENDORED_SDK_PATH)/source/ti/ble5stack/symbols/cc26x0r2/pxxx.symbols \
+	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/package.xdc \
+	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/ITarget.xdc \
+	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/package/ti_targets.class \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/M3.xdc \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/package/ti_targets_arm_elf.class \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/Settings.xdc \
@@ -63,6 +68,11 @@ check-fw-deps:
 			missing=1; \
 		fi; \
 	done; \
+	if [ "$$missing" -eq 0 ] && ! "$(XDC_XS)" --xdcpath="$(XDC_PACKAGE_PATH)" -e "xdc.module('ti.targets.arm.elf.M3');" >/dev/null 2>&1; then \
+		echo "Firmware XDC target package cannot be resolved: ti.targets.arm.elf.M3"; \
+		echo "XDC path: $(XDC_PACKAGE_PATH)"; \
+		missing=1; \
+	fi; \
 	if [ "$$missing" -ne 0 ]; then \
 		echo "Run: git submodule update --init --recursive"; \
 		exit 1; \
