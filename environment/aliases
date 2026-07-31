@@ -9,6 +9,7 @@ alias run_docker="docker run --rm -it --net=host -v \"$SCRIPT_DIR\"/..:\"$DOCKER
 alias run_docker_as_root="docker run --rm -it --net=host -v \"$SCRIPT_DIR\"/..:\"$DOCKER_WORKINGDIR\" --entrypoint=/bin/bash \"$DOCKER_IMAGE_NAME\""
 alias rebuild_fw="docker run --rm -t --net=host -v \"$REPO_ROOT\":\"$DOCKER_WORKINGDIR\" --entrypoint=/bin/bash \"$DOCKER_IMAGE_NAME\" -c \"cd $DOCKER_WORKINGDIR && make rebuild-fw\""
 alias clean_fw="docker run --rm -t --net=host -v \"$REPO_ROOT\":\"$DOCKER_WORKINGDIR\" --entrypoint=/bin/bash \"$DOCKER_IMAGE_NAME\" -c \"cd $DOCKER_WORKINGDIR && make clean-fw\""
+alias diagnose_fw="docker run --rm -t --net=host -v \"$REPO_ROOT\":\"$DOCKER_WORKINGDIR\" --entrypoint=/bin/bash \"$DOCKER_IMAGE_NAME\" -c \"cd $DOCKER_WORKINGDIR && make diagnose-fw-xdc\""
 alias rebuild_fw_wsl="make -C \"$REPO_ROOT\" rebuild-fw"
 alias clean_fw_wsl="make -C \"$REPO_ROOT\" clean-fw"
 alias fw_paths="make -C \"$REPO_ROOT\" show-paths"

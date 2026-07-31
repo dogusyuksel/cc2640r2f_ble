@@ -51,7 +51,7 @@ export STACK_LIBRARY_PATH
 export XDCTOOLS_JAVA_HOME
 export XDC_PACKAGE_PATH
 
-.PHONY: all check-fw-deps firmware stack-library rebuild-fw clean clean-fw clean-stack-library show-paths
+.PHONY: all check-fw-deps diagnose-fw-xdc firmware stack-library rebuild-fw clean clean-fw clean-stack-library show-paths
 
 all: firmware
 
@@ -69,15 +69,58 @@ check-fw-deps:
 			missing=1; \
 		fi; \
 	done; \
-	if [ "$$missing" -eq 0 ] && ! "$(XDC_XS)" --xdcpath="$(XDC_PACKAGE_PATH)" -e "xdc.module('ti.targets.arm.elf.M3');" >/dev/null 2>&1; then \
-		echo "Firmware XDC target package cannot be resolved: ti.targets.arm.elf.M3"; \
-		echo "XDC path: $(XDC_PACKAGE_PATH)"; \
-		missing=1; \
+	if [ "$$missing" -eq 0 ]; then \
+		probe=$$(mktemp /tmp/cc2640r2-xdc.XXXXXX.xs); \
+		printf '%s\n' 'xdc.module("ti.targets.arm.elf.M3");' 'print("resolved ti.targets.arm.elf.M3");' > "$$probe"; \
+		if ! "$(XDC_XS)" --xdcpath="$(XDC_PACKAGE_PATH)" -f "$$probe" >/dev/null 2>&1; then \
+			echo "Firmware XDC target package cannot be resolved: ti.targets.arm.elf.M3"; \
+			echo "XDC path: $(XDC_PACKAGE_PATH)"; \
+			missing=1; \
+		fi; \
+		rm -f "$$probe"; \
 	fi; \
 	if [ "$$missing" -ne 0 ]; then \
 		echo "Run: git submodule update --init --recursive"; \
 		exit 1; \
 	fi
+
+diagnose-fw-xdc:
+	@echo "REPO_ROOT=$(REPO_ROOT)"
+	@echo "CCS_PATH=$(CCS_PATH)"
+	@echo "TI_ARM_CGT=$(TI_ARM_CGT)"
+	@echo "XDC_XS=$(XDC_XS)"
+	@echo "XDC_PACKAGE_PATH=$(XDC_PACKAGE_PATH)"
+	@echo "XDCTOOLS_JAVA_HOME=$(XDCTOOLS_JAVA_HOME)"
+	@echo
+	@echo "app configuro command:"
+	@grep -n -- '--xdcpath' "$(REPO_ROOT)/firmware/build/cc2640r2f_app.mk" || true
+	@echo
+	@echo "required XDC target package files:"
+	@missing=0; \
+	for file in \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/package.xdc" \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/package/ti_targets.class" \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/package.xdc" \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/M3.xdc" \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/package/ti_targets_arm_elf.class" \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/Settings.xdc" \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/lib/ti.targets.arm.rtsarm.aem3"; do \
+		if [ -e "$$file" ]; then \
+			ls -l "$$file"; \
+		else \
+			echo "MISSING $$file"; \
+			missing=1; \
+		fi; \
+	done; \
+	if [ "$$missing" -ne 0 ]; then exit 1; fi
+	@echo
+	@echo "XDC target resolve:"
+	@probe=$$(mktemp /tmp/cc2640r2-xdc.XXXXXX.xs); \
+	printf '%s\n' 'xdc.module("ti.targets.arm.elf.M3");' 'print("resolved ti.targets.arm.elf.M3");' > "$$probe"; \
+	"$(XDC_XS)" --xdcpath="$(XDC_PACKAGE_PATH)" -f "$$probe"; \
+	status=$$?; \
+	rm -f "$$probe"; \
+	exit $$status
 
 firmware: check-fw-deps stack-library
 	$(MAKE) -C "$(APP_BUILD_DIR)" all
