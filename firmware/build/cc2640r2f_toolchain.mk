@@ -2,6 +2,7 @@ TI_ARM_CGT ?= $(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 VENDORED_SDK_PATH := $(REPO_ROOT)/firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11
 VENDORED_BLESTACK := $(VENDORED_SDK_PATH)/source/ti/ble5stack
 VENDORED_DEVICES := $(VENDORED_SDK_PATH)/source/ti/devices
+XDC_PACKAGE_PATH ?= $(VENDORED_SDK_PATH)/source;$(VENDORED_SDK_PATH)/kernel/tirtos/packages;$(VENDORED_BLESTACK)
 
 ARMCL := "$(TI_ARM_CGT)/bin/armcl"
 ARMAR := "$(TI_ARM_CGT)/bin/armar"

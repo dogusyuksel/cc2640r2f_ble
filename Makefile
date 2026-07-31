@@ -49,6 +49,7 @@ export REPO_ROOT
 export APP_PATH
 export STACK_LIBRARY_PATH
 export XDCTOOLS_JAVA_HOME
+export XDC_PACKAGE_PATH
 
 .PHONY: all check-fw-deps firmware stack-library rebuild-fw clean clean-fw clean-stack-library show-paths
 

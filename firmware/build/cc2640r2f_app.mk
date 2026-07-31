@@ -117,7 +117,7 @@ app-xdc-config:
 app-xdc-config-inproc: ../TOOLS/app_ble.cfg
 	@echo 'Building file: "$<"'
 	@echo 'Invoking: XDCtools'
-	$(XDC_XS) --xdcpath="$(VENDORED_SDK_PATH)/source;$(VENDORED_SDK_PATH)/kernel/tirtos/packages;$(VENDORED_BLESTACK);" xdc.tools.configuro -o configPkg -t ti.targets.arm.elf.M3 -p ti.platforms.simplelink:CC2640R2F -r release -c "$(TI_ARM_CGT)" --compileOptions "$(APP_XDC_COMPILE_OPTIONS)" "$<"
+	$(XDC_XS) --xdcpath="$(XDC_PACKAGE_PATH)" xdc.tools.configuro -o configPkg -t ti.targets.arm.elf.M3 -p ti.platforms.simplelink:CC2640R2F -r release -c "$(TI_ARM_CGT)" --compileOptions "$(APP_XDC_COMPILE_OPTIONS)" "$<"
 	@echo 'Finished building: "$<"'
 	@echo ' '
 
