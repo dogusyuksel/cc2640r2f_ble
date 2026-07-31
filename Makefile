@@ -46,6 +46,7 @@ REQUIRED_FW_FILES := \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/Settings.xdc \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/package.xs \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/lib/ti.targets.arm.rtsarm.aem3 \
+	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/sysbios/rom/cortexm/cc26xx/r2/golden/CC26xx/rom_sysbios_config.obj \
 	$(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search \
 	$(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search.py
 
@@ -114,7 +115,8 @@ diagnose-fw-xdc:
 		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/package/ti_targets_arm_elf.class" \
 		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/Settings.xdc" \
 		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/package.xs" \
-		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/lib/ti.targets.arm.rtsarm.aem3"; do \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/lib/ti.targets.arm.rtsarm.aem3" \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/sysbios/rom/cortexm/cc26xx/r2/golden/CC26xx/rom_sysbios_config.obj"; do \
 		if [ -e "$$file" ]; then \
 			ls -l "$$file"; \
 		else \
