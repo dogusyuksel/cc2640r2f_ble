@@ -8,6 +8,21 @@ XDCTOOLS_JAVA_HOME ?= /usr/lib/jvm/default-java
 
 APP_BUILD_DIR := $(APP_PATH)/FlashROM_StackLibrary
 STACK_BUILD_DIR := $(STACK_LIBRARY_PATH)/FlashROM_Library
+TI_ARM_CGT := $(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
+VENDORED_SDK_PATH := $(REPO_ROOT)/firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11
+
+REQUIRED_FW_FILES := \
+	$(TI_ARM_CGT)/bin/armcl \
+	$(TI_ARM_CGT)/bin/armar \
+	$(TI_ARM_CGT)/bin/armhex \
+	$(CCS_PATH)/xdctools_3_62_01_16_core/xs \
+	$(VENDORED_SDK_PATH)/source/ti/devices/cc26x0r2/driverlib/bin/ccs/driverlib.lib \
+	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/dpl/lib/dpl_cc26x0r2.aem3 \
+	$(VENDORED_SDK_PATH)/source/ti/drivers/lib/drivers_cc26x0r2.aem3 \
+	$(VENDORED_SDK_PATH)/source/ti/drivers/rf/lib/rf_singleMode_cc26x0r2.aem3 \
+	$(VENDORED_SDK_PATH)/source/ti/grlib/lib/ccs/m3/grlib.a \
+	$(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search \
+	$(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search.py
 
 export CCS_PATH
 export REPO_ROOT
@@ -15,17 +30,36 @@ export APP_PATH
 export STACK_LIBRARY_PATH
 export XDCTOOLS_JAVA_HOME
 
-.PHONY: all firmware stack-library rebuild-fw clean clean-fw clean-stack-library show-paths
+.PHONY: all check-fw-deps firmware stack-library rebuild-fw clean clean-fw clean-stack-library show-paths
 
 all: firmware
 
-firmware: stack-library
+check-fw-deps:
+	@missing=0; \
+	for file in $(REQUIRED_FW_FILES); do \
+		if [ ! -e "$$file" ]; then \
+			echo "Missing firmware dependency: $$file"; \
+			missing=1; \
+		fi; \
+	done; \
+	for tool in "$(TI_ARM_CGT)/bin/armcl" "$(TI_ARM_CGT)/bin/armar" "$(TI_ARM_CGT)/bin/armhex" "$(CCS_PATH)/xdctools_3_62_01_16_core/xs" "$(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search"; do \
+		if [ -e "$$tool" ] && [ ! -x "$$tool" ]; then \
+			echo "Firmware tool is not executable: $$tool"; \
+			missing=1; \
+		fi; \
+	done; \
+	if [ "$$missing" -ne 0 ]; then \
+		echo "Run: git submodule update --init --recursive"; \
+		exit 1; \
+	fi
+
+firmware: check-fw-deps stack-library
 	$(MAKE) -C "$(APP_BUILD_DIR)" all
 
-stack-library:
+stack-library: check-fw-deps
 	$(MAKE) -C "$(STACK_BUILD_DIR)" all
 
-rebuild-fw: clean-fw firmware
+rebuild-fw: clean-fw clean-stack-library firmware
 
 clean: clean-fw
 

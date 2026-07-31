@@ -256,7 +256,7 @@ openocd -f openocd/tcl/interface/xds110.cfg -f openocd/tcl/board/ti_cc26x0_launc
 In docker environment, execute below commands;
 
 ```
-source environment
+source environment/aliases
 git submodule update --init --recursive
 build_docker
 rebuild_fw
@@ -277,4 +277,3 @@ PS: Windows Desktop application written in C# can be found in the "tools"
 4. [More on BLE on Linux](./docs/Communication_with_Bluetooth_Low-Energy_Devices_on_Linux.pdf)
 5. [More on BLE on Linux](https://github.com/IanHarvey/bluepy)
 6. [More](./docs)
-

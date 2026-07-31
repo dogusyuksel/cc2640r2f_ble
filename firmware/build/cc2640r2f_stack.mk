@@ -32,7 +32,6 @@ STACK_INCLUDE_DIRS := \
 	$(VENDORED_BLESTACK)/services/src/nv \
 	$(VENDORED_BLESTACK)/services/src/saddr \
 	$(VENDORED_DEVICES)/cc26x0r2 \
-	$(VENDORED_DEVICES)/cc26x0r2/rf_patches \
 	$(VENDORED_DEVICES)/cc26x0r2/inc \
 	$(VENDORED_SDK_PATH)/source \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages \
@@ -165,7 +164,7 @@ Startup/ble_user_config.obj: $(VENDORED_BLESTACK)/icall/stack/ble_user_config.c 
 Startup/icall_startup.obj: $(VENDORED_BLESTACK)/common/cc26xx/icall_startup.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
 	$(COMPILE_STACK_C)
 
-Startup/osal_icall_ble.obj: $(VENDORED_SDK_PATH)/examples/rtos/CC2640R2_LAUNCHXL/ble5stack/simple_peripheral/src/stack/osal_icall_ble.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
+Startup/osal_icall_ble.obj: $(STACK_LIBRARY_PATH)/Startup/osal_icall_ble.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
 	$(COMPILE_STACK_C)
 
 TOOLS/onboard.obj: $(VENDORED_BLESTACK)/common/cc26xx/onboard.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
