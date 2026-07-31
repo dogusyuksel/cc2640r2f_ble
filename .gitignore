@@ -43,6 +43,11 @@ ccsObjs.opt
 !firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/grlib/lib/ccs/m3/grlib.a
 !firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/ble5stack/blelib/cc26x0r2/**/*.a
 
+# XDC package scripts are source inputs for TI-RTOS configuro, not build outputs.
+!firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11/kernel/tirtos/packages/**/*.xs
+!firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/display/package.xs
+!firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/drivers/rf/package.xs
+
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so

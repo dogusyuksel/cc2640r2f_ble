@@ -35,11 +35,16 @@ REQUIRED_FW_FILES := \
 	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/host/sm_pxxx.a \
 	$(VENDORED_SDK_PATH)/source/ti/ble5stack/symbols/cc26x0r2/pxxx.symbols \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/package.xdc \
+	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/package.xs \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/ITarget.xdc \
+	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/ITarget.xs \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/package/ti_targets.class \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/M3.xdc \
+	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/IArm.xs \
+	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/package.xs \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/package/ti_targets_arm_elf.class \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/Settings.xdc \
+	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/package.xs \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/lib/ti.targets.arm.rtsarm.aem3 \
 	$(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search \
 	$(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search.py
@@ -99,11 +104,16 @@ diagnose-fw-xdc:
 	@missing=0; \
 	for file in \
 		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/package.xdc" \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/package.xs" \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/ITarget.xs" \
 		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/package/ti_targets.class" \
 		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/package.xdc" \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/package.xs" \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/IArm.xs" \
 		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/M3.xdc" \
 		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/elf/package/ti_targets_arm_elf.class" \
 		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/Settings.xdc" \
+		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/package.xs" \
 		"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/lib/ti.targets.arm.rtsarm.aem3"; do \
 		if [ -e "$$file" ]; then \
 			ls -l "$$file"; \
