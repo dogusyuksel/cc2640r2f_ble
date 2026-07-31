@@ -1,7 +1,11 @@
 # custom ignores
 ble5_simple_peripheral_cc2640r2lp_app_linkInfo.xml
 firmware/ble5_simple_peripheral_cc2640r2lp_app/FlashROM_StackLibrary/configPkg
+firmware/ble5_simple_peripheral_cc2640r2lp_app/TOOLS/src/makefile.libs
 firmware/ble5_simple_peripheral_cc2640r2lp_app/TOOLS/src/sysbios
+firmware/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/ble5_simple_peripheral_cc2640r2lp_stack_library.lib
+firmware/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/ble_r2.symbols
+firmware/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/lib_linker.cmd
 *.d_raw
 ccsObjs.opt
 *.ccsproject

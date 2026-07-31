@@ -1,0 +1,5 @@
+#!/bin/bash
+
+[ -L /workspace ] && sudo rm /workspace
+sudo ln -s "$PWD" /workspace
+cd /workspace
