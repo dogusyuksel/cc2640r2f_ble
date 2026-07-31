@@ -21,6 +21,17 @@ REQUIRED_FW_FILES := \
 	$(VENDORED_SDK_PATH)/source/ti/drivers/lib/drivers_cc26x0r2.aem3 \
 	$(VENDORED_SDK_PATH)/source/ti/drivers/rf/lib/rf_singleMode_cc26x0r2.aem3 \
 	$(VENDORED_SDK_PATH)/source/ti/grlib/lib/ccs/m3/grlib.a \
+	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/ctrl/hci_pxxx.a \
+	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/ctrl/ll_pxxx.a \
+	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/hci_tl/hci_tl_none.a \
+	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/host/att_pxxx.a \
+	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/host/gap_pxxx.a \
+	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/host/gatt_pxxx.a \
+	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/host/l2cap_pxxx.a \
+	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/host/profiles_pxxx.a \
+	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/host/smp_pxxx.a \
+	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/host/sm_pxxx.a \
+	$(VENDORED_SDK_PATH)/source/ti/ble5stack/symbols/cc26x0r2/pxxx.symbols \
 	$(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search \
 	$(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search.py
 

@@ -41,6 +41,7 @@ ccsObjs.opt
 
 # Required vendored TI prebuilt libraries
 !firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/grlib/lib/ccs/m3/grlib.a
+!firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/ble5stack/blelib/cc26x0r2/**/*.a
 
 # Shared objects (inc. Windows DLLs)
 *.dll
