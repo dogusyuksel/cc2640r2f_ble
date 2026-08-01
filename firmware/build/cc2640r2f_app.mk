@@ -1,17 +1,17 @@
 include $(dir $(lastword $(MAKEFILE_LIST)))cc2640r2f_toolchain.mk
 
 APP_CMD_FILES := \
-	--cmd_file="$(APP_PATH)/TOOLS/defines/ble5_simple_peripheral_cc2640r2lp_app_FlashROM_StackLibrary.opt" \
+	--cmd_file="$(APP_PATH)/config/defines/app.opt" \
 	$(BLE_CONFIG_CMD_FILES)
 
 APP_COMMON_FLAGS := $(CC2640_COMMON_FLAGS)
 
 APP_LOCAL_INCLUDE_DIRS := \
 	$(APP_PATH) \
-	$(APP_PATH)/Application \
-	$(APP_PATH)/Startup \
-	$(APP_PATH)/PROFILES \
-	$(APP_PATH)/Include
+	$(APP_PATH)/src \
+	$(APP_PATH)/startup \
+	$(APP_PATH)/profiles \
+	$(APP_PATH)/include
 
 APP_BLESTACK_INCLUDE_DIRS := \
 	$(VENDORED_BLESTACK)/controller/cc26xx/inc \
@@ -43,10 +43,10 @@ APP_INCLUDE_FLAGS := $(addprefix --include_path=,$(APP_INCLUDE_DIRS))
 APP_COMPILE_FLAGS := $(APP_CMD_FILES) $(APP_COMMON_FLAGS) $(APP_INCLUDE_FLAGS)
 APP_XDC_COMPILE_OPTIONS := $(APP_COMMON_FLAGS) $(APP_INCLUDE_FLAGS)
 
-APP_OUTPUT := ble5_simple_peripheral_cc2640r2lp_app.out
-APP_HEX_OUTPUT := ble5_simple_peripheral_cc2640r2lp_app.hex
+APP_OUTPUT := firmware.out
+APP_HEX_OUTPUT := firmware.hex
 
-CFG_SRCS += ../TOOLS/app_ble.cfg
+CFG_SRCS += ../config/app_ble.cfg
 
 GEN_CMDS += ./configPkg/linker.cmd
 
@@ -83,9 +83,9 @@ APP_LINK_LIBS := \
 	-l"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/dpl/lib/dpl_cc26x0r2.aem3" \
 	-l"$(VENDORED_SDK_PATH)/source/ti/drivers/lib/drivers_cc26x0r2.aem3" \
 	-l"$(VENDORED_SDK_PATH)/source/ti/drivers/rf/lib/rf_singleMode_cc26x0r2.aem3" \
-	-l"$(STACK_LIBRARY_PATH)/FlashROM_Library/ble_r2.symbols" \
-	-l"$(STACK_LIBRARY_PATH)/FlashROM_Library/lib_linker.cmd" \
-	-l"$(STACK_LIBRARY_PATH)/FlashROM_Library/ble5_simple_peripheral_cc2640r2lp_stack_library.lib" \
+	-l"$(STACK_LIBRARY_PATH)/build/ble_r2.symbols" \
+	-l"$(STACK_LIBRARY_PATH)/build/lib_linker.cmd" \
+	-l"$(STACK_LIBRARY_PATH)/build/ble_stack.lib" \
 	-l"$(VENDORED_BLESTACK)/common/cc26xx/ccs/cc26xx_app.cmd" \
 	-llibc.a
 
@@ -93,7 +93,7 @@ APP_LINK_FLAGS := \
 	$(APP_CMD_FILES) \
 	$(APP_COMMON_FLAGS) \
 	-z \
-	-m"ble5_simple_peripheral_cc2640r2lp_app.map" \
+	-m"firmware.map" \
 	--heap_size=0 \
 	--stack_size=256 \
 	-i"$(TI_ARM_CGT)/lib" \
@@ -108,7 +108,7 @@ APP_LINK_FLAGS := \
 	--diag_wrap=off \
 	--display_error_number \
 	--warn_sections \
-	--xml_link_info="ble5_simple_peripheral_cc2640r2lp_app_linkInfo.xml" \
+	--xml_link_info="firmware_linkInfo.xml" \
 	--rom_model
 
 define COMPILE_APP_C
@@ -122,24 +122,24 @@ endef
 app-xdc-config:
 	@$(MAKE) --no-print-directory -Onone app-xdc-config-inproc
 
-app-xdc-config-inproc: ../TOOLS/app_ble.cfg
+app-xdc-config-inproc: ../config/app_ble.cfg
 	@echo 'Building file: "$<"'
 	@echo 'Invoking: XDCtools'
 	$(XDC_XS) --xdcpath="$(XDC_PACKAGE_PATH)" xdc.tools.configuro -o configPkg -t ti.targets.arm.elf.M3 -p ti.platforms.simplelink:CC2640R2F -r release -c "$(TI_ARM_CGT)" --compileOptions "$(APP_XDC_COMPILE_OPTIONS)" "$<"
 	@echo 'Finished building: "$<"'
 	@echo ' '
 
-configPkg/linker.cmd: app-xdc-config ../TOOLS/app_ble.cfg
+configPkg/linker.cmd: app-xdc-config ../config/app_ble.cfg
 configPkg/compiler.opt: app-xdc-config
 configPkg: app-xdc-config
 
-%.obj: ../Application/%.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
+%.obj: ../src/%.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
 	$(COMPILE_APP_C)
 
-%.obj: ../PROFILES/%.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
+%.obj: ../profiles/%.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
 	$(COMPILE_APP_C)
 
-%.obj: ../Startup/%.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
+%.obj: ../startup/%.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
 	$(COMPILE_APP_C)
 
 ECCROMCC26XX.obj: $(VENDORED_BLESTACK)/common/cc26xx/ecc/ECCROMCC26XX.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)

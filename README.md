@@ -25,8 +25,6 @@ This is a nice example with the following features;
     - [Characteristic 3 (UUID: FFF3)](#characteristic-3-uuid-fff3)
     - [Characteristic 4 (UUID: FFF4)](#characteristic-4-uuid-fff4)
     - [Characteristic 5 (UUID: FFF5)](#characteristic-5-uuid-fff5)
-  - [Production Test Mode (PTM)](#production-test-mode-ptm)
-    - [Enabling PTM Mode on the Simple Peripheral Application](#enabling-ptm-mode-on-the-simple-peripheral-application)
   - [HOW TO USE GDB](#how-to-use-gdb)
   - [HOW TO BUILD PROJECT](#how-to-build-project)
   - [NOTES](#notes)
@@ -43,15 +41,7 @@ and demonstrates the TI Simple Prole. This project can be a framework for develo
 peripheral-role applications. The Simple Peripheral project is used as the baseline for explaining the stack in
 the **BLE5-Stack User's Guide**.
 
-This project uses stack and app congurations that are summarized in the table below:
-
-![TABLE1](./docs/images/TABLE1.JPG "TABLE1")
-
-FlashROM_Library congurations use the stack library conguration, which is explained **here**.
-
-This document discusses the procedure for using the Simple Peripheral application when the
-FlashROM_StackLibrary conguration is used, and the FlashROM_StackLibrary_RCOSC conguration is
-discussed in the **RCOSC section of the BLE5-Stack User's Guide**.
+This repo builds a single firmware configuration from `firmware/app` and `firmware/stack`.
 
 ## Hardware Prerequisites
 
@@ -208,38 +198,6 @@ pressing the read button will show the characteristic's value as shown below:
 ![SCREEN11](./docs/images/SCREEN11.JPG "SCREEN11")
 
 
-## Production Test Mode (PTM)
-
-PTM mode allows a BLE application in a "single-chip" conguration to temporarily expose the host control
-interface (HCI) test commands over the serial interface when triggered externally to do so (e.g. holding a GPIO
-pin low during power up). This test mode allows the device to be connected to a Bluetooth RF Tester in order
-to run Direct Test Mode (DTM) commands on a production line using the nal release rmware.
-
-A possible use of PTM mode is showcased in this Simple Peripheral project and can be enabled with a change
-in project conguration or by adding a preprocessor dene of PTM_MODE to the application *.opt le.
-
-### Enabling PTM Mode on the Simple Peripheral Application
-
-In order to enter PTM mode
-
-1) Change your project conguration to FlashROM_StackLibrary_PTM
-
-2) Rebuild the stack project
-
-3) Rebuild the app project
-
-4) Flash the app project (Up to this point all we did was add the option to enter PTM mode via the 2-button
-menu)
-
-5) Click on the right button on the LaunchPad to start PTM operation
-
-
-Now, on boot when connected to a UART terminal you will see the option enable PTM mode.
-
-Note: Once transitioned to PTM mode, the UART feed will stop and it's responsibility will transfer to the NPI
-task to handle the receiving and transmitting of test mode commands. In order to exit this mode, a reboot is
-required.
-
 ## HOW TO USE GDB
 
 ```
@@ -260,7 +218,7 @@ source environment/aliases
 git submodule update --init --recursive
 rebuild_fw_wsl
 
-// and then find the hex "ble5_simple_peripheral_cc2640r2lp_app.hex"
+// and then find the hex "firmware/app/build/firmware.hex"
 ```
 
 

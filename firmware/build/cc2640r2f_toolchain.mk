@@ -20,7 +20,7 @@ XDC_XS := "$(CCS_PATH)/xdctools_3_62_01_16_core/xs"
 BLE_CONFIG_CMD_FILES := \
 	--cmd_file="$(VENDORED_BLESTACK)/config/build_components.opt" \
 	--cmd_file="$(VENDORED_BLESTACK)/config/factory_config.opt" \
-	--cmd_file="$(STACK_LIBRARY_PATH)/TOOLS/build_config.opt"
+	--cmd_file="$(STACK_LIBRARY_PATH)/config/build_config.opt"
 
 CC2640_CPU_FLAGS := \
 	-mv7M3 \

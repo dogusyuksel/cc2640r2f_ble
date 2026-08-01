@@ -6,8 +6,8 @@ override APP_PATH := $(REPO_ROOT)/firmware/app
 override STACK_LIBRARY_PATH := $(REPO_ROOT)/firmware/stack
 XDCTOOLS_JAVA_HOME ?= /usr/lib/jvm/default-java
 
-APP_BUILD_DIR := $(APP_PATH)/FlashROM_StackLibrary
-STACK_BUILD_DIR := $(STACK_LIBRARY_PATH)/FlashROM_Library
+APP_BUILD_DIR := $(APP_PATH)/build
+STACK_BUILD_DIR := $(STACK_LIBRARY_PATH)/build
 TI_ARM_CGT := $(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 override VENDORED_SDK_PATH := $(REPO_ROOT)/firmware/vendor/ti_cc2640r2
 XDC_XS := $(CCS_PATH)/xdctools_3_62_01_16_core/xs

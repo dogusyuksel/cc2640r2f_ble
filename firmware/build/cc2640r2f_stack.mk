@@ -3,10 +3,10 @@ include $(dir $(lastword $(MAKEFILE_LIST)))cc2640r2f_toolchain.mk
 PYTHON ?= python3
 LIB_SEARCH := $(PYTHON) $(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search.py
 
-STACK_OUTPUT := ble5_simple_peripheral_cc2640r2lp_stack_library.lib
+STACK_OUTPUT := ble_stack.lib
 
 STACK_CMD_FILES := \
-	--cmd_file="$(STACK_LIBRARY_PATH)/TOOLS/defines/ble5_simple_peripheral_cc2640r2lp_stack_library_FlashROM_Library.opt" \
+	--cmd_file="$(STACK_LIBRARY_PATH)/config/defines/stack.opt" \
 	$(BLE_CONFIG_CMD_FILES)
 
 STACK_COMMON_FLAGS := $(CC2640_COMMON_FLAGS)
@@ -174,7 +174,7 @@ Startup/ble_user_config.obj: $(VENDORED_BLESTACK)/icall/stack/ble_user_config.c 
 Startup/icall_startup.obj: $(VENDORED_BLESTACK)/common/cc26xx/icall_startup.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
 	$(COMPILE_STACK_C)
 
-Startup/osal_icall_ble.obj: $(STACK_LIBRARY_PATH)/Startup/osal_icall_ble.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
+Startup/osal_icall_ble.obj: $(STACK_LIBRARY_PATH)/startup/osal_icall_ble.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
 	$(COMPILE_STACK_C)
 
 TOOLS/onboard.obj: $(VENDORED_BLESTACK)/common/cc26xx/onboard.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
