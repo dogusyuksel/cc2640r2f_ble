@@ -32,7 +32,7 @@ import argparse
 import os
 import shutil
 import re
-from lxml import etree
+import xml.etree.ElementTree as etree
 
 
 __version__ = '2.1.0'
@@ -225,8 +225,7 @@ def parse_features_xml(xml_path):
     input_regex_class = InputRegexClass()
 
     with open(xml_path, 'r') as f:
-        lxml_parser = etree.XMLParser(remove_blank_text=True)
-        tree = etree.parse(f, lxml_parser)
+        tree = etree.parse(f)
         root = tree.getroot()
 
         if root.tag == 'lib_search':

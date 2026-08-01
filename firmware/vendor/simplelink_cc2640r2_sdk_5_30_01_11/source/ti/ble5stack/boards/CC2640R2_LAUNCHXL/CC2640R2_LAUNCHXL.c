@@ -410,6 +410,7 @@ const uint_least8_t AESCTRDRBG_count = CC2640R2_LAUNCHXL_AESCTRDRBGCOUNT;
 /*
  *  =============================== Display ===============================
  */
+#ifndef Display_DISABLE_ALL
 #include <ti/display/Display.h>
 #include <ti/display/DisplayUart.h>
 #include <ti/display/DisplaySharp.h>
@@ -491,6 +492,7 @@ const Display_Config *Display_config = NULL;
 const uint_least8_t Display_count = 0;
 
 #endif /* (BOARD_DISPLAY_USE_UART || BOARD_DISPLAY_USE_LCD) */
+#endif /* Display_DISABLE_ALL */
 
 /*
  *  =============================== GPIO ===============================

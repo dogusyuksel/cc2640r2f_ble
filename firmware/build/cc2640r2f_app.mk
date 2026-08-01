@@ -74,7 +74,6 @@ APP_LINK_LIBS := \
 	-l"$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/dpl/lib/dpl_cc26x0r2.aem3" \
 	-l"$(VENDORED_SDK_PATH)/source/ti/drivers/lib/drivers_cc26x0r2.aem3" \
 	-l"$(VENDORED_SDK_PATH)/source/ti/drivers/rf/lib/rf_singleMode_cc26x0r2.aem3" \
-	-l"$(VENDORED_SDK_PATH)/source/ti/grlib/lib/ccs/m3/grlib.a" \
 	-l"$(STACK_LIBRARY_PATH)/FlashROM_Library/ble_r2.symbols" \
 	-l"$(STACK_LIBRARY_PATH)/FlashROM_Library/lib_linker.cmd" \
 	-l"$(STACK_LIBRARY_PATH)/FlashROM_Library/ble5_simple_peripheral_cc2640r2lp_stack_library.lib" \

@@ -1,3 +1,11 @@
+REPO_ROOT ?= $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/../..)
+TI_ROOT ?= $(REPO_ROOT)/thirdparty/ti_cc2640r2f_sdk
+CCS_PATH ?= $(TI_ROOT)/ccs1281
+APP_PATH ?= $(REPO_ROOT)/firmware/ble5_simple_peripheral_cc2640r2lp_app
+STACK_LIBRARY_PATH ?= $(REPO_ROOT)/firmware/ble5_simple_peripheral_cc2640r2lp_stack_library
+XDCTOOLS_JAVA_HOME ?= /usr/lib/jvm/default-java
+export XDCTOOLS_JAVA_HOME
+
 TI_ARM_CGT ?= $(CCS_PATH)/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 VENDORED_SDK_PATH := $(REPO_ROOT)/firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11
 VENDORED_BLESTACK := $(VENDORED_SDK_PATH)/source/ti/ble5stack

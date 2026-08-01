@@ -9,6 +9,11 @@ RMDIR := rm -rf
 
 OBJS += $(APP_OBJECTS)
 
+STACK_LINK_INPUTS := \
+$(STACK_LIBRARY_PATH)/FlashROM_Library/ble_r2.symbols \
+$(STACK_LIBRARY_PATH)/FlashROM_Library/lib_linker.cmd \
+$(STACK_LIBRARY_PATH)/FlashROM_Library/ble5_simple_peripheral_cc2640r2lp_stack_library.lib
+
 ORDERED_OBJS += $(OBJS) $(GEN_CMDS__FLAG) $(APP_LINK_LIBS)
 
 # Add inputs and outputs from these tool invocations to the build variables 
@@ -29,7 +34,7 @@ dependents:
 	-cd $(STACK_LIBRARY_PATH)/FlashROM_Library && $(MAKE) clean all
 
 # Tool invocations
-$(APP_OUTPUT): $(OBJS) $(CMD_SRCS) $(GEN_CMDS) $(STACK_LIBRARY_PATH)/FlashROM_Library/ble5_simple_peripheral_cc2640r2lp_stack_library.lib
+$(APP_OUTPUT): $(OBJS) $(CMD_SRCS) $(GEN_CMDS) $(STACK_LINK_INPUTS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: Arm Linker'
 	$(ARMCL) $(APP_LINK_FLAGS) -o "$(APP_OUTPUT)" $(ORDERED_OBJS)
@@ -49,4 +54,7 @@ post-build:
 
 .PHONY: all clean dependents
 .SECONDARY:
-$(STACK_LIBRARY_PATH)/FlashROM_Library/ble5_simple_peripheral_cc2640r2lp_stack_library.lib:
+$(STACK_LINK_INPUTS): stack-link-inputs
+
+stack-link-inputs:
+	$(MAKE) -C "$(STACK_LIBRARY_PATH)/FlashROM_Library" all

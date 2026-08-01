@@ -1,6 +1,7 @@
 include $(dir $(lastword $(MAKEFILE_LIST)))cc2640r2f_toolchain.mk
 
-LIB_SEARCH := $(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search
+PYTHON ?= python3
+LIB_SEARCH := $(PYTHON) $(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search.py
 
 STACK_OUTPUT := ble5_simple_peripheral_cc2640r2lp_stack_library.lib
 

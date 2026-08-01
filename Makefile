@@ -22,7 +22,6 @@ REQUIRED_FW_FILES := \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/dpl/lib/dpl_cc26x0r2.aem3 \
 	$(VENDORED_SDK_PATH)/source/ti/drivers/lib/drivers_cc26x0r2.aem3 \
 	$(VENDORED_SDK_PATH)/source/ti/drivers/rf/lib/rf_singleMode_cc26x0r2.aem3 \
-	$(VENDORED_SDK_PATH)/source/ti/grlib/lib/ccs/m3/grlib.a \
 	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/ctrl/hci_pxxx.a \
 	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/ctrl/ll_pxxx.a \
 	$(VENDORED_SDK_PATH)/source/ti/ble5stack/blelib/cc26x0r2/hci_tl/hci_tl_none.a \
@@ -47,7 +46,7 @@ REQUIRED_FW_FILES := \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/package.xs \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/targets/arm/rtsarm/lib/ti.targets.arm.rtsarm.aem3 \
 	$(VENDORED_SDK_PATH)/kernel/tirtos/packages/ti/sysbios/rom/cortexm/cc26xx/r2/golden/CC26xx/rom_sysbios_config.obj \
-	$(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search \
+	$(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search.xml \
 	$(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search.py
 
 export CCS_PATH
@@ -69,12 +68,16 @@ check-fw-deps:
 			missing=1; \
 		fi; \
 	done; \
-	for tool in "$(TI_ARM_CGT)/bin/armcl" "$(TI_ARM_CGT)/bin/armar" "$(TI_ARM_CGT)/bin/armhex" "$(CCS_PATH)/xdctools_3_62_01_16_core/xs" "$(VENDORED_SDK_PATH)/tools/ble5stack/lib_search/lib_search"; do \
+	for tool in "$(TI_ARM_CGT)/bin/armcl" "$(TI_ARM_CGT)/bin/armar" "$(TI_ARM_CGT)/bin/armhex" "$(CCS_PATH)/xdctools_3_62_01_16_core/xs"; do \
 		if [ -e "$$tool" ] && [ ! -x "$$tool" ]; then \
 			echo "Firmware tool is not executable: $$tool"; \
 			missing=1; \
 		fi; \
 	done; \
+	if ! command -v python3 >/dev/null 2>&1; then \
+		echo "Missing firmware dependency: python3"; \
+		missing=1; \
+	fi; \
 	if [ "$$missing" -eq 0 ]; then \
 		probe=$$(mktemp /tmp/cc2640r2-xdc.XXXXXX.xs); \
 		printf '%s\n' 'xdc.module("ti.targets.arm.elf.M3");' 'print("resolved ti.targets.arm.elf.M3");' > "$$probe"; \

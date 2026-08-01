@@ -12,6 +12,7 @@ RUN apt-get update && \
         g++-multilib \
         default-jre \
         default-jdk \
+        python3 \
         unzip && \
     apt-get -y clean
 
