@@ -11,6 +11,25 @@ This is a nice example with the following features;
 5. TI RTOS task usage
 6. GDB usage
 
+## Table of Contents
+- [Simple Peripheral](#simple-peripheral)
+  - [Table of Contents](#table-of-contents)
+  - [IO Layout](#io-layout)
+  - [Introduction](#introduction)
+  - [Hardware Prerequisites](#hardware-prerequisites)
+  - [Software Prerequisites](#software-prerequisites)
+  - [Project Layout](#project-layout)
+  - [Service/Prol e Table](#serviceprol-e-table)
+  - [Usage](#usage)
+    - [Characteristic 1 (UUID: FFF1)](#characteristic-1-uuid-fff1)
+    - [Characteristic 2 (UUID: FFF2)](#characteristic-2-uuid-fff2)
+    - [Characteristic 3 (UUID: FFF3)](#characteristic-3-uuid-fff3)
+    - [Characteristic 4 (UUID: FFF4)](#characteristic-4-uuid-fff4)
+    - [Characteristic 5 (UUID: FFF5)](#characteristic-5-uuid-fff5)
+  - [HOW TO USE GDB](#how-to-use-gdb)
+  - [HOW TO BUILD PROJECT](#how-to-build-project)
+  - [NOTES](#notes)
+
 ## IO Layout
 
 ![IO](./docs/images/IO.JPG "IO")
@@ -23,15 +42,7 @@ and demonstrates the TI Simple Prole. This project can be a framework for develo
 peripheral-role applications. The Simple Peripheral project is used as the baseline for explaining the stack in
 the **BLE5-Stack User's Guide**.
 
-This project uses stack and app congurations that are summarized in the table below:
-
-![TABLE1](./docs/images/TABLE1.JPG "TABLE1")
-
-FlashROM_Library congurations use the stack library conguration, which is explained **here**.
-
-This document discusses the procedure for using the Simple Peripheral application when the
-FlashROM_StackLibrary conguration is used, and the FlashROM_StackLibrary_RCOSC conguration is
-discussed in the **RCOSC section of the BLE5-Stack User's Guide**.
+This repo builds a single firmware configuration from `firmware/app` and `firmware/stack`.
 
 ## Hardware Prerequisites
 
@@ -44,10 +55,42 @@ For custom hardware, see the **Running the SDK on Custom Boards section of the B
 
 ## Software Prerequisites
 
-For information on what versions of Code Composer Studio and IAR Embedded Workbench to use, see the
-Release Notes located in the docs/ble5stack folder. For information on how to import this project into your
-IDE workspace and build/run, please refer to **The CC2640R2F Platform section in the BLE5-Stack User's
-Guide**.
+The firmware build uses the TI ARM compiler and XDCtools from the `thirdparty/ti_cc2640r2f_sdk`
+submodule. The reduced SimpleLink/BLE5/TI-RTOS files needed by the firmware live in
+`firmware/vendor/ti_cc2640r2`.
+
+Required host tools:
+
+- GNU make
+- Python 3
+- Java for XDCtools
+- Docker, only if using the Docker aliases
+
+Initialize the toolchain submodule before building:
+
+```sh
+git submodule update --init --recursive
+```
+
+## Project Layout
+
+```text
+firmware/
+  app/                  Application sources and firmware build output
+    build/              Generated objects, map, out, and firmware.hex
+    config/             app_ble.cfg, app.opt, and XDC generated-source inputs
+    debug/              XDS/CCXML debug target config
+    include/            App-local compatibility headers
+    profiles/           GATT profile/service sources
+    src/                Main application, board, utility, sensor/flash code
+    startup/            Startup and CCFG sources
+  stack/                BLE stack library build
+    build/              Generated stack objects and ble_stack.lib
+    config/             Stack build configuration
+    src/                Stack-local source
+  build/                Shared make fragments
+  vendor/ti_cc2640r2    Reduced vendored TI SDK files required by this firmware
+```
 
 ## Service/Prol e Table
 
@@ -188,49 +231,59 @@ pressing the read button will show the characteristic's value as shown below:
 ![SCREEN11](./docs/images/SCREEN11.JPG "SCREEN11")
 
 
-## Production Test Mode (PTM)
+## HOW TO USE GDB
 
-PTM mode allows a BLE application in a "single-chip" conguration to temporarily expose the host control
-interface (HCI) test commands over the serial interface when triggered externally to do so (e.g. holding a GPIO
-pin low during power up). This test mode allows the device to be connected to a Bluetooth RF Tester in order
-to run Direct Test Mode (DTM) commands on a production line using the nal release rmware.
+```
+openocd -f openocd/tcl/interface/xds110.cfg -f openocd/tcl/board/ti_cc26x0_launchpad.cfg
 
-A possible use of PTM mode is showcased in this Simple Peripheral project and can be enabled with a change
-in project conguration or by adding a preprocessor dene of PTM_MODE to the application *.opt le.
+# then in another terminal, run below
+# gdb-multiarch firmware/app/build/firmware.out
+# target extended-remote localhost:3333
+# load command can be used to fw update
+```
 
-### Enabling PTM Mode on the Simple Peripheral Application
+## HOW TO BUILD PROJECT
 
-In order to enter PTM mode
+In WSL:
 
-1) Change your project conguration to FlashROM_StackLibrary_PTM
+```sh
+source environment/aliases
+git submodule update --init --recursive
+make check-fw-deps
+rebuild_fw_wsl
+```
 
-2) Rebuild the stack project
+In Docker:
 
-3) Rebuild the app project
+```sh
+source environment/aliases
+git submodule update --init --recursive
+build_docker
+rebuild_fw
+```
 
-4) Flash the app project (Up to this point all we did was add the option to enter PTM mode via the 2-button
-menu)
+Firmware output:
 
-5) Click on the right button on the LaunchPad to start PTM operation
+```text
+firmware/app/build/firmware.hex
+```
 
+Useful diagnostics:
 
-Now, on boot when connected to a UART terminal you will see the option enable PTM mode.
+```sh
+make show-paths
+make diagnose-fw-xdc
+```
 
-Note: Once transitioned to PTM mode, the UART feed will stop and it's responsibility will transfer to the NPI
-task to handle the receiving and transmitting of test mode commands. In order to exit this mode, a reboot is
-required.
-
-
-# NOTES
+## NOTES
 
 PS: Bootloader related things can be found in the links and the examples (they are calling bootloader as "bim")
 
 PS: Windows Desktop application written in C# can be found in the "tools"
 
 1. [BLE5-Stack User’s Guide](https://software-dl.ti.com/lprf/simplelink_cc26x2_latest/docs/ble5stack/ble_user_guide/html/ble-stack-5.x-guide/index-cc26x2.html)
-2. [More Example](https://github.com/dogusyuksel/ti_cc2640r2f_sdk/tree/master/simplelink_cc2640r2_sdk_5_30_01_11/examples)
+2. [Original SDK examples](https://github.com/dogusyuksel/ti_cc2640r2f_sdk/tree/master/simplelink_cc2640r2_sdk_5_30_01_11/examples)
 3. [Schematic Details](./docs/LAUNCHXL-CC2640R2_1_0_0_Schematics.pdf)
 4. [More on BLE on Linux](./docs/Communication_with_Bluetooth_Low-Energy_Devices_on_Linux.pdf)
 5. [More on BLE on Linux](https://github.com/IanHarvey/bluepy)
 6. [More](./docs)
-

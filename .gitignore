@@ -1,11 +1,13 @@
+# Firmware build outputs
+firmware/app/build/*
+!firmware/app/build/
+!firmware/app/build/makefile
+firmware/app/config/src/
+firmware/stack/build/*
+!firmware/stack/build/
+!firmware/stack/build/makefile
+
 # custom ignores
-docker
-ti_cc2640r2f_sdk
-linting
-openocd
-ble5_simple_peripheral_cc2640r2lp_app_linkInfo.xml
-firmware/ble5_simple_peripheral_cc2640r2lp_app/FlashROM_StackLibrary/configPkg
-firmware/ble5_simple_peripheral_cc2640r2lp_app/TOOLS/src/sysbios
 *.d_raw
 ccsObjs.opt
 *.ccsproject
@@ -38,6 +40,14 @@ ccsObjs.opt
 *.a
 *.la
 *.lo
+
+# Required vendored TI prebuilt libraries
+!firmware/vendor/ti_cc2640r2/source/ti/ble5stack/blelib/cc26x0r2/**/*.a
+
+# XDC package scripts are source inputs for TI-RTOS configuro, not build outputs.
+!firmware/vendor/ti_cc2640r2/kernel/tirtos/packages/**/*.xs
+!firmware/vendor/ti_cc2640r2/source/ti/drivers/rf/package.xs
+!firmware/vendor/ti_cc2640r2/kernel/tirtos/packages/ti/sysbios/rom/cortexm/cc26xx/r2/golden/CC26xx/*.obj
 
 # Shared objects (inc. Windows DLLs)
 *.dll
