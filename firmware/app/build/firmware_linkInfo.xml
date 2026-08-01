@@ -2,7 +2,7 @@
 <link_info>
    <banner>TI ARM Linker Unix v20.2.7.LTS</banner>
    <copyright>Copyright (c) 1996-2018 Texas Instruments Incorporated</copyright>
-   <link_time>0x6a6e773c</link_time>
+   <link_time>0x6a6e7aca</link_time>
    <link_errors>0x0</link_errors>
    <output_file>firmware.out</output_file>
    <entry_point>
@@ -427,8 +427,8 @@
       <input_file id="fl-174">
          <path>/tmp/</path>
          <kind>object</kind>
-         <file>TIiNkNcEpKp</file>
-         <name>TIiNkNcEpKp</name>
+         <file>TIjjZnkVAOo</file>
+         <name>TIjjZnkVAOo</name>
       </input_file>
       <input_file id="fl-17">
          <path>/mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/firmware/app/build/configPkg/package/cfg/</path>
