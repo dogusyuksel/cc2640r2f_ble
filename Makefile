@@ -89,6 +89,7 @@ check-fw-deps:
 		rm -f "$$probe"; \
 	fi; \
 	if [ "$$missing" -ne 0 ]; then \
+		echo "Ensure submodules are initialized and vendored firmware files are present."; \
 		echo "Run: git submodule update --init --recursive"; \
 		exit 1; \
 	fi

@@ -1,11 +1,11 @@
 # custom ignores
-ble5_simple_peripheral_cc2640r2lp_app_linkInfo.xml
-firmware/ble5_simple_peripheral_cc2640r2lp_app/FlashROM_StackLibrary/configPkg
-firmware/ble5_simple_peripheral_cc2640r2lp_app/TOOLS/src/makefile.libs
-firmware/ble5_simple_peripheral_cc2640r2lp_app/TOOLS/src/sysbios
-firmware/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/ble5_simple_peripheral_cc2640r2lp_stack_library.lib
-firmware/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/ble_r2.symbols
-firmware/ble5_simple_peripheral_cc2640r2lp_stack_library/FlashROM_Library/lib_linker.cmd
+firmware/app/build/configPkg
+firmware/app/build/firmware_linkInfo.xml
+firmware/app/config/src/makefile.libs
+firmware/app/config/src/sysbios
+firmware/stack/build/ble_stack.lib
+firmware/stack/build/ble_r2.symbols
+firmware/stack/build/lib_linker.cmd
 *.d_raw
 ccsObjs.opt
 *.ccsproject
@@ -40,12 +40,12 @@ ccsObjs.opt
 *.lo
 
 # Required vendored TI prebuilt libraries
-!firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/ble5stack/blelib/cc26x0r2/**/*.a
+!firmware/vendor/ti_cc2640r2/source/ti/ble5stack/blelib/cc26x0r2/**/*.a
 
 # XDC package scripts are source inputs for TI-RTOS configuro, not build outputs.
-!firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11/kernel/tirtos/packages/**/*.xs
-!firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11/source/ti/drivers/rf/package.xs
-!firmware/vendor/simplelink_cc2640r2_sdk_5_30_01_11/kernel/tirtos/packages/ti/sysbios/rom/cortexm/cc26xx/r2/golden/CC26xx/*.obj
+!firmware/vendor/ti_cc2640r2/kernel/tirtos/packages/**/*.xs
+!firmware/vendor/ti_cc2640r2/source/ti/drivers/rf/package.xs
+!firmware/vendor/ti_cc2640r2/kernel/tirtos/packages/ti/sysbios/rom/cortexm/cc26xx/r2/golden/CC26xx/*.obj
 
 # Shared objects (inc. Windows DLLs)
 *.dll

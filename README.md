@@ -18,6 +18,7 @@ This is a nice example with the following features;
   - [Introduction](#introduction)
   - [Hardware Prerequisites](#hardware-prerequisites)
   - [Software Prerequisites](#software-prerequisites)
+  - [Project Layout](#project-layout)
   - [Service/Prol e Table](#serviceprol-e-table)
   - [Usage](#usage)
     - [Characteristic 1 (UUID: FFF1)](#characteristic-1-uuid-fff1)
@@ -54,10 +55,42 @@ For custom hardware, see the **Running the SDK on Custom Boards section of the B
 
 ## Software Prerequisites
 
-For information on what versions of Code Composer Studio and IAR Embedded Workbench to use, see the
-Release Notes located in the docs/ble5stack folder. For information on how to import this project into your
-IDE workspace and build/run, please refer to **The CC2640R2F Platform section in the BLE5-Stack User's
-Guide**.
+The firmware build uses the TI ARM compiler and XDCtools from the `thirdparty/ti_cc2640r2f_sdk`
+submodule. The reduced SimpleLink/BLE5/TI-RTOS files needed by the firmware live in
+`firmware/vendor/ti_cc2640r2`.
+
+Required host tools:
+
+- GNU make
+- Python 3
+- Java for XDCtools
+- Docker, only if using the Docker aliases
+
+Initialize the toolchain submodule before building:
+
+```sh
+git submodule update --init --recursive
+```
+
+## Project Layout
+
+```text
+firmware/
+  app/                  Application sources and firmware build output
+    build/              Generated objects, map, out, and firmware.hex
+    config/             app_ble.cfg, app.opt, and XDC generated-source inputs
+    debug/              XDS/CCXML debug target config
+    include/            App-local compatibility headers
+    profiles/           GATT profile/service sources
+    src/                Main application, board, utility, sensor/flash code
+    startup/            Startup and CCFG sources
+  stack/                BLE stack library build
+    build/              Generated stack objects and ble_stack.lib
+    config/             Stack build configuration
+    startup/            Stack-local startup source
+  build/                Shared make fragments
+  vendor/ti_cc2640r2    Reduced vendored TI SDK files required by this firmware
+```
 
 ## Service/Prol e Table
 
@@ -204,23 +237,43 @@ pressing the read button will show the characteristic's value as shown below:
 openocd -f openocd/tcl/interface/xds110.cfg -f openocd/tcl/board/ti_cc26x0_launchpad.cfg
 
 # then in another terminal, run below
-# gdb-multiarch <your_code>.out
+# gdb-multiarch firmware/app/build/firmware.out
 # target extended-remote localhost:3333
-# load comamnd can be used to fw update
+# load command can be used to fw update
 ```
 
 ## HOW TO BUILD PROJECT
 
-In WSL, execute below commands;
+In WSL:
 
-```
+```sh
 source environment/aliases
 git submodule update --init --recursive
+make check-fw-deps
 rebuild_fw_wsl
-
-// and then find the hex "firmware/app/build/firmware.hex"
 ```
 
+In Docker:
+
+```sh
+source environment/aliases
+git submodule update --init --recursive
+build_docker
+rebuild_fw
+```
+
+Firmware output:
+
+```text
+firmware/app/build/firmware.hex
+```
+
+Useful diagnostics:
+
+```sh
+make show-paths
+make diagnose-fw-xdc
+```
 
 ## NOTES
 
@@ -229,7 +282,7 @@ PS: Bootloader related things can be found in the links and the examples (they a
 PS: Windows Desktop application written in C# can be found in the "tools"
 
 1. [BLE5-Stack User’s Guide](https://software-dl.ti.com/lprf/simplelink_cc26x2_latest/docs/ble5stack/ble_user_guide/html/ble-stack-5.x-guide/index-cc26x2.html)
-2. [More Example](https://github.com/dogusyuksel/ti_cc2640r2f_sdk/tree/master/simplelink_cc2640r2_sdk_5_30_01_11/examples)
+2. [Original SDK examples](https://github.com/dogusyuksel/ti_cc2640r2f_sdk/tree/master/simplelink_cc2640r2_sdk_5_30_01_11/examples)
 3. [Schematic Details](./docs/LAUNCHXL-CC2640R2_1_0_0_Schematics.pdf)
 4. [More on BLE on Linux](./docs/Communication_with_Bluetooth_Low-Energy_Devices_on_Linux.pdf)
 5. [More on BLE on Linux](https://github.com/IanHarvey/bluepy)
