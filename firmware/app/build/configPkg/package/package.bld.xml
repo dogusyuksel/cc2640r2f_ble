@@ -25,7 +25,7 @@
             platform="ti.platforms.simCM3"
             isa="v7M"
             suffix="em3"
-            rootDir="/workspace/thirdparty/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS"
+            rootDir="/mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/thirdparty/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS"
             os="undefined"
             rts="ti.targets.arm.rtsarm">
             <model endian="little"

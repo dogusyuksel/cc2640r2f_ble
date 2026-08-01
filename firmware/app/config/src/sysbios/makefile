@@ -17,11 +17,11 @@ CCOPTS = --endian=little -mv7M3 --abi=eabi -q -ms --opt_for_speed=0  --program_l
 
 BIOS_INC = -I"/mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/firmware/vendor/ti_cc2640r2/kernel/tirtos/packages/"
 ANNEX_INCS = 
-INCS = $(BIOS_INC) $(ANNEX_INCS) -I"/mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/firmware/vendor/ti_cc2640r2/source/" -I"/mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/firmware/vendor/ti_cc2640r2/kernel/tirtos/packages/" -I"/mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/firmware/vendor/ti_cc2640r2/source/ti/ble5stack/" -I"/mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/thirdparty/ti_cc2640r2f_sdk/ccs1281/xdctools_3_62_01_16_core/packages/" -I"../" -I"/packages//"  -I/workspace/thirdparty/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include 
+INCS = $(BIOS_INC) $(ANNEX_INCS) -I"/mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/firmware/vendor/ti_cc2640r2/source/" -I"/mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/firmware/vendor/ti_cc2640r2/kernel/tirtos/packages/" -I"/mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/firmware/vendor/ti_cc2640r2/source/ti/ble5stack/" -I"/mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/thirdparty/ti_cc2640r2f_sdk/ccs1281/xdctools_3_62_01_16_core/packages/" -I"../" -I"/packages//"  -I/mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/thirdparty/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include 
 
-CC = /workspace/thirdparty/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl -c $(CCOPTS)
-ASM = /workspace/thirdparty/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl -c $(CCOPTS)
-AR = /workspace/thirdparty/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armar rq
+CC = /mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/thirdparty/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl -c $(CCOPTS)
+ASM = /mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/thirdparty/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl -c $(CCOPTS)
+AR = /mnt/c/cygwin64/home/dodo-/cc2640r2f_ble/thirdparty/ti_cc2640r2f_sdk/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armar rq
 
 DEL = rm -f
 CP = cp -f

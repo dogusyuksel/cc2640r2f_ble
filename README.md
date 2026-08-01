@@ -87,7 +87,7 @@ firmware/
   stack/                BLE stack library build
     build/              Generated stack objects and ble_stack.lib
     config/             Stack build configuration
-    startup/            Stack-local startup source
+    src/                Stack-local source
   build/                Shared make fragments
   vendor/ti_cc2640r2    Reduced vendored TI SDK files required by this firmware
 ```

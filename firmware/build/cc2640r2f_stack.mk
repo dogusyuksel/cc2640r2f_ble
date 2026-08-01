@@ -174,7 +174,7 @@ Startup/ble_user_config.obj: $(VENDORED_BLESTACK)/icall/stack/ble_user_config.c 
 Startup/icall_startup.obj: $(VENDORED_BLESTACK)/common/cc26xx/icall_startup.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
 	$(COMPILE_STACK_C)
 
-Startup/osal_icall_ble.obj: $(STACK_LIBRARY_PATH)/startup/osal_icall_ble.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
+Startup/osal_icall_ble.obj: $(STACK_LIBRARY_PATH)/src/osal_icall_ble.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
 	$(COMPILE_STACK_C)
 
 TOOLS/onboard.obj: $(VENDORED_BLESTACK)/common/cc26xx/onboard.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
