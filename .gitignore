@@ -1,11 +1,13 @@
+# Firmware build outputs
+firmware/app/build/*
+!firmware/app/build/
+!firmware/app/build/makefile
+firmware/app/config/src/
+firmware/stack/build/*
+!firmware/stack/build/
+!firmware/stack/build/makefile
+
 # custom ignores
-firmware/app/build/configPkg
-firmware/app/build/firmware_linkInfo.xml
-firmware/app/config/src/makefile.libs
-firmware/app/config/src/sysbios
-firmware/stack/build/ble_stack.lib
-firmware/stack/build/ble_r2.symbols
-firmware/stack/build/lib_linker.cmd
 *.d_raw
 ccsObjs.opt
 *.ccsproject
