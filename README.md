@@ -253,13 +253,12 @@ openocd -f openocd/tcl/interface/xds110.cfg -f openocd/tcl/board/ti_cc26x0_launc
 
 ## HOW TO BUILD PROJECT
 
-In docker environment, execute below commands;
+In WSL, execute below commands;
 
 ```
 source environment/aliases
 git submodule update --init --recursive
-build_docker
-rebuild_fw
+rebuild_fw_wsl
 
 // and then find the hex "ble5_simple_peripheral_cc2640r2lp_app.hex"
 ```
