@@ -55,7 +55,7 @@ For custom hardware, see the **Running the SDK on Custom Boards section of the B
 
 ## Software Prerequisites
 
-The firmware build uses the TI ARM compiler and XDCtools from the `thirdparty/ti_cc2640r2f_sdk`
+The firmware build uses the TI ARM compiler and XDCtools from the `ccs1281`
 submodule. The reduced SimpleLink/BLE5/TI-RTOS files needed by the firmware live in
 `firmware/vendor/ti_cc2640r2`.
 
@@ -282,8 +282,7 @@ PS: Bootloader related things can be found in the links and the examples (they a
 PS: Windows Desktop application written in C# can be found in the "tools"
 
 1. [BLE5-Stack User’s Guide](https://software-dl.ti.com/lprf/simplelink_cc26x2_latest/docs/ble5stack/ble_user_guide/html/ble-stack-5.x-guide/index-cc26x2.html)
-2. [Original SDK examples](https://github.com/dogusyuksel/ti_cc2640r2f_sdk/tree/master/simplelink_cc2640r2_sdk_5_30_01_11/examples)
-3. [Schematic Details](./docs/LAUNCHXL-CC2640R2_1_0_0_Schematics.pdf)
-4. [More on BLE on Linux](./docs/Communication_with_Bluetooth_Low-Energy_Devices_on_Linux.pdf)
-5. [More on BLE on Linux](https://github.com/IanHarvey/bluepy)
-6. [More](./docs)
+2. [Schematic Details](./docs/LAUNCHXL-CC2640R2_1_0_0_Schematics.pdf)
+3. [More on BLE on Linux](./docs/Communication_with_Bluetooth_Low-Energy_Devices_on_Linux.pdf)
+4. [More on BLE on Linux](https://github.com/IanHarvey/bluepy)
+5. [More](./docs)
