@@ -1,7 +1,6 @@
 REPO_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 
-TI_ROOT ?= $(REPO_ROOT)/thirdparty/ti_cc2640r2f_sdk
-CCS_PATH ?= $(TI_ROOT)/ccs1281
+CCS_PATH ?= $(REPO_ROOT)/ccs1281
 override APP_PATH := $(REPO_ROOT)/firmware/app
 override STACK_LIBRARY_PATH := $(REPO_ROOT)/firmware/stack
 XDCTOOLS_JAVA_HOME ?= /usr/lib/jvm/default-java
@@ -87,11 +86,6 @@ check-fw-deps:
 			missing=1; \
 		fi; \
 		rm -f "$$probe"; \
-	fi; \
-	if [ "$$missing" -ne 0 ]; then \
-		echo "Ensure submodules are initialized and vendored firmware files are present."; \
-		echo "Run: git submodule update --init --recursive"; \
-		exit 1; \
 	fi
 
 diagnose-fw-xdc:
