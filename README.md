@@ -55,8 +55,8 @@ For custom hardware, see the **Running the SDK on Custom Boards section of the B
 
 ## Software Prerequisites
 
-The firmware build uses the TI ARM compiler and XDCtools from the `ccs1281`.
-The reduced SimpleLink/BLE5/TI-RTOS files needed by the firmware live in
+The firmware build uses the TI ARM compiler and XDCtools from the `ccs1281`
+submodule. The reduced SimpleLink/BLE5/TI-RTOS files needed by the firmware live in
 `firmware/vendor/ti_cc2640r2`.
 
 Required host tools:
